@@ -16,7 +16,7 @@
 <meta property="og:site_name" content="Renewing">
 <meta property="og:description" content="卷积原理在信号与系统中，卷积积分是线性时不变系统分析的一个重要工具，具体是通过两个函数f和g生成第三个函数，表征函数f与g经过翻转和平移的重叠部分的面积。 卷积是两个变量在某范围内相乘后求和的结果。如果卷积的变量是序列x(n)和h(n)，则卷积的结果y(n)=x(n)h(n)，其中星号表示卷积。当时序n=0时，序列h(-i)是h(i)的时序i取反的结果；时序取反使得h(i)以纵轴为中心翻转180度">
 <meta property="og:locale" content="default">
-<meta property="og:updated_time" content="2018-06-01T16:15:43.837Z">
+<meta property="og:updated_time" content="2018-06-02T02:11:18.417Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="如何选取卷积生成序列中的有用部分">
 <meta name="twitter:description" content="卷积原理在信号与系统中，卷积积分是线性时不变系统分析的一个重要工具，具体是通过两个函数f和g生成第三个函数，表征函数f与g经过翻转和平移的重叠部分的面积。 卷积是两个变量在某范围内相乘后求和的结果。如果卷积的变量是序列x(n)和h(n)，则卷积的结果y(n)=x(n)h(n)，其中星号表示卷积。当时序n=0时，序列h(-i)是h(i)的时序i取反的结果；时序取反使得h(i)以纵轴为中心翻转180度">
@@ -62,13 +62,13 @@
 			
 				<li><a href="/categories">文章归档</a></li>
 	        
-				<li><a href="/tags/machine learning/">机器学习</a></li>
+				<li><a href="/categories/machine-learning/">机器学习</a></li>
 	        
-				<li><a href="/tags/deep learning/">深度学习</a></li>
+				<li><a href="/categories/deep-learning/">深度学习</a></li>
 	        
-				<li><a href="/tags/signal processing/">信号处理</a></li>
+				<li><a href="/categories/signal-processing/">信号处理</a></li>
 	        
-				<li><a href="/tags/mind palace/">随笔</a></li>
+				<li><a href="/categories/mind-palace/">随笔</a></li>
 	        
 			</ul>
 		</nav>
@@ -150,13 +150,13 @@
 				
 					<li style="width: 20%"><a href="/categories">文章归档</a></li>
 		        
-					<li style="width: 20%"><a href="/tags/machine learning/">机器学习</a></li>
+					<li style="width: 20%"><a href="/categories/machine-learning/">机器学习</a></li>
 		        
-					<li style="width: 20%"><a href="/tags/deep learning/">深度学习</a></li>
+					<li style="width: 20%"><a href="/categories/deep-learning/">深度学习</a></li>
 		        
-					<li style="width: 20%"><a href="/tags/signal processing/">信号处理</a></li>
+					<li style="width: 20%"><a href="/categories/signal-processing/">信号处理</a></li>
 		        
-					<li style="width: 20%"><a href="/tags/mind palace/">随笔</a></li>
+					<li style="width: 20%"><a href="/categories/mind-palace/">随笔</a></li>
 		        
 				</ul>
 			</nav>
@@ -197,10 +197,9 @@
 <p>已知信号长度为M的时间序列{x(i), i=1,M}与长度为N的近似理想脉冲响应滤波器{h(i),i=1,N}的卷积长度为M+N-1的序列{y(i),i=1,M+N-1}。实际上只有中间的M-N+1的长度是有效卷积的内容。而两端各有N/2的长度,是部分{h(i)}和{x(i)}乘积求和的结果，是两个脉冲函数，这两端的部分不是我们想要的。</p>
 <p>在实际应用中，我们希望得到的{y(i)}，不仅能够在长度上与{x(i)}一致，而且在内容上也全部是有效的。MATLAB中conv(x,h,flag)的函数flag有三个选项“full”,”same”和“valid”。在默认情况下是“full”全部长度即M+N-1,完整的调用格式为conv(x,h,’full’)。 ‘valid’选项的长度只M-N+1, 其内容就是’same’和‘full’的中间M-N+1的部分。而‘same’中的前首尾两端各N/2不是我们想要的，’full’首尾两端各N的长度也不是我们想要的。</p>
 <p>#解决方法</p>
-<p>##1.周期延拓<br>将原始的{x(i)}中尾部N/2长度的数据接在其前面，并且将原始{x(i)}中头部的数据接在其后面，即完成了周期延拓。再使用conv(x, h, ‘valid’)就可以得到与原始{x(i)}在长度上相同，重要的是有效地卷积序列。</p>
-<p>##2.多条数据首尾相接法<br>如果{x(i)}是一条数据的长度，那么可将前条数据末尾的N/2长度接在当条数据的前面，将下一条数据头部的N/2长度接在当条的尾部，再进行conv(x, h, ‘valid’)就可以得到与原始{x(i)}在长度上相同，重要的是有效地卷积序列。<br>两种方法的差别在于有效部分开始的少量结果有一致，到中间有效部分的长度就是完全一样的了。</p>
-<p>##matlab实现代码</p>
-<p><code>`</code>matlab</p>
+<h2 id="1-周期延拓"><a href="#1-周期延拓" class="headerlink" title="1.周期延拓"></a>1.周期延拓</h2><p>将原始的{x(i)}中尾部N/2长度的数据接在其前面，并且将原始{x(i)}中头部的数据接在其后面，即完成了周期延拓。再使用conv(x, h, ‘valid’)就可以得到与原始{x(i)}在长度上相同，重要的是有效地卷积序列。</p>
+<h2 id="2-多条数据首尾相接法"><a href="#2-多条数据首尾相接法" class="headerlink" title="2.多条数据首尾相接法"></a>2.多条数据首尾相接法</h2><p>如果{x(i)}是一条数据的长度，那么可将前条数据末尾的N/2长度接在当条数据的前面，将下一条数据头部的N/2长度接在当条的尾部，再进行conv(x, h, ‘valid’)就可以得到与原始{x(i)}在长度上相同，重要的是有效地卷积序列。<br>两种方法的差别在于有效部分开始的少量结果有一致，到中间有效部分的长度就是完全一样的了。</p>
+<h2 id="matlab实现代码"><a href="#matlab实现代码" class="headerlink" title="matlab实现代码"></a>matlab实现代码</h2><p><code>`</code>matlab</p>
 <pre><code>h=load(&apos;hfilter.dat&apos;); 
 N=length(h);  
 d1=load(&apos;MZL3_20080101Hx.dat&apos;); 
@@ -386,6 +385,15 @@ int get_num_fir_bp()
   
 <nav id="article-nav">
   
+    <a href="/2018/06/02/数据分箱/" id="article-nav-newer" class="article-nav-link-wrap">
+      <i class="icon-circle-left"></i>
+      <div class="article-nav-title">
+        
+          数据分箱
+        
+      </div>
+    </a>
+  
   
     <a href="/2018/06/01/hello-world/" id="article-nav-older" class="article-nav-link-wrap">
       <div class="article-nav-title">Hello World</div>
@@ -415,7 +423,7 @@ int get_num_fir_bp()
                 </span>
                 <span class="tooltip-content">
                     <div class="toc-article">
-                    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#卷积原理"><span class="toc-number">1.</span> <span class="toc-text">卷积原理</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#C语言实现"><span class="toc-number">1.1.</span> <span class="toc-text">C语言实现</span></a></li></ol></li></ol>
+                    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#卷积原理"><span class="toc-number">1.</span> <span class="toc-text">卷积原理</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-周期延拓"><span class="toc-number">1.1.</span> <span class="toc-text">1.周期延拓</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-多条数据首尾相接法"><span class="toc-number">1.2.</span> <span class="toc-text">2.多条数据首尾相接法</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#matlab实现代码"><span class="toc-number">1.3.</span> <span class="toc-text">matlab实现代码</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#C语言实现"><span class="toc-number">1.4.</span> <span class="toc-text">C语言实现</span></a></li></ol></li></ol>
                     </div>
                 </span>
             </div>
@@ -544,7 +552,15 @@ MathJax.Hub.Queue(function() {
           <ul class="article-tag-list" q-show="showTags">
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">随笔</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color5">信号处理，卷积序列</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">机器学习，特征工程</a>
               </li>
             
             <div class="clearfix"></div>
