@@ -172,63 +172,6 @@
           <div id="js-content" class="content-ll">
             
   
-    <article id="post-欢迎使用CSDN-markdown编辑器" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>#数据分箱的适用情形<br>数据分箱是下列情形下常用的方法：<br>1.某些数值自变量在测量时存在随机误差，需要对数值进行平滑以消除噪音。<br>2.有些数值自变量有大量不重复的取值，对于使用&lt;、&gt;、=等基本操作符的算法（如决策树）而言，如果能减少这些不重复取值的个数，就能提高算法的速度。<br>3.有些算法只能使用分类自变量，需要把数值变量离散化。<br>数据被归入几个分箱之后，可以用每个分箱内数值的均值、中位数或边界值来替代该分箱内各观测的数值，也可以把每个分箱作为离散化后的一个类别。例如，某个自变量的观测值为1，2.1，2.5，3.4，4，5.6，7，7.4，8.2.假设将它们分为三个分箱，（1，2.1，2.5），（3.4，4，5.6），（7，7.4，8.2），那么使用分箱均值替代后所得值为（1.87，1.87，1.87），（4.33，4.33，4.33），（7.53，7.53，7.53），使用分箱中位数替代后所得值为（2.1，2.1，2.1），（4，4，4），（7.4，7.4，7.4），使用边界值替代后所得值为（1，2.5，2.5），（3.4，3.4，5.6），（7，7，8.2）（每个观测值由其所属分箱的两个边界值中较近的值替代）。</p>
-<p>#数据分箱的常用方法</p>
-<p>##有监督的卡方分箱法(ChiMerge)<br>自底向上的(即基于合并的)数据离散化方法。<br>它依赖于卡方检验:具有最小卡方值的相邻区间合并在一起,直到满足确定的停止准则。</p>
-<p>###基本思想:<br>对于精确的离散化，相对类频率在一个区间内应当完全一致。因此,如果两个相邻的区间具有非常类似的类分布，则这两个区间可以合并；否则，它们应当保持分开。而低卡方值表明它们具有相似的类分布。</p>
-<p>这里需要注意初始化时需要对实例进行排序，在排序的基础上进行合并。</p>
-<p>###卡方阈值的确定：<br>根据显著性水平和自由度得到卡方值<br>自由度比类别数量小1。例如：有3类,自由度为2，则90%置信度(10%显著性水平)下，卡方的值为4.6。</p>
-<p>###阈值的意义<br>类别和属性独立时,有90%的可能性,计算得到的卡方值会小于4.6。 大于阈值4.6的卡方值就说明属性和类不是相互独立的，不能合并。如果阈值选的大,区间合并就会进行很多次,离散后的区间数量少、区间大。 </p>
-<p>###注:<br>1,ChiMerge算法推荐使用0.90、0.95、0.99置信度,最大区间数取10到15之间.<br>2,也可以不考虑卡方阈值,此时可以考虑最小区间数或者最大区间数。指定区间数量的上限和下限,最多几个区间,最少几个区间。<br>3,对于类别型变量,需要分箱时需要按照某种方式进行排序。<br>无监督分箱法:<br>等距划分、等频划分<br>等距分箱<br>从最小值到最大值之间,均分为 N 等份, 这样, 如果 A,B 为最小最大值, 则每个区间的长度为 W=(B−A)/N , 则区间边界值为A+W,A+2W,….A+(N−1)W 。这里只考虑边界，每个等份里面的实例数量可能不等。 </p>
-<p>等频分箱<br>区间的边界值要经过选择,使得每个区间包含大致相等的实例数量。比如说 N=10 ,每个区间应该包含大约10%的实例。 </p>
-<p>以上两种算法的弊端<br>比如,等宽区间划分,划分为5区间,最高工资为50000,则所有工资低于10000的人都被划分到同一区间。等频区间可能正好相反,所有工资高于50000的人都会被划分到50000这一区间中。这两种算法都忽略了实例所属的类型,落在正确区间里的偶然性很大。<br>我们对特征进行分箱后，需要对分箱后的每组（箱）进行woe编码，然后才能放进模型训练。</p>
-
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-      
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2018/06/02/欢迎使用CSDN-markdown编辑器/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
     <article id="post-数据分箱" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
@@ -705,11 +648,11 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">信号处理，卷积序列</a>
+                <a href="javascript:void(0)" class="js-tag color5">机器学习，特征工程</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">机器学习，特征工程</a>
+                <a href="javascript:void(0)" class="js-tag color5">信号处理，卷积序列</a>
               </li>
             
             <div class="clearfix"></div>
