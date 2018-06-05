@@ -6,19 +6,20 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge" >
   <link rel="dns-prefetch" href="http://www.wuxiaochun.cn">
-  <title>Tag: 卷积序列 | Renewing</title>
+  <title>Introduction to ML with Python | Renewing</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="PKU在读，机器学习菜鸟，此博客日常分享技术心得，偶尔吐槽心情。">
-<meta name="keywords" content="机器学习,python,html,code">
-<meta property="og:type" content="website">
-<meta property="og:title" content="Renewing">
-<meta property="og:url" content="http://www.wuxiaochun.cn/tags/卷积序列/index.html">
+  <meta name="description" content="sklearn中的交叉验证标准交叉验证123from sklearn.datasets import load_breast_cancerfrom sklearn.model_selection import train_test_splitcancer = load_breast_cancer() 123456789from sklearn.model_selection import cros">
+<meta name="keywords" content="机器学习,特征处理">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Introduction to ML with Python">
+<meta property="og:url" content="http://www.wuxiaochun.cn/2018/06/05/Introduction-to-ML-with-Python/index.html">
 <meta property="og:site_name" content="Renewing">
-<meta property="og:description" content="PKU在读，机器学习菜鸟，此博客日常分享技术心得，偶尔吐槽心情。">
+<meta property="og:description" content="sklearn中的交叉验证标准交叉验证123from sklearn.datasets import load_breast_cancerfrom sklearn.model_selection import train_test_splitcancer = load_breast_cancer() 123456789from sklearn.model_selection import cros">
 <meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2018-06-05T08:39:03.097Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Renewing">
-<meta name="twitter:description" content="PKU在读，机器学习菜鸟，此博客日常分享技术心得，偶尔吐槽心情。">
+<meta name="twitter:title" content="Introduction to ML with Python">
+<meta name="twitter:description" content="sklearn中的交叉验证标准交叉验证123from sklearn.datasets import load_breast_cancerfrom sklearn.model_selection import train_test_splitcancer = load_breast_cancer() 123456789from sklearn.model_selection import cros">
   
     <link rel="alternative" href="/atom.xml" title="Renewing" type="application/atom+xml">
   
@@ -180,75 +181,239 @@ var _hmt = _hmt || [];
             <canvas data-colors="#eaeaea" data-sectionHeight="100" data-contentId="js-content" id="myCanvas1" class="anm-canvas"></canvas>
           </div>
           <div id="js-content" class="content-ll">
-            
-  
-  
+            <article id="post-Introduction-to-ML-with-Python" class="article article-type-post " itemscope itemprop="blogPost">
+  <div class="article-inner">
     
-    
-      
-      
-      <section class="archives-wrap">
-        <div class="archive-year-wrap">
-          <a href="/archives/2018" class="archive-year">2018</a>
-        </div>
-        <div class="archives">
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2018/05/08/如何选取卷积生成序列中的有用部分/" class="archive-article-date">
-  	<time datetime="2018-05-07T16:03:18.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-05-08</time>
-</a>
-        </div>
-    	 
+      <header class="article-header">
+        
   
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2018/05/08/如何选取卷积生成序列中的有用部分/">如何选取卷积生成序列中的有用部分</a>
+    <h1 class="article-title" itemprop="name">
+      Introduction to ML with Python
     </h1>
   
 
-        <div class="article-info info-on-right">
-          
+        
+        <a href="/2018/06/05/Introduction-to-ML-with-Python/" class="archive-article-date">
+  	<time datetime="2018-06-05T08:37:39.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-06-05</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="sklearn中的交叉验证"><a href="#sklearn中的交叉验证" class="headerlink" title="sklearn中的交叉验证"></a>sklearn中的交叉验证</h1><h2 id="标准交叉验证"><a href="#标准交叉验证" class="headerlink" title="标准交叉验证"></a>标准交叉验证</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> sklearn.datasets <span class="keyword">import</span> load_breast_cancer</span><br><span class="line"><span class="keyword">from</span> sklearn.model_selection <span class="keyword">import</span> train_test_split</span><br><span class="line">cancer = load_breast_cancer()</span><br></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> sklearn.model_selection <span class="keyword">import</span> cross_val_score</span><br><span class="line"><span class="keyword">from</span> sklearn.datasets <span class="keyword">import</span> load_iris</span><br><span class="line"><span class="keyword">from</span> sklearn.linear_model <span class="keyword">import</span> LogisticRegression</span><br><span class="line"></span><br><span class="line">iris = load_iris()</span><br><span class="line">logerg = LogisticRegression()</span><br><span class="line"></span><br><span class="line">scores = cross_val_score(logerg, iris.data, iris.target)</span><br><span class="line"><span class="keyword">print</span> <span class="string">"Cross-validation scores: &#123;&#125;"</span>.format(scores)</span><br></pre></td></tr></table></figure>
+<pre><code>Cross-validation scores: [ 0.96078431  0.92156863  0.95833333]
+</code></pre><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">scores = cross_val_score(logerg, iris.data, iris.target, cv=<span class="number">5</span>)</span><br><span class="line"><span class="keyword">print</span> <span class="string">"Cross-validation scores: &#123;&#125;"</span>.format(scores)</span><br></pre></td></tr></table></figure>
+<pre><code>Cross-validation scores: [ 1.          0.96666667  0.93333333  0.9         1.        ]
+</code></pre><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">print</span> <span class="string">"Average cross-validation score: &#123;:.2f&#125;"</span>.format(scores.mean())</span><br></pre></td></tr></table></figure>
+<pre><code>Average cross-validation score: 0.96
+</code></pre><a id="more"></a>    
+<h2 id="对交叉验证的更多控制"><a href="#对交叉验证的更多控制" class="headerlink" title="对交叉验证的更多控制"></a>对交叉验证的更多控制</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> sklearn.model_selection <span class="keyword">import</span> KFold</span><br><span class="line">kfold = KFold(n_splits=<span class="number">5</span>)</span><br></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">print</span> <span class="string">"Cross-validation scores:\n&#123;&#125;"</span>.format(</span><br><span class="line">       cross_val_score(logerg, iris.data, iris.target, cv=kfold))</span><br></pre></td></tr></table></figure>
+<pre><code>Cross-validation scores:
+[ 1.          0.93333333  0.43333333  0.96666667  0.43333333]
+</code></pre><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">kfold = KFold(n_splits=<span class="number">3</span>)</span><br><span class="line"><span class="keyword">print</span> <span class="string">"Cross-validation scores:\n&#123;&#125;"</span>.format(</span><br><span class="line">       cross_val_score(logerg, iris.data, iris.target, cv=kfold))</span><br></pre></td></tr></table></figure>
+<pre><code>Cross-validation scores:
+[ 0.  0.  0.]
+</code></pre><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">kfold = KFold(n_splits=<span class="number">3</span>, shuffle=<span class="keyword">True</span>, random_state=<span class="number">0</span>)</span><br><span class="line"><span class="keyword">print</span> <span class="string">"Cross-validation scores:\n&#123;&#125;"</span>.format(</span><br><span class="line">       cross_val_score(logerg, iris.data, iris.target, cv=kfold))</span><br></pre></td></tr></table></figure>
+<pre><code>Cross-validation scores:
+[ 0.9   0.96  0.96]
+</code></pre><h2 id="留一法交叉验证"><a href="#留一法交叉验证" class="headerlink" title="留一法交叉验证"></a>留一法交叉验证</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> sklearn.model_selection <span class="keyword">import</span> LeaveOneOut</span><br><span class="line">loo = LeaveOneOut()</span><br><span class="line">scores = cross_val_score(logerg, iris.data, iris.target, cv=loo)</span><br><span class="line"><span class="keyword">print</span> <span class="string">"Number of cv iterations: "</span>, len(scores)</span><br><span class="line"><span class="keyword">print</span> <span class="string">"Mean accuracy: &#123;:.2f&#125;"</span>.format(scores.mean())</span><br></pre></td></tr></table></figure>
+<pre><code>Number of cv iterations:  150
+Mean accuracy: 0.95
+</code></pre><h2 id="打乱划分交叉验证"><a href="#打乱划分交叉验证" class="headerlink" title="打乱划分交叉验证"></a>打乱划分交叉验证</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> sklearn.model_selection <span class="keyword">import</span> ShuffleSplit</span><br><span class="line">shuffle_split = ShuffleSplit(test_size=<span class="number">.5</span>, train_size=<span class="number">.5</span>, n_splits=<span class="number">10</span>)</span><br><span class="line">scores = cross_val_score(logerg, iris.data, iris.target, cv=shuffle_split)</span><br><span class="line"><span class="keyword">print</span> <span class="string">"Cross-validation scores:\n&#123;&#125;"</span>.format(scores)</span><br></pre></td></tr></table></figure>
+<pre><code>Cross-validation scores:
+[ 0.97333333  0.97333333  0.92        0.88        0.97333333  0.96
+  0.94666667  0.96        0.77333333  0.89333333]
+</code></pre><h2 id="分组交叉验证"><a href="#分组交叉验证" class="headerlink" title="分组交叉验证"></a>分组交叉验证</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> sklearn.model_selection <span class="keyword">import</span> GroupKFold</span><br><span class="line"><span class="keyword">from</span> sklearn.datasets <span class="keyword">import</span> make_blobs</span><br><span class="line"><span class="comment"># 创建模拟数据集</span></span><br><span class="line">X, y = make_blobs(n_samples=<span class="number">12</span>, random_state=<span class="number">0</span>)</span><br><span class="line"><span class="comment"># 假设前3个样本属于同一组，接下来的4个样本属于同一组，以此类推</span></span><br><span class="line">groups = [<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">1</span>,<span class="number">1</span>,<span class="number">1</span>,<span class="number">1</span>,<span class="number">2</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">3</span>,<span class="number">3</span>]</span><br><span class="line">scores = cross_val_score(logerg, X, y, groups, cv=GroupKFold(n_splits=<span class="number">3</span>))</span><br><span class="line"><span class="keyword">print</span> <span class="string">"Cross-validation scores:\n&#123;&#125;"</span>.format(scores)</span><br></pre></td></tr></table></figure>
+<pre><code>Cross-validation scores:
+[ 0.75        0.8         0.66666667]
+</code></pre><h1 id="网格搜索"><a href="#网格搜索" class="headerlink" title="网格搜索"></a>网格搜索</h1><h2 id="简单网格搜索"><a href="#简单网格搜索" class="headerlink" title="简单网格搜索"></a>简单网格搜索</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> sklearn.svm <span class="keyword">import</span> SVC</span><br><span class="line">X_train, X_test, y_train, y_test = train_test_split(</span><br><span class="line">    iris.data, iris.target, random_state=<span class="number">0</span>)</span><br><span class="line"><span class="keyword">print</span> <span class="string">"Size of training set: &#123;&#125;  size of the test set: &#123;&#125;"</span>.format(</span><br><span class="line">    X_train.shape[<span class="number">0</span>], X_test.shape[<span class="number">0</span>])</span><br><span class="line"></span><br><span class="line">best_score = <span class="number">0</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> gamma <span class="keyword">in</span> [<span class="number">0.001</span>, <span class="number">0.01</span>, <span class="number">0.1</span>, <span class="number">1</span>, <span class="number">10</span>, <span class="number">100</span>]:</span><br><span class="line">    <span class="keyword">for</span> C <span class="keyword">in</span> [<span class="number">0.001</span>, <span class="number">0.01</span>, <span class="number">0.1</span>, <span class="number">1</span>, <span class="number">10</span>, <span class="number">100</span>]:</span><br><span class="line">        svm = SVC(gamma=gamma,C=C)</span><br><span class="line">        svm.fit(X_train, y_train)</span><br><span class="line">        score = svm.score(X_test, y_test)</span><br><span class="line">        <span class="keyword">if</span> score &gt; best_score:</span><br><span class="line">            best_score = score</span><br><span class="line">            best_parameters = &#123;<span class="string">'C'</span>: C, <span class="string">'gamma'</span>: gamma&#125;</span><br><span class="line">            </span><br><span class="line"><span class="keyword">print</span> <span class="string">"Best score: &#123;:.2f&#125;"</span>.format(best_score)</span><br><span class="line"><span class="keyword">print</span> <span class="string">"Best parameters: &#123;&#125;"</span>.format(best_parameters)</span><br></pre></td></tr></table></figure>
+<pre><code>Size of training set: 112  size of the test set: 38
+Best score: 0.97
+Best parameters: {&apos;C&apos;: 100, &apos;gamma&apos;: 0.001}
+</code></pre><ul>
+<li>training set: Model fitting</li>
+<li>validation set: Patameter selection</li>
+<li>test set: Evaluation</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> mglearn</span><br><span class="line">mglearn.plots.plot_grid_search_overview()</span><br></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> sklearn.metrics <span class="keyword">import</span> precision_recall_curve</span><br><span class="line">X, y = make_blobs(n_samples=<span class="number">450</span>, n_features=<span class="number">2</span>, centers=<span class="number">2</span>, cluster_std=[<span class="number">7.0</span>, <span class="number">2</span>],</span><br><span class="line">                random_state=<span class="number">22</span>)</span><br><span class="line">X_train, X_test, y_train, y_test = train_test_split(X, y, random_state=<span class="number">0</span>)</span><br><span class="line">svc = SVC(gamma=<span class="number">.05</span>).fit(X_train, y_train)</span><br><span class="line">precision, recall, thresholds = precision_recall_curve(</span><br><span class="line">    y_test, svc.decision_function(X_test))</span><br></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mglearn.plots.plot_decision_threshold()</span><br></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> sklearn.metrics <span class="keyword">import</span> classification_report</span><br><span class="line"><span class="keyword">print</span> classification_report(y_test, svc.predict(X_test))</span><br></pre></td></tr></table></figure>
+<pre><code>             precision    recall  f1-score   support
+
+          0       0.96      0.80      0.87        60
+          1       0.81      0.96      0.88        53
+
+avg / total       0.89      0.88      0.88       113
+</code></pre><h1 id="预处理与缩放"><a href="#预处理与缩放" class="headerlink" title="预处理与缩放"></a>预处理与缩放</h1><h2 id="应用数据变换"><a href="#应用数据变换" class="headerlink" title="应用数据变换"></a>应用数据变换</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> sklearn.datasets <span class="keyword">import</span> load_breast_cancer</span><br><span class="line"><span class="keyword">from</span> sklearn.model_selection <span class="keyword">import</span> train_test_split</span><br><span class="line">cancer = load_breast_cancer()</span><br><span class="line"></span><br><span class="line">X_train, X_test, y_train, y_test = train_test_split(cancer.data, cancer.target,</span><br><span class="line">                                                   random_state=<span class="number">1</span>)</span><br><span class="line">print(X_train.shape)</span><br><span class="line">print(X_test.shape)</span><br></pre></td></tr></table></figure>
+<pre><code>(426L, 30L)
+(143L, 30L)
+</code></pre><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> sklearn.preprocessing <span class="keyword">import</span> MinMaxScaler</span><br><span class="line"></span><br><span class="line">scaler = MinMaxScaler()</span><br><span class="line">scaler.fit(X_train)</span><br><span class="line">MinMaxScaler(copy=<span class="keyword">True</span>, feature_range=(<span class="number">0</span>,<span class="number">1</span>))</span><br><span class="line"><span class="comment">#变换数据</span></span><br><span class="line">X_train_scaled = scaler.transform(X_train)</span><br><span class="line">X_test_scaled = scaler.transform(X_test)</span><br></pre></td></tr></table></figure>
+<h1 id="降维、特征提取和流形学习"><a href="#降维、特征提取和流形学习" class="headerlink" title="降维、特征提取和流形学习"></a>降维、特征提取和流形学习</h1><h2 id="PCA"><a href="#PCA" class="headerlink" title="PCA"></a>PCA</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span>  sklearn.datasets <span class="keyword">import</span> load_breast_cancer</span><br><span class="line"><span class="keyword">from</span> sklearn.preprocessing <span class="keyword">import</span> StandardScaler</span><br><span class="line">cancer = load_breast_cancer()</span><br><span class="line"></span><br><span class="line">scaler = StandardScaler()</span><br><span class="line">scaler.fit(cancer.data)</span><br><span class="line">X_scaled = scaler.transform(cancer.data)</span><br><span class="line"></span><br><span class="line"><span class="keyword">from</span> sklearn.decomposition <span class="keyword">import</span> PCA</span><br><span class="line">pca = PCA(n_components=<span class="number">2</span>)</span><br><span class="line">pca.fit(X_scaled)</span><br><span class="line"></span><br><span class="line">X_pca = pca.transform(X_scaled)</span><br><span class="line"><span class="keyword">print</span> <span class="string">"Original shape: &#123;&#125;"</span>.format(X_scaled.shape)</span><br><span class="line"><span class="keyword">print</span> <span class="string">"Reduced shape: &#123;&#125;"</span>.format(X_pca.shape)</span><br></pre></td></tr></table></figure>
+<pre><code>Original shape: (569L, 30L)
+Reduced shape: (569L, 2L)
+</code></pre><h2 id="非负矩阵分解-NMF"><a href="#非负矩阵分解-NMF" class="headerlink" title="非负矩阵分解 NMF"></a>非负矩阵分解 NMF</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> mglearn</span><br><span class="line">mglearn.plots.plot_nmf_illustration()</span><br></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> matplotlib.pyplot <span class="keyword">as</span> plt</span><br><span class="line"><span class="keyword">from</span> sklearn.decomposition <span class="keyword">import</span> NMF</span><br><span class="line"><span class="keyword">from</span> sklearn.model_selection <span class="keyword">import</span> train_test_split</span><br><span class="line"><span class="keyword">from</span> sklearn.datasets <span class="keyword">import</span> fetch_lfw_people</span><br><span class="line"></span><br><span class="line">people = fetch_lfw_people(min_faces_per_person=<span class="number">20</span>, resize=<span class="number">0.7</span>)</span><br><span class="line">X_people = people.data[mask]</span><br><span class="line">y_people = people.target[mask]</span><br><span class="line">X_train, X_test, y_train, y_test = train_test_split(X_people, y_people, stratify=y_people, random_state=<span class="number">0</span>)</span><br><span class="line">nmf = NMF(n_cpmponents=<span class="number">15</span>, random_state=<span class="number">0</span>)</span><br><span class="line">nmf.fit(X_train)</span><br><span class="line">X_train_nmf = nmf.transform(X_train)</span><br><span class="line">X_test_nmf = nmf.transform(X_test)</span><br><span class="line"></span><br><span class="line">fix, axes = plt.subplots(<span class="number">3</span>, <span class="number">5</span>, figsize=(<span class="number">15</span>,<span class="number">12</span>),</span><br><span class="line">                        subplot_kw=&#123;<span class="string">'xticks'</span>:(), <span class="string">'yticks'</span>:()&#125;)</span><br><span class="line"><span class="keyword">for</span> i, (component,ax) <span class="keyword">in</span> enumerate(zip(nmf.components_, axes.ravel())):</span><br><span class="line">    ax.imshow(component.reshape(image_shape))</span><br><span class="line">    ax.set_title(<span class="string">"&#123;&#125;.component"</span>.format(i))</span><br></pre></td></tr></table></figure>
+<h2 id="用t-SNE进行流形学习"><a href="#用t-SNE进行流形学习" class="headerlink" title="用t-SNE进行流形学习"></a>用t-SNE进行流形学习</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> sklearn.datasets <span class="keyword">import</span> load_digits</span><br><span class="line">digits = load_digits()</span><br><span class="line"></span><br><span class="line">fig, axes = plt.subplots(<span class="number">2</span>, <span class="number">5</span>, figsize=(<span class="number">10</span>,<span class="number">5</span>),</span><br><span class="line">                        subplot_kw=&#123;<span class="string">'xticks'</span>:(), <span class="string">'yticks'</span>:()&#125;)</span><br><span class="line"><span class="keyword">for</span> ax, img <span class="keyword">in</span> zip(axes.ravel(), digits.images):</span><br><span class="line">    ax.imshow(img)</span><br></pre></td></tr></table></figure>
+<h1 id="数据表示与特征工程"><a href="#数据表示与特征工程" class="headerlink" title="数据表示与特征工程"></a>数据表示与特征工程</h1><h2 id="分箱、离散化、线性模型与树"><a href="#分箱、离散化、线性模型与树" class="headerlink" title="分箱、离散化、线性模型与树"></a>分箱、离散化、线性模型与树</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> sklearn.linear_model <span class="keyword">import</span> LinearRegression</span><br><span class="line"><span class="keyword">from</span> sklearn.tree <span class="keyword">import</span> DecisionTreeRegressor</span><br><span class="line"><span class="keyword">import</span> mglearn</span><br><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"><span class="keyword">import</span> matplotlib.pyplot <span class="keyword">as</span> plt</span><br><span class="line"></span><br><span class="line">X, y = mglearn.datasets.make_wave(n_samples=<span class="number">100</span>)</span><br><span class="line">line = np.linspace(<span class="number">-3</span>, <span class="number">3</span>, <span class="number">1000</span>, endpoint=<span class="keyword">False</span>).reshape(<span class="number">-1</span>, <span class="number">1</span>)</span><br><span class="line">reg = DecisionTreeRegressor(min_samples_split=<span class="number">3</span>).fit(X, y)</span><br><span class="line">plt.plot(line, reg.predict(line), label=<span class="string">"decision tree"</span>)</span><br><span class="line"></span><br><span class="line">reg = LinearRegression().fit(X, y)</span><br><span class="line">plt.plot(line, reg.predict(line), label=<span class="string">"linear regression"</span>)</span><br><span class="line"></span><br><span class="line">plt.plot(X[:,<span class="number">0</span>], y, <span class="string">'o'</span>, c=<span class="string">'k'</span>)</span><br><span class="line">plt.ylabel(<span class="string">"Regression output"</span>)</span><br><span class="line">plt.xlabel(<span class="string">"Input feature"</span>)</span><br><span class="line">plt.legend(loc=<span class="string">"best"</span>)</span><br></pre></td></tr></table></figure>
+<pre><code>&lt;matplotlib.legend.Legend at 0x103c4da0&gt;
+</code></pre><h2 id="自动化特征选择"><a href="#自动化特征选择" class="headerlink" title="自动化特征选择"></a>自动化特征选择</h2><h3 id="单变量统计"><a href="#单变量统计" class="headerlink" title="单变量统计"></a>单变量统计</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">citibike = mglearn.datasets.load_citibike()</span><br><span class="line"><span class="keyword">print</span> <span class="string">"Citi Bike data:\n&#123;&#125;"</span>.format(citibike.head())</span><br></pre></td></tr></table></figure>
+<pre><code>Citi Bike data:
+starttime
+2015-08-01 00:00:00     3.0
+2015-08-01 03:00:00     0.0
+2015-08-01 06:00:00     9.0
+2015-08-01 09:00:00    41.0
+2015-08-01 12:00:00    39.0
+Freq: 3H, Name: one, dtype: float64
+</code></pre><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> pandas <span class="keyword">as</span> pd</span><br><span class="line">plt.figure(figsize=(<span class="number">10</span>, <span class="number">3</span>))</span><br><span class="line">xticks = pd.date_range(start=citibike.index.min(), end=citibike.index.max(),</span><br><span class="line">                      freq=<span class="string">'D'</span>)</span><br><span class="line">plt.plot(citibike, linewidth=<span class="number">1</span>)</span><br><span class="line">plt.xlabel(<span class="string">'Date'</span>)</span><br><span class="line">plt.ylabel(<span class="string">'Rentals'</span>)</span><br></pre></td></tr></table></figure>
+<pre><code>Text(0,0.5,u&apos;Rentals&apos;)
+</code></pre><h1 id="算法链与管道"><a href="#算法链与管道" class="headerlink" title="算法链与管道"></a>算法链与管道</h1><h2 id="举例说明信息泄露"><a href="#举例说明信息泄露" class="headerlink" title="举例说明信息泄露"></a>举例说明信息泄露</h2><p>考虑一个假象的回归任务，包含从高斯分布中独立采样的100个样本和10000个特征。还从高斯分布中对响应进行采样：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line">rnd = np.random.RandomState(seed=<span class="number">0</span>)</span><br><span class="line">X = rnd.normal(size=(<span class="number">100</span>,<span class="number">10000</span>))</span><br><span class="line">y = rnd.normal(size=(<span class="number">100</span>,))</span><br></pre></td></tr></table></figure>
+<p>考虑到创建数据集的方式，数据X与目标y之间没有任何关系，所以应该不可能从这个数据集中学到任何内容。现在首先利用SelectPercentile特征选择从10000个特征中选择信息量最大的特征，然后使用交叉验证对Ridge回归进行评估：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> sklearn.feature_selection <span class="keyword">import</span> SelectPercentile, f_regression</span><br><span class="line"></span><br><span class="line">select = SelectPercentile(score_func=f_regression, percentile=<span class="number">5</span>).fit(X, y)</span><br><span class="line">X_selected = select.transform(X)</span><br><span class="line"><span class="keyword">print</span> <span class="string">"X_selected.shape:&#123;&#125;"</span>.format(X_selected.shape)</span><br></pre></td></tr></table></figure>
+<pre><code>X_selected.shape:(100L, 500L)
+</code></pre><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> sklearn.model_selection <span class="keyword">import</span> cross_val_score</span><br><span class="line"><span class="keyword">from</span> sklearn.linear_model <span class="keyword">import</span> Ridge</span><br><span class="line"><span class="keyword">print</span> <span class="string">"Cross-validation accuracy(cv only on ridge):&#123;:.2f&#125;"</span>.format(np.mean(cross_val_score(Ridge(), X_selected, y, cv=<span class="number">5</span>)))</span><br></pre></td></tr></table></figure>
+<pre><code>Cross-validation accuracy(cv only on ridge):0.91
+</code></pre><p>交叉验证计算得到的平均R^2为0.91，表示这是一个非常线性的模型，但是这明显不对，因为数据是完全随机的。这里的特征选择从10000个随机特征中（碰巧）选出了与目标相关性非常好的一些特征。由于我们在交叉验证之外对特征选择进行拟合，所以能够找到在训练部分和测试部分都相关的特征。从测试部分泄露出去的信息包含的信息量非常大，导致得到非常不切实际的结果。将上面的结果和正确的交叉验证（使用管道）进行对比：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> sklearn.pipeline <span class="keyword">import</span> Pipeline</span><br><span class="line">pipe = Pipeline([(<span class="string">"select"</span>, SelectPercentile(score_func=f_regression,</span><br><span class="line">                                            percentile=<span class="number">5</span>)),</span><br><span class="line">                (<span class="string">"ridge"</span>,Ridge())])</span><br><span class="line"><span class="keyword">print</span> <span class="string">"Cross-validation accuracy (pipeline):&#123;:.2f&#125;"</span>.format(</span><br><span class="line">        np.mean(cross_val_score(pipe, X, y, cv=<span class="number">5</span>)))</span><br></pre></td></tr></table></figure>
+<pre><code>Cross-validation accuracy (pipeline):-0.25
+</code></pre><p>这一次得到了负的R^2分数，表示模型很差。利用管道，特征选择现在位于交叉验证循环内部，也就是说，仅适用数据的训练部分来选择特征，而不使用测试部分。特征选择找到的特征在训练集中与目标相关，但由于数据是完全随机的，这些特征在测试集中并不与目标相关。在这个例子中，修正特征选择中的数据泄露问题，结论也由“模型表现很好”变为“模型根本没有效果”。</p>
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
 	<div class="article-tag tagcloud">
 		<i class="icon-price-tags icon"></i>
 		<ul class="article-tag-list">
 			 
         		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">信号处理</a>
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">机器学习</a>
         		</li>
       		 
         		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">卷积序列</a>
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">特征处理</a>
         		</li>
       		
 		</ul>
 	</div>
 
-          
+      
 	<div class="article-category tagcloud">
 		<i class="icon-book icon"></i>
 		<ul class="article-tag-list">
 			 
         		<li class="article-tag-list-item">
-        			<a href="/categories/信号处理/" class="article-tag-list-link color5">信号处理</a>
+        			<a href="/categories/机器学习/" class="article-tag-list-link color5">机器学习</a>
         		</li>
       		
 		</ul>
 	</div>
 
 
+      
+
+      
+        
+<div class="share-btn share-icons tooltip-left">
+  <div class="tooltip tooltip-east">
+    <span class="tooltip-item">
+      <a href="javascript:;" class="share-sns share-outer">
+        <i class="icon icon-share"></i>
+      </a>
+    </span>
+    <span class="tooltip-content">
+      <div class="share-wrap">
+        <div class="share-icons">
+          <a class="weibo share-sns" href="javascript:;" data-type="weibo">
+            <i class="icon icon-weibo"></i>
+          </a>
+          <a class="weixin share-sns wxFab" href="javascript:;" data-type="weixin">
+            <i class="icon icon-weixin"></i>
+          </a>
+          <a class="qq share-sns" href="javascript:;" data-type="qq">
+            <i class="icon icon-qq"></i>
+          </a>
+          <a class="douban share-sns" href="javascript:;" data-type="douban">
+            <i class="icon icon-douban"></i>
+          </a>
+          <a class="qzone share-sns" href="javascript:;" data-type="qzone">
+            <i class="icon icon-qzone"></i>
+          </a>
+          <a class="facebook share-sns" href="javascript:;" data-type="facebook">
+            <i class="icon icon-facebook"></i>
+          </a>
+          <a class="twitter share-sns" href="javascript:;" data-type="twitter">
+            <i class="icon icon-twitter"></i>
+          </a>
+          <a class="google share-sns" href="javascript:;" data-type="google">
+            <i class="icon icon-google"></i>
+          </a>
         </div>
-        <div class="clearfix"></div>
-    </header>
+      </div>
+    </span>
+  </div>
+</div>
+
+<div class="page-modal wx-share js-wx-box">
+    <a class="close js-modal-close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <div class="wx-qrcode">
+      <img src="http://s.jiathis.com/qrcode.php?url=http://www.wuxiaochun.cn/2018/06/05/Introduction-to-ML-with-Python/" alt="微信分享二维码">
+    </div>
+</div>
+
+<div class="mask js-mask"></div>
+      
+      <div class="clearfix"></div>
+    </div>
   </div>
 </article>
+
+  
+<nav id="article-nav">
   
   
-    </div></section>
+    <a href="/2018/06/05/jupyter-kernel-error/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">jupyter kernel error</div>
+      <i class="icon-circle-right"></i>
+    </a>
+  
+</nav>
+
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+  
+  
   
 
-    
+  
+
+  
 
 
           </div>
@@ -271,9 +436,9 @@ var _hmt = _hmt || [];
 	var yiliaConfig = {
 		mathjax: true,
 		isHome: false,
-		isPost: false,
+		isPost: true,
 		isArchive: false,
-		isTag: true,
+		isTag: false,
 		isCategory: false,
 		open_in_new: false,
 		toc_hide_index: true,

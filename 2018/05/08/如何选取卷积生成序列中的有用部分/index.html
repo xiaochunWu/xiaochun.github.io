@@ -6,19 +6,20 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge" >
   <link rel="dns-prefetch" href="http://www.wuxiaochun.cn">
-  <title>Tag: 卷积序列 | Renewing</title>
+  <title>如何选取卷积生成序列中的有用部分 | Renewing</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="PKU在读，机器学习菜鸟，此博客日常分享技术心得，偶尔吐槽心情。">
-<meta name="keywords" content="机器学习,python,html,code">
-<meta property="og:type" content="website">
-<meta property="og:title" content="Renewing">
-<meta property="og:url" content="http://www.wuxiaochun.cn/tags/卷积序列/index.html">
+  <meta name="description" content="卷积原理在信号与系统中，卷积积分是线性时不变系统分析的一个重要工具，具体是通过两个函数f和g生成第三个函数，表征函数f与g经过翻转和平移的重叠部分的面积。 卷积是两个变量在某范围内相乘后求和的结果。如果卷积的变量是序列x(n)和h(n)，则卷积的结果y(n)=x(n)h(n)，其中星号表示卷积。当时序n=0时，序列h(-i)是h(i)的时序i取反的结果；时序取反使得h(i)以纵轴为中心翻转180度">
+<meta name="keywords" content="信号处理,卷积序列">
+<meta property="og:type" content="article">
+<meta property="og:title" content="如何选取卷积生成序列中的有用部分">
+<meta property="og:url" content="http://www.wuxiaochun.cn/2018/05/08/如何选取卷积生成序列中的有用部分/index.html">
 <meta property="og:site_name" content="Renewing">
-<meta property="og:description" content="PKU在读，机器学习菜鸟，此博客日常分享技术心得，偶尔吐槽心情。">
+<meta property="og:description" content="卷积原理在信号与系统中，卷积积分是线性时不变系统分析的一个重要工具，具体是通过两个函数f和g生成第三个函数，表征函数f与g经过翻转和平移的重叠部分的面积。 卷积是两个变量在某范围内相乘后求和的结果。如果卷积的变量是序列x(n)和h(n)，则卷积的结果y(n)=x(n)h(n)，其中星号表示卷积。当时序n=0时，序列h(-i)是h(i)的时序i取反的结果；时序取反使得h(i)以纵轴为中心翻转180度">
 <meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2018-06-05T08:40:11.276Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Renewing">
-<meta name="twitter:description" content="PKU在读，机器学习菜鸟，此博客日常分享技术心得，偶尔吐槽心情。">
+<meta name="twitter:title" content="如何选取卷积生成序列中的有用部分">
+<meta name="twitter:description" content="卷积原理在信号与系统中，卷积积分是线性时不变系统分析的一个重要工具，具体是通过两个函数f和g生成第三个函数，表征函数f与g经过翻转和平移的重叠部分的面积。 卷积是两个变量在某范围内相乘后求和的结果。如果卷积的变量是序列x(n)和h(n)，则卷积的结果y(n)=x(n)h(n)，其中星号表示卷积。当时序n=0时，序列h(-i)是h(i)的时序i取反的结果；时序取反使得h(i)以纵轴为中心翻转180度">
   
     <link rel="alternative" href="/atom.xml" title="Renewing" type="application/atom+xml">
   
@@ -180,36 +181,133 @@ var _hmt = _hmt || [];
             <canvas data-colors="#eaeaea" data-sectionHeight="100" data-contentId="js-content" id="myCanvas1" class="anm-canvas"></canvas>
           </div>
           <div id="js-content" class="content-ll">
-            
-  
-  
+            <article id="post-如何选取卷积生成序列中的有用部分" class="article article-type-post " itemscope itemprop="blogPost">
+  <div class="article-inner">
     
-    
-      
-      
-      <section class="archives-wrap">
-        <div class="archive-year-wrap">
-          <a href="/archives/2018" class="archive-year">2018</a>
-        </div>
-        <div class="archives">
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2018/05/08/如何选取卷积生成序列中的有用部分/" class="archive-article-date">
-  	<time datetime="2018-05-07T16:03:18.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-05-08</time>
-</a>
-        </div>
-    	 
+      <header class="article-header">
+        
   
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2018/05/08/如何选取卷积生成序列中的有用部分/">如何选取卷积生成序列中的有用部分</a>
+    <h1 class="article-title" itemprop="name">
+      如何选取卷积生成序列中的有用部分
     </h1>
   
 
-        <div class="article-info info-on-right">
-          
+        
+        <a href="/2018/05/08/如何选取卷积生成序列中的有用部分/" class="archive-article-date">
+  	<time datetime="2018-05-07T16:03:18.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-05-08</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="卷积原理"><a href="#卷积原理" class="headerlink" title="卷积原理"></a>卷积原理</h1><p>在信号与系统中，卷积积分是线性时不变系统分析的一个重要工具，具体是通过两个函数f和g生成第三个函数，表征函数f与g经过翻转和平移的重叠部分的面积。</p>
+<p>卷积是两个变量在某范围内相乘后求和的结果。如果卷积的变量是序列x(n)和h(n)，则卷积的结果y(n)=x(n)<em>h(n)，其中星号</em>表示卷积。当时序n=0时，序列h(-i)是h(i)的时序i取反的结果；时序取反使得h(i)以纵轴为中心翻转180度，所以这种相乘后求和的计算法称为卷积和，简称卷积。另外，n是使h(-i)位移的量，不同的n对应不同的卷积结果。</p>
+<p>如果卷积的变量是函数x(t)和h(t)，则卷积的计算变为y(t)=x(t)<em>h(t)，其中p是积分变量，积分也是求和，t是使函数h(-p)位移的量，星号</em>表示卷积。</p>
+<p>已知信号长度为M的时间序列{x(i), i=1,M}与长度为N的近似理想脉冲响应滤波器{h(i),i=1,N}的卷积长度为M+N-1的序列{y(i),i=1,M+N-1}。实际上只有中间的M-N+1的长度是有效卷积的内容。而两端各有N/2的长度,是部分{h(i)}和{x(i)}乘积求和的结果，是两个脉冲函数，这两端的部分不是我们想要的。</p>
+<p>在实际应用中，我们希望得到的{y(i)}，不仅能够在长度上与{x(i)}一致，而且在内容上也全部是有效的。MATLAB中conv(x,h,flag)的函数flag有三个选项“full”,”same”和“valid”。在默认情况下是“full”全部长度即M+N-1,完整的调用格式为conv(x,h,’full’)。 ‘valid’选项的长度只M-N+1, 其内容就是’same’和‘full’的中间M-N+1的部分。而‘same’中的前首尾两端各N/2不是我们想要的，’full’首尾两端各N的长度也不是我们想要的。<br><a id="more"></a></p>
+<h1 id="解决方法"><a href="#解决方法" class="headerlink" title="解决方法"></a>解决方法</h1><h2 id="1-周期延拓"><a href="#1-周期延拓" class="headerlink" title="1.周期延拓"></a>1.周期延拓</h2><p>将原始的{x(i)}中尾部N/2长度的数据接在其前面，并且将原始{x(i)}中头部的数据接在其后面，即完成了周期延拓。再使用conv(x, h, ‘valid’)就可以得到与原始{x(i)}在长度上相同，重要的是有效地卷积序列。</p>
+<h2 id="2-多条数据首尾相接法"><a href="#2-多条数据首尾相接法" class="headerlink" title="2.多条数据首尾相接法"></a>2.多条数据首尾相接法</h2><p>如果{x(i)}是一条数据的长度，那么可将前条数据末尾的N/2长度接在当条数据的前面，将下一条数据头部的N/2长度接在当条的尾部，再进行conv(x, h, ‘valid’)就可以得到与原始{x(i)}在长度上相同，重要的是有效地卷积序列。<br>两种方法的差别在于有效部分开始的少量结果有一致，到中间有效部分的长度就是完全一样的了。</p>
+<h2 id="matlab实现代码"><a href="#matlab实现代码" class="headerlink" title="matlab实现代码"></a>matlab实现代码</h2><p><code>`</code>matlab</p>
+<pre><code>h=load(&apos;hfilter.dat&apos;); 
+N=length(h);  
+d1=load(&apos;MZL3_20080101Hx.dat&apos;); 
+d2=load(&apos;MZL3_20080102Hx.dat&apos;); 
+d3=load(&apos;MZL3_20080103Hx.dat&apos;); 
+M=length(d1);    
+
+Figure   
+% 用当条的数据周期延拓  
+dd1=[d2(M-N/2+1:end); d2; d2(1:N/2)]; 
+% 使用三条的数据接起来  
+dd2=[d1(M-N/2+1:end); d2; d3(1:N/2)]; 
+plot(dd1,&apos;r&apos;);hold on; 
+plot(dd2);   
+
+figure  
+y1=conv(dd1,h,&apos;valid&apos;); 
+y2=conv(dd2,h,&apos;valid&apos;);  
+plot(y1(1:N/2),&apos;ro&apos;);hold on; 
+plot(y2(1:N/2),&apos;*&apos;);    
+
+figure   
+y11=conv(dd1,h,&apos;same&apos;); 
+y22=conv(dd2,h,&apos;same&apos;); 
+plot(y11,&apos;ro&apos;);hold on; 
+plot(y22,&apos;*&apos;); 
+
+figure  
+y111=conv(d2,h,&apos;same&apos;);  
+yy111=[zeros(N/2,1); y111;zeros(N/2,1)]; 
+y222=conv(d3,h,&apos;full&apos;); 
+plot(yy111 ,&apos;r&apos;);hold on; 
+plot(y222);
+</code></pre><h2 id="C语言实现"><a href="#C语言实现" class="headerlink" title="C语言实现"></a>C语言实现</h2><p>在用c语言来实现带通滤波器时我们遇到了这个问题，最终使用的是只计算两个序列对齐时的卷积值当作总的卷积值，代码如下：</p>
+<p><code>`</code>c</p>
+<pre><code>int coefficient_bp[length_bp] =
+{
+165, 115, 121, 101, 56, -6, -71, -129, -173, -204, -231, -268, -321, -393, -467,
+-517, -510, -417, -226, 54, 386, 715, 981, 1129, 1129, 981, 715, 386, 54, -226,
+-417, -510, -517, -467, -393, -321, -268, -231, -204, -173, -129, -71, -6, 56,
+101, 121, 115, 165
+};
+
+int data_before_filter_array[length_bp];
+int num_fir_bp=0;
+
+int get_num_fir_bp()
+{
+    return num_fir_bp;
+}
+</code></pre><p>//<strong><strong><strong><strong><strong>*</strong></strong></strong></strong></strong>带通滤波函数<strong><strong><strong><strong><strong>**</strong></strong></strong></strong></strong></p>
+<pre><code>int fir_bp(int data_before_filter)
+{
+    int data_filtered_bp = 0;
+    if (num_fir_bp &lt; length_bp)      //输入数据数组未填满时，不计算结果
+    {
+        data_before_filter_array[num_fir_bp] = data_before_filter;
+        num_fir_bp++;
+        if (num_fir_bp == length_bp)  //输入数据数组刚好填满时，计算第一个结果
+        {
+            for (int i = 0; i &lt; length_bp; i++)
+            {
+                data_filtered_bp = data_filtered_bp + coefficient_bp[i] * data_before_filter_array[i];
+            }
+            data_filtered_bp=data_filtered_bp&gt;&gt;13;  //恢复原来的大小
+
+            // chenhao0620 限幅
+            data_filtered_bp = data_filtered_bp&gt;32767 ? 32767:(data_filtered_bp&lt;-32768?-32767:data_filtered_bp);
+            return data_filtered_bp;
+        }
+        return 0;
+    }
+    else
+    {
+        for (int i = 1; i &lt; length_bp; i++) //输入数据数组填满之后更新与移动
+        {
+            data_before_filter_array[i - 1] = data_before_filter_array[i];
+        }     //原代码有bug，提前将新数据灌进去了，导致46和47(最后两个)是一样的
+        data_before_filter_array[length_bp-1] = data_before_filter;
+
+        for (int i = 0; i &lt; length_bp; i++) //卷积计算
+        {
+            data_filtered_bp = data_filtered_bp + coefficient_bp[i] * data_before_filter_array[i];
+        }
+        data_filtered_bp=data_filtered_bp&gt;&gt;13;  //因为滤波器函数为了取整扩大了2^13倍，现在移位来恢复原来的大小
+
+    //限幅
+        data_filtered_bp = data_filtered_bp&gt;32767 ? 32767:(data_filtered_bp&lt;-32768?-32767:data_filtered_bp);
+        return data_filtered_bp;
+    }
+}
+</code></pre>
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
 	<div class="article-tag tagcloud">
 		<i class="icon-price-tags icon"></i>
 		<ul class="article-tag-list">
@@ -225,7 +323,7 @@ var _hmt = _hmt || [];
 		</ul>
 	</div>
 
-          
+      
 	<div class="article-category tagcloud">
 		<i class="icon-book icon"></i>
 		<ul class="article-tag-list">
@@ -238,17 +336,111 @@ var _hmt = _hmt || [];
 	</div>
 
 
+      
+
+      
+        
+<div class="share-btn share-icons tooltip-left">
+  <div class="tooltip tooltip-east">
+    <span class="tooltip-item">
+      <a href="javascript:;" class="share-sns share-outer">
+        <i class="icon icon-share"></i>
+      </a>
+    </span>
+    <span class="tooltip-content">
+      <div class="share-wrap">
+        <div class="share-icons">
+          <a class="weibo share-sns" href="javascript:;" data-type="weibo">
+            <i class="icon icon-weibo"></i>
+          </a>
+          <a class="weixin share-sns wxFab" href="javascript:;" data-type="weixin">
+            <i class="icon icon-weixin"></i>
+          </a>
+          <a class="qq share-sns" href="javascript:;" data-type="qq">
+            <i class="icon icon-qq"></i>
+          </a>
+          <a class="douban share-sns" href="javascript:;" data-type="douban">
+            <i class="icon icon-douban"></i>
+          </a>
+          <a class="qzone share-sns" href="javascript:;" data-type="qzone">
+            <i class="icon icon-qzone"></i>
+          </a>
+          <a class="facebook share-sns" href="javascript:;" data-type="facebook">
+            <i class="icon icon-facebook"></i>
+          </a>
+          <a class="twitter share-sns" href="javascript:;" data-type="twitter">
+            <i class="icon icon-twitter"></i>
+          </a>
+          <a class="google share-sns" href="javascript:;" data-type="google">
+            <i class="icon icon-google"></i>
+          </a>
         </div>
-        <div class="clearfix"></div>
-    </header>
+      </div>
+    </span>
+  </div>
+</div>
+
+<div class="page-modal wx-share js-wx-box">
+    <a class="close js-modal-close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <div class="wx-qrcode">
+      <img src="http://s.jiathis.com/qrcode.php?url=http://www.wuxiaochun.cn/2018/05/08/如何选取卷积生成序列中的有用部分/" alt="微信分享二维码">
+    </div>
+</div>
+
+<div class="mask js-mask"></div>
+      
+      <div class="clearfix"></div>
+    </div>
   </div>
 </article>
+
+  
+<nav id="article-nav">
+  
+    <a href="/2018/05/20/数据分箱/" id="article-nav-newer" class="article-nav-link-wrap">
+      <i class="icon-circle-left"></i>
+      <div class="article-nav-title">
+        
+          数据分箱
+        
+      </div>
+    </a>
   
   
-    </div></section>
+    <a href="/2018/05/05/hello-world/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">Have you seen my xiaoxiao bear.</div>
+      <i class="icon-circle-right"></i>
+    </a>
+  
+</nav>
+
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+  
+  
   
 
-    
+  
+
+  
 
 
           </div>
@@ -271,9 +463,9 @@ var _hmt = _hmt || [];
 	var yiliaConfig = {
 		mathjax: true,
 		isHome: false,
-		isPost: false,
+		isPost: true,
 		isArchive: false,
-		isTag: true,
+		isTag: false,
 		isCategory: false,
 		open_in_new: false,
 		toc_hide_index: true,
