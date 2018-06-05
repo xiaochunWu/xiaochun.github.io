@@ -3,6 +3,73 @@
   
     
     <entry>
+      <title>jupyter kernel error</title>
+      <link href="/2018/06/05/jupyter-kernel-error/"/>
+      <url>/2018/06/05/jupyter-kernel-error/</url>
+      <content type="html"><![CDATA[<h2 id="问题出现"><a href="#问题出现" class="headerlink" title="问题出现"></a>问题出现</h2><p>之前因为Python2中混淆了编码问题，Python2的str默认是ascii编码，和unicode编码冲突，解决方法主要有两种，一种是用sys.setdefaultencoding(utf8)来进行强制转换，<br>还有一种是用区分了unicode str和byte array的Python3。<br>所以用Anaconda同时安装了Python2.7和Python3.6，但是jupyter notebook却报错如下：<br>    File”//anaconda/lib/python2.7/site-packages/jupyter_client/manager.py”, line 190, in _launch_kernel<br>    return launch_kernel(kernel_cmd, <strong>kw)<br>    File “//anaconda/lib/python2.7/site-packages/jupyter_client/launcher.py”, line 123, in launch_kernel<br>    proc = Popen(cmd, </strong>kwargs)<br>    File “//anaconda/lib/python2.7/subprocess.py”, line 710, in init<br>    errread, errwrite)<br>    File “//anaconda/lib/python2.7/subprocess.py”, line 1335, in _execute_child<br>    raise child_exception<br>    OSError: [Errno 2] No such file or director</p><h2 id="解决方法"><a href="#解决方法" class="headerlink" title="解决方法"></a>解决方法</h2><ol><li>首先使用jupyter kernelspec list查看安装的内核和位置</li><li>进入安装内核目录打开kernel.jason文件，查看Python编译器的路径是否正确</li><li>如果不正确python -m ipykernel install –user重新安装内核，如果有多个内核，如果你使用conda create -n python2 python=2,为Python2.7设置conda变量,那么在anacoda下使用activate pyhton2切换python环境，重新使用python -m ipykernel install –user安装内核</li><li>重启jupyter notebook即可</li></ol>]]></content>
+      
+      <categories>
+          
+          <category> 机器学习 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> 机器学习 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    <entry>
+      <title>数据分箱</title>
+      <link href="/2018/06/02/%E6%95%B0%E6%8D%AE%E5%88%86%E7%AE%B1/"/>
+      <url>/2018/06/02/%E6%95%B0%E6%8D%AE%E5%88%86%E7%AE%B1/</url>
+      <content type="html"><![CDATA[<h1 id="数据分箱的适用情形"><a href="#数据分箱的适用情形" class="headerlink" title="数据分箱的适用情形"></a>数据分箱的适用情形</h1><p>数据分箱是下列情形下常用的方法：<br>1.某些数值自变量在测量时存在随机误差，需要对数值进行平滑以消除噪音。<br>2.有些数值自变量有大量不重复的取值，对于使用&lt;、&gt;、=等基本操作符的算法（如决策树）而言，如果能减少这些不重复取值的个数，就能提高算法的速度。<br>3.有些算法只能使用分类自变量，需要把数值变量离散化。<br>数据被归入几个分箱之后，可以用每个分箱内数值的均值、中位数或边界值来替代该分箱内各观测的数值，也可以把每个分箱作为离散化后的一个类别。例如，某个自变量的观测值为1，2.1，2.5，3.4，4，5.6，7，7.4，8.2.假设将它们分为三个分箱，（1，2.1，2.5），（3.4，4，5.6），（7，7.4，8.2），那么使用分箱均值替代后所得值为（1.87，1.87，1.87），（4.33，4.33，4.33），（7.53，7.53，7.53），使用分箱中位数替代后所得值为（2.1，2.1，2.1），（4，4，4），（7.4，7.4，7.4），使用边界值替代后所得值为（1，2.5，2.5），（3.4，3.4，5.6），（7，7，8.2）（每个观测值由其所属分箱的两个边界值中较近的值替代）。</p><h1 id="数据分箱的常用方法"><a href="#数据分箱的常用方法" class="headerlink" title="数据分箱的常用方法"></a>数据分箱的常用方法</h1><h2 id="有监督的卡方分箱法-ChiMerge"><a href="#有监督的卡方分箱法-ChiMerge" class="headerlink" title="有监督的卡方分箱法(ChiMerge)"></a>有监督的卡方分箱法(ChiMerge)</h2><p>自底向上的(即基于合并的)数据离散化方法。<br>它依赖于卡方检验:具有最小卡方值的相邻区间合并在一起,直到满足确定的停止准则。<br><a id="more"></a></p><h3 id="基本思想"><a href="#基本思想" class="headerlink" title="基本思想:"></a>基本思想:</h3><p>对于精确的离散化，相对类频率在一个区间内应当完全一致。因此,如果两个相邻的区间具有非常类似的类分布，则这两个区间可以合并；否则，它们应当保持分开。而低卡方值表明它们具有相似的类分布。</p><p>这里需要注意初始化时需要对实例进行排序，在排序的基础上进行合并。</p><h3 id="卡方阈值的确定："><a href="#卡方阈值的确定：" class="headerlink" title="卡方阈值的确定："></a>卡方阈值的确定：</h3><p>根据显著性水平和自由度得到卡方值<br>自由度比类别数量小1。例如：有3类,自由度为2，则90%置信度(10%显著性水平)下，卡方的值为4.6。</p><h3 id="阈值的意义"><a href="#阈值的意义" class="headerlink" title="阈值的意义"></a>阈值的意义</h3><p>类别和属性独立时,有90%的可能性,计算得到的卡方值会小于4.6。 大于阈值4.6的卡方值就说明属性和类不是相互独立的，不能合并。如果阈值选的大,区间合并就会进行很多次,离散后的区间数量少、区间大。 </p><h3 id="注"><a href="#注" class="headerlink" title="注:"></a>注:</h3><p>1,ChiMerge算法推荐使用0.90、0.95、0.99置信度,最大区间数取10到15之间.<br>2,也可以不考虑卡方阈值,此时可以考虑最小区间数或者最大区间数。指定区间数量的上限和下限,最多几个区间,最少几个区间。<br>3,对于类别型变量,需要分箱时需要按照某种方式进行排序。</p><h2 id="无监督分箱法"><a href="#无监督分箱法" class="headerlink" title="无监督分箱法:"></a>无监督分箱法:</h2><h3 id="等距划分、等频划分"><a href="#等距划分、等频划分" class="headerlink" title="等距划分、等频划分"></a>等距划分、等频划分</h3><h3 id="等距分箱"><a href="#等距分箱" class="headerlink" title="等距分箱"></a>等距分箱</h3><p>从最小值到最大值之间,均分为 N 等份, 这样, 如果 A,B 为最小最大值, 则每个区间的长度为 W=(B−A)/N , 则区间边界值为A+W,A+2W,….A+(N−1)W 。这里只考虑边界，每个等份里面的实例数量可能不等。 </p><h3 id="等频分箱"><a href="#等频分箱" class="headerlink" title="等频分箱"></a>等频分箱</h3><p>区间的边界值要经过选择,使得每个区间包含大致相等的实例数量。比如说 N=10 ,每个区间应该包含大约10%的实例。 </p><h3 id="以上两种算法的弊端"><a href="#以上两种算法的弊端" class="headerlink" title="以上两种算法的弊端"></a>以上两种算法的弊端</h3><p>比如,等宽区间划分,划分为5区间,最高工资为50000,则所有工资低于10000的人都被划分到同一区间。等频区间可能正好相反,所有工资高于50000的人都会被划分到50000这一区间中。这两种算法都忽略了实例所属的类型,落在正确区间里的偶然性很大。<br>我们对特征进行分箱后，需要对分箱后的每组（箱）进行woe编码，然后才能放进模型训练。</p>]]></content>
+      
+      <categories>
+          
+          <category> 机器学习 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> 机器学习 </tag>
+            
+            <tag> 特征工程 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    <entry>
+      <title>如何选取卷积生成序列中的有用部分</title>
+      <link href="/2018/06/02/%E5%A6%82%E4%BD%95%E9%80%89%E5%8F%96%E5%8D%B7%E7%A7%AF%E7%94%9F%E6%88%90%E5%BA%8F%E5%88%97%E4%B8%AD%E7%9A%84%E6%9C%89%E7%94%A8%E9%83%A8%E5%88%86/"/>
+      <url>/2018/06/02/%E5%A6%82%E4%BD%95%E9%80%89%E5%8F%96%E5%8D%B7%E7%A7%AF%E7%94%9F%E6%88%90%E5%BA%8F%E5%88%97%E4%B8%AD%E7%9A%84%E6%9C%89%E7%94%A8%E9%83%A8%E5%88%86/</url>
+      <content type="html"><![CDATA[<h1 id="卷积原理"><a href="#卷积原理" class="headerlink" title="卷积原理"></a>卷积原理</h1><p>在信号与系统中，卷积积分是线性时不变系统分析的一个重要工具，具体是通过两个函数f和g生成第三个函数，表征函数f与g经过翻转和平移的重叠部分的面积。</p><p>卷积是两个变量在某范围内相乘后求和的结果。如果卷积的变量是序列x(n)和h(n)，则卷积的结果y(n)=x(n)<em>h(n)，其中星号</em>表示卷积。当时序n=0时，序列h(-i)是h(i)的时序i取反的结果；时序取反使得h(i)以纵轴为中心翻转180度，所以这种相乘后求和的计算法称为卷积和，简称卷积。另外，n是使h(-i)位移的量，不同的n对应不同的卷积结果。</p><p>如果卷积的变量是函数x(t)和h(t)，则卷积的计算变为y(t)=x(t)<em>h(t)，其中p是积分变量，积分也是求和，t是使函数h(-p)位移的量，星号</em>表示卷积。</p><p>已知信号长度为M的时间序列{x(i), i=1,M}与长度为N的近似理想脉冲响应滤波器{h(i),i=1,N}的卷积长度为M+N-1的序列{y(i),i=1,M+N-1}。实际上只有中间的M-N+1的长度是有效卷积的内容。而两端各有N/2的长度,是部分{h(i)}和{x(i)}乘积求和的结果，是两个脉冲函数，这两端的部分不是我们想要的。</p><p>在实际应用中，我们希望得到的{y(i)}，不仅能够在长度上与{x(i)}一致，而且在内容上也全部是有效的。MATLAB中conv(x,h,flag)的函数flag有三个选项“full”,”same”和“valid”。在默认情况下是“full”全部长度即M+N-1,完整的调用格式为conv(x,h,’full’)。 ‘valid’选项的长度只M-N+1, 其内容就是’same’和‘full’的中间M-N+1的部分。而‘same’中的前首尾两端各N/2不是我们想要的，’full’首尾两端各N的长度也不是我们想要的。<br><a id="more"></a></p><h1 id="解决方法"><a href="#解决方法" class="headerlink" title="解决方法"></a>解决方法</h1><h2 id="1-周期延拓"><a href="#1-周期延拓" class="headerlink" title="1.周期延拓"></a>1.周期延拓</h2><p>将原始的{x(i)}中尾部N/2长度的数据接在其前面，并且将原始{x(i)}中头部的数据接在其后面，即完成了周期延拓。再使用conv(x, h, ‘valid’)就可以得到与原始{x(i)}在长度上相同，重要的是有效地卷积序列。</p><h2 id="2-多条数据首尾相接法"><a href="#2-多条数据首尾相接法" class="headerlink" title="2.多条数据首尾相接法"></a>2.多条数据首尾相接法</h2><p>如果{x(i)}是一条数据的长度，那么可将前条数据末尾的N/2长度接在当条数据的前面，将下一条数据头部的N/2长度接在当条的尾部，再进行conv(x, h, ‘valid’)就可以得到与原始{x(i)}在长度上相同，重要的是有效地卷积序列。<br>两种方法的差别在于有效部分开始的少量结果有一致，到中间有效部分的长度就是完全一样的了。</p><h2 id="matlab实现代码"><a href="#matlab实现代码" class="headerlink" title="matlab实现代码"></a>matlab实现代码</h2><p><code>`</code>matlab</p><pre><code>h=load(&apos;hfilter.dat&apos;); N=length(h);  d1=load(&apos;MZL3_20080101Hx.dat&apos;); d2=load(&apos;MZL3_20080102Hx.dat&apos;); d3=load(&apos;MZL3_20080103Hx.dat&apos;); M=length(d1);    Figure   % 用当条的数据周期延拓  dd1=[d2(M-N/2+1:end); d2; d2(1:N/2)]; % 使用三条的数据接起来  dd2=[d1(M-N/2+1:end); d2; d3(1:N/2)]; plot(dd1,&apos;r&apos;);hold on; plot(dd2);   figure  y1=conv(dd1,h,&apos;valid&apos;); y2=conv(dd2,h,&apos;valid&apos;);  plot(y1(1:N/2),&apos;ro&apos;);hold on; plot(y2(1:N/2),&apos;*&apos;);    figure   y11=conv(dd1,h,&apos;same&apos;); y22=conv(dd2,h,&apos;same&apos;); plot(y11,&apos;ro&apos;);hold on; plot(y22,&apos;*&apos;); figure  y111=conv(d2,h,&apos;same&apos;);  yy111=[zeros(N/2,1); y111;zeros(N/2,1)]; y222=conv(d3,h,&apos;full&apos;); plot(yy111 ,&apos;r&apos;);hold on; plot(y222);</code></pre><h2 id="C语言实现"><a href="#C语言实现" class="headerlink" title="C语言实现"></a>C语言实现</h2><p>在用c语言来实现带通滤波器时我们遇到了这个问题，最终使用的是只计算两个序列对齐时的卷积值当作总的卷积值，代码如下：</p><p><code>`</code>c</p><pre><code>int coefficient_bp[length_bp] ={165, 115, 121, 101, 56, -6, -71, -129, -173, -204, -231, -268, -321, -393, -467,-517, -510, -417, -226, 54, 386, 715, 981, 1129, 1129, 981, 715, 386, 54, -226,-417, -510, -517, -467, -393, -321, -268, -231, -204, -173, -129, -71, -6, 56,101, 121, 115, 165};int data_before_filter_array[length_bp];int num_fir_bp=0;int get_num_fir_bp(){    return num_fir_bp;}</code></pre><p>//<strong><strong><strong><strong><strong>*</strong></strong></strong></strong></strong>带通滤波函数<strong><strong><strong><strong><strong>**</strong></strong></strong></strong></strong></p><pre><code>int fir_bp(int data_before_filter){    int data_filtered_bp = 0;    if (num_fir_bp &lt; length_bp)      //输入数据数组未填满时，不计算结果    {        data_before_filter_array[num_fir_bp] = data_before_filter;        num_fir_bp++;        if (num_fir_bp == length_bp)  //输入数据数组刚好填满时，计算第一个结果        {            for (int i = 0; i &lt; length_bp; i++)            {                data_filtered_bp = data_filtered_bp + coefficient_bp[i] * data_before_filter_array[i];            }            data_filtered_bp=data_filtered_bp&gt;&gt;13;  //恢复原来的大小            // chenhao0620 限幅            data_filtered_bp = data_filtered_bp&gt;32767 ? 32767:(data_filtered_bp&lt;-32768?-32767:data_filtered_bp);            return data_filtered_bp;        }        return 0;    }    else    {        for (int i = 1; i &lt; length_bp; i++) //输入数据数组填满之后更新与移动        {            data_before_filter_array[i - 1] = data_before_filter_array[i];        }     //原代码有bug，提前将新数据灌进去了，导致46和47(最后两个)是一样的        data_before_filter_array[length_bp-1] = data_before_filter;        for (int i = 0; i &lt; length_bp; i++) //卷积计算        {            data_filtered_bp = data_filtered_bp + coefficient_bp[i] * data_before_filter_array[i];        }        data_filtered_bp=data_filtered_bp&gt;&gt;13;  //因为滤波器函数为了取整扩大了2^13倍，现在移位来恢复原来的大小    //限幅        data_filtered_bp = data_filtered_bp&gt;32767 ? 32767:(data_filtered_bp&lt;-32768?-32767:data_filtered_bp);        return data_filtered_bp;    }}</code></pre>]]></content>
+      
+      <categories>
+          
+          <category> 信号处理 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> 信号处理 </tag>
+            
+            <tag> 卷积序列 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    <entry>
       <title>Hello World</title>
       <link href="/2018/06/01/hello-world/"/>
       <url>/2018/06/01/hello-world/</url>
