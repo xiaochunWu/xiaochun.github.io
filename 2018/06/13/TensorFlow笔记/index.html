@@ -6,19 +6,20 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge" >
   <link rel="dns-prefetch" href="http://www.wuxiaochun.cn">
-  <title>Tag: 随笔 | Renewing</title>
+  <title>TensorFlow笔记 | Renewing</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="PKU在读，机器学习菜鸟，此博客日常分享技术心得，偶尔吐槽心情。">
-<meta name="keywords" content="机器学习,python,html,code">
-<meta property="og:type" content="website">
-<meta property="og:title" content="Renewing">
-<meta property="og:url" content="http://www.wuxiaochun.cn/tags/随笔/index.html">
+  <meta name="description" content="神经网络神经网络的基本概念 张量是多维数组（列表），用‘阶’表示张量的维度 TensorFlow的数据类型有tf.float32、tf.int32等 计算图：是承载一个或多个计算节点的一张图，只搭建网络，不运算  12345import tensorflow as tfx = tf.constant([[1.0, 2.0]])w = tf.constant([[3.0],[4.0]])y = tf">
+<meta name="keywords" content="深度学习,TensorFlow">
+<meta property="og:type" content="article">
+<meta property="og:title" content="TensorFlow笔记">
+<meta property="og:url" content="http://www.wuxiaochun.cn/2018/06/13/TensorFlow笔记/index.html">
 <meta property="og:site_name" content="Renewing">
-<meta property="og:description" content="PKU在读，机器学习菜鸟，此博客日常分享技术心得，偶尔吐槽心情。">
+<meta property="og:description" content="神经网络神经网络的基本概念 张量是多维数组（列表），用‘阶’表示张量的维度 TensorFlow的数据类型有tf.float32、tf.int32等 计算图：是承载一个或多个计算节点的一张图，只搭建网络，不运算  12345import tensorflow as tfx = tf.constant([[1.0, 2.0]])w = tf.constant([[3.0],[4.0]])y = tf">
 <meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2018-06-13T03:03:16.662Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Renewing">
-<meta name="twitter:description" content="PKU在读，机器学习菜鸟，此博客日常分享技术心得，偶尔吐槽心情。">
+<meta name="twitter:title" content="TensorFlow笔记">
+<meta name="twitter:description" content="神经网络神经网络的基本概念 张量是多维数组（列表），用‘阶’表示张量的维度 TensorFlow的数据类型有tf.float32、tf.int32等 计算图：是承载一个或多个计算节点的一张图，只搭建网络，不运算  12345import tensorflow as tfx = tf.constant([[1.0, 2.0]])w = tf.constant([[3.0],[4.0]])y = tf">
   
     <link rel="alternative" href="/atom.xml" title="Renewing" type="application/atom+xml">
   
@@ -180,71 +181,270 @@ var _hmt = _hmt || [];
             <canvas data-colors="#eaeaea" data-sectionHeight="100" data-contentId="js-content" id="myCanvas1" class="anm-canvas"></canvas>
           </div>
           <div id="js-content" class="content-ll">
-            
-  
-  
+            <article id="post-TensorFlow笔记" class="article article-type-post " itemscope itemprop="blogPost">
+  <div class="article-inner">
     
-    
-      
-      
-      <section class="archives-wrap">
-        <div class="archive-year-wrap">
-          <a href="/archives/2018" class="archive-year">2018</a>
-        </div>
-        <div class="archives">
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2018/05/05/hello-world/" class="archive-article-date">
-  	<time datetime="2018-05-04T16:00:00.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-05-05</time>
-</a>
-        </div>
-    	 
+      <header class="article-header">
+        
   
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2018/05/05/hello-world/">Hello bear.</a>
+    <h1 class="article-title" itemprop="name">
+      TensorFlow笔记
     </h1>
   
 
-        <div class="article-info info-on-right">
-          
+        
+        <a href="/2018/06/13/TensorFlow笔记/" class="archive-article-date">
+  	<time datetime="2018-06-13T02:58:53.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-06-13</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="神经网络"><a href="#神经网络" class="headerlink" title="神经网络"></a>神经网络</h1><h2 id="神经网络的基本概念"><a href="#神经网络的基本概念" class="headerlink" title="神经网络的基本概念"></a>神经网络的基本概念</h2><ol>
+<li>张量是多维数组（列表），用‘阶’表示张量的维度</li>
+<li>TensorFlow的数据类型有tf.float32、tf.int32等</li>
+<li>计算图：是承载一个或多个计算节点的一张图，只搭建网络，不运算</li>
+</ol>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> tensorflow <span class="keyword">as</span> tf</span><br><span class="line">x = tf.constant([[<span class="number">1.0</span>, <span class="number">2.0</span>]])</span><br><span class="line">w = tf.constant([[<span class="number">3.0</span>],[<span class="number">4.0</span>]])</span><br><span class="line">y = tf.matmul(x,w)</span><br><span class="line">print(y)</span><br></pre></td></tr></table></figure>
+<pre><code>Tensor(&quot;MatMul_3:0&quot;, shape=(1, 1), dtype=float32)
+</code></pre><p>可以看到，print的结构显示y是一个张量，只搭建承载计算过程的计算图，并没有运算。<br><a id="more"></a></p>
+<ol start="4">
+<li>会话：执行计算图中的节点运算<br>用with结构实现，语法如下：</li>
+</ol>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">with</span> tf.Session() <span class="keyword">as</span> sess:</span><br><span class="line">    print(sess.run(y))</span><br></pre></td></tr></table></figure>
+<pre><code>[[11.]]
+</code></pre><h2 id="神经网络的搭建"><a href="#神经网络的搭建" class="headerlink" title="神经网络的搭建"></a>神经网络的搭建</h2><ol>
+<li>准备数据集，提取特征，作为输入喂给NN</li>
+<li>搭建NN结构，从输入到输出（先搭建计算图，再用会话执行）<br> （NN前向传播算法–&gt;计算输出）</li>
+<li>大量特征数据喂给NN，迭代优化NN参数<br> （NN反向传播算法–&gt;优化参数训练模型）</li>
+<li>使用训练好的模型预测和分类</li>
+</ol>
+<h3 id="前向传播的tensorflow描述"><a href="#前向传播的tensorflow描述" class="headerlink" title="前向传播的tensorflow描述"></a>前向传播的tensorflow描述</h3><p>变量初始化、计算图节点运算都要用会话（with结构）实现</p>
+<pre><code>with tf.Session() as sess:
+
+    sess.run()
+</code></pre><p>变量初始化：在sess.run函数中用tf.global_variables_initializer()汇总所有待优化变量</p>
+<pre><code>init_op = tf.global_variables_initializer()
+
+sess.run(init_op)
+</code></pre><p>计算图节点运算：在sess.run函数中写入待运算的节点</p>
+<pre><code>sess.run(y)
+</code></pre><p>用tf.placeholder占位，在sess.run函数中用feed_dict喂数据<br>喂一组数据：</p>
+<pre><code>x = tf.placeholder(tf.float32, shape=(1,2))
+
+sess.run(y,feed_dict={x: [[0.5,0.6]]})
+</code></pre><p>喂多组数据：</p>
+<pre><code>x = tf.placeholder(tf.float32, shape=(None,2))
+
+sess.run(y,feed_dict={x: [[0.5,0.6]],[[0.1,0.5]],[[0.4,0.2]]，[[0.8,0.7]]})
+</code></pre><h3 id="反向传播的tensorflow描述"><a href="#反向传播的tensorflow描述" class="headerlink" title="反向传播的tensorflow描述"></a>反向传播的tensorflow描述</h3><ul>
+<li><p>反向传播：训练模型参数，在所有参数上用梯度下降，使NN模型在训练数据上的损失函数最小</p>
+</li>
+<li><p>损失函数（loss）：计算得到的预测值y与已知y_的差距</p>
+</li>
+<li><p>均方误差MSE：常用的损失函数计算方法，是求前向传播计算结果与已知答案之差的平方再求平均。</p>
+<p>  loss_mse = tf.reduce_mean(tf.square(y_ - y)) </p>
+</li>
+<li><p>反向传播训练方法：以减小 loss 值为优化目标，有梯度下降、momentum 优化器、adam 优化器等优化方法。</p>
+<p>  train_step=tf.train.GradientDescentOptimizer(learning_rate).minimize(loss)</p>
+<p>  train_step=tf.train.MomentumOptimizer(learning_rate, momentum).minimize(loss)</p>
+<p>  train_step=tf.train.AdamOptimizer(learning_rate).minimize(loss)</p>
+</li>
+<li><p>学习率：决定每次参数更新的幅度。</p>
+</li>
+</ul>
+<h2 id="神经网络优化"><a href="#神经网络优化" class="headerlink" title="神经网络优化"></a>神经网络优化</h2><ul>
+<li>交叉熵(Cross Entropy)：表示两个概率分布之间的距离。交叉熵越大，两个概率分布距离越远，两个概率分布越相异；交叉熵越小，两个概率分布距离越近，两个概率分布越相似。交叉熵计算公式：𝐇(𝐲_ , 𝐲) = −∑𝐲_ ∗ 𝒍𝒐𝒈 𝒚</li>
+</ul>
+<p>用 Tensorflow 函数表示为</p>
+<pre><code>ce= -tf.reduce_mean(y_* tf.log(tf.clip_by_value(y, 1e-12, 1.0))) 
+</code></pre><ul>
+<li>softmax函数：将 n 分类的 n 个输出（y1,y2…yn）变为满足以下概率分布要求的函数。</li>
+</ul>
+<p>在 Tensorflow 中，一般让模型的输出经过 sofemax 函数，以获得输出分类的概率分布，再与标准<br>答案对比，求出交叉熵，得到损失函数，用如下函数实现：</p>
+<pre><code>ce = tf.nn.sparse_softmax_cross_entropy_with_logits(logits=y, labels=tf.argmax(y_, 1))
+
+cem = tf.reduce_mean(ce)
+</code></pre><ul>
+<li>学习率 learning_rate：表示了每次参数更新的幅度大小。学习率过大，会导致待优化的参数在最小值附近波动，不收敛；学习率过小，会导致待优化的参数收敛缓慢。在训练过程中，参数的更新向着损失函数梯度下降的方向。</li>
+</ul>
+<p>参数的更新公式为：</p>
+<pre><code>𝒘𝒏+𝟏 = 𝒘𝒏 − 𝒍𝒆𝒂𝒓𝒏𝒊𝒏𝒈_𝒓𝒂𝒕𝒆delta
+</code></pre><ul>
+<li>指数衰减学习率：学习率随着训练轮数变化而动态更新</li>
+</ul>
+<p>用 Tensorflow 的函数表示为：</p>
+<pre><code>global_step = tf.Variable(0, trainable=False)
+
+learning_rate = tf.train.exponential_decay(
+LEARNING_RATE_BASE,
+global_step,
+LEARNING_RATE_STEP, LEARNING_RATE_DECAY,
+staircase=True/False)
+</code></pre><p>   注：staircase为True时，表示global_step/learning rate step取整数，学习率阶梯型衰减</p>
+<pre><code>staircase为False时，学习率是一条平滑下降的曲线
+</code></pre><ul>
+<li>滑动平均：记录了一段时间内模型中所有参数 w 和 b 各自的平均值。利用滑动平均值可以增强模型的泛化能力。</li>
+</ul>
+<p>滑动平均值（影子）计算公式：</p>
+<p>影子 = 衰减率 <em> 影子 +（1 - 衰减率）</em> 参数</p>
+<p>其中，衰减率 = 𝐦𝐢𝐧 {𝑴𝑶𝑽𝑰𝑵𝑮𝑨𝑽𝑬𝑹𝑨𝑮𝑬𝑫𝑬𝑪𝑨𝒀,(𝟏+轮数)/(𝟏𝟎+轮数)}，影子初值=参数初值   </p>
+<p>用 Tensorflow 函数表示为：</p>
+<pre><code>ema = tf.train.ExponentialMovingAverage(MOVING_AVERAGE_DECAY，global_step)
+</code></pre><p>其中，MOVING_AVERAGE_DECAY 表示滑动平均衰减率，一般会赋接近 1 的值，global_step 表示当前训练了多少轮。</p>
+<pre><code>ema_op = ema.apply(tf.trainable_variables())
+</code></pre><p>其中，ema.apply()函数实现对括号内参数求滑动平均，tf.trainable_variables()函数实现把所有待训练参数汇总为列表。</p>
+<pre><code>with tf.control_dependencies([train_step, ema_op]):
+     train_op = tf.no_op(name=&apos;train&apos;) 
+</code></pre><ul>
+<li><p>过拟合：神经网络模型在训练数据集上的准确率较高，在新的数据进行预测或分类时准确率较低，说明模型的泛化能力差。 </p>
+</li>
+<li><p>正则化：在损失函数中给每个参数 w 加上权重，引入模型复杂度指标，从而抑制模型噪声，减小过拟合。 </p>
+</li>
+</ul>
+<p>正则化计算方法：<br>① L1 正则化： 𝒍𝒐𝒔𝒔𝑳𝟏 = ∑𝒊|𝒘𝒊|</p>
+<p>用 Tensorflow 函数表示:</p>
+<pre><code>loss(w) = tf.contrib.layers.l1_regularizer(REGULARIZER)(w)
+</code></pre><p>② L2 正则化： 𝒍𝒐𝒔𝒔𝑳𝟐 = ∑𝒊|𝒘𝒊|^𝟐</p>
+<p>用 Tensorflow 函数表示:</p>
+<pre><code>loss(w) = tf.contrib.layers.l2_regularizer(REGULARIZER)(w)
+</code></pre><p>用 Tensorflow 函数实现正则化：</p>
+<pre><code>tf.add_to_collection(&apos;losses&apos;, tf.contrib.layers.l2_regularizer(regularizer)(w)
+loss = cem + tf.add_n(tf.get_collection(&apos;losses&apos;)) 
+</code></pre><p>利用L1经过训练后，会让权重得到稀疏解，即权重中的一部分项为0，这种作用相当于对原始数据进行了特征选择；利用L2进行训练后，会让权重更趋于0，但不会得到稀疏结，这样做可以避免某些权重过大；两种正则做法都可以减轻过拟合，使训练结果更加具有鲁棒性。</p>
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
 	<div class="article-tag tagcloud">
 		<i class="icon-price-tags icon"></i>
 		<ul class="article-tag-list">
 			 
         		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">随笔</a>
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">深度学习</a>
+        		</li>
+      		 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">TensorFlow</a>
         		</li>
       		
 		</ul>
 	</div>
 
-          
+      
 	<div class="article-category tagcloud">
 		<i class="icon-book icon"></i>
 		<ul class="article-tag-list">
 			 
         		<li class="article-tag-list-item">
-        			<a href="/categories/随笔/" class="article-tag-list-link color3">随笔</a>
+        			<a href="/categories/深度学习/" class="article-tag-list-link color5">深度学习</a>
         		</li>
       		
 		</ul>
 	</div>
 
 
+      
+
+      
+        
+<div class="share-btn share-icons tooltip-left">
+  <div class="tooltip tooltip-east">
+    <span class="tooltip-item">
+      <a href="javascript:;" class="share-sns share-outer">
+        <i class="icon icon-share"></i>
+      </a>
+    </span>
+    <span class="tooltip-content">
+      <div class="share-wrap">
+        <div class="share-icons">
+          <a class="weibo share-sns" href="javascript:;" data-type="weibo">
+            <i class="icon icon-weibo"></i>
+          </a>
+          <a class="weixin share-sns wxFab" href="javascript:;" data-type="weixin">
+            <i class="icon icon-weixin"></i>
+          </a>
+          <a class="qq share-sns" href="javascript:;" data-type="qq">
+            <i class="icon icon-qq"></i>
+          </a>
+          <a class="douban share-sns" href="javascript:;" data-type="douban">
+            <i class="icon icon-douban"></i>
+          </a>
+          <a class="qzone share-sns" href="javascript:;" data-type="qzone">
+            <i class="icon icon-qzone"></i>
+          </a>
+          <a class="facebook share-sns" href="javascript:;" data-type="facebook">
+            <i class="icon icon-facebook"></i>
+          </a>
+          <a class="twitter share-sns" href="javascript:;" data-type="twitter">
+            <i class="icon icon-twitter"></i>
+          </a>
+          <a class="google share-sns" href="javascript:;" data-type="google">
+            <i class="icon icon-google"></i>
+          </a>
         </div>
-        <div class="clearfix"></div>
-    </header>
+      </div>
+    </span>
+  </div>
+</div>
+
+<div class="page-modal wx-share js-wx-box">
+    <a class="close js-modal-close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <div class="wx-qrcode">
+      <img src="http://s.jiathis.com/qrcode.php?url=http://www.wuxiaochun.cn/2018/06/13/TensorFlow笔记/" alt="微信分享二维码">
+    </div>
+</div>
+
+<div class="mask js-mask"></div>
+      
+      <div class="clearfix"></div>
+    </div>
   </div>
 </article>
+
+  
+<nav id="article-nav">
   
   
-    </div></section>
+    <a href="/2018/06/11/梯度提升树-GBDT-概述及sklearn调参/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">梯度提升树(GBDT)概述及sklearn调参</div>
+      <i class="icon-circle-right"></i>
+    </a>
+  
+</nav>
+
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+  
+  
   
 
-    
+  
+
+  
 
 
           </div>
@@ -267,9 +467,9 @@ var _hmt = _hmt || [];
 	var yiliaConfig = {
 		mathjax: true,
 		isHome: false,
-		isPost: false,
+		isPost: true,
 		isArchive: false,
-		isTag: true,
+		isTag: false,
 		isCategory: false,
 		open_in_new: false,
 		toc_hide_index: true,
