@@ -6,19 +6,24 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge" >
   <link rel="dns-prefetch" href="http://www.wuxiaochun.cn">
-  <title>Category: 机器学习 | Renewing</title>
+  <title>改善深层神经网络-Gradient+Checking | Renewing</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="PKU在读，机器学习菜鸟，此博客日常分享技术心得，偶尔吐槽心情。">
-<meta name="keywords" content="机器学习,python,html,code">
-<meta property="og:type" content="website">
-<meta property="og:title" content="Renewing">
-<meta property="og:url" content="http://www.wuxiaochun.cn/categories/machine-learning/index.html">
+  <meta name="description" content="Gradient CheckingWelcome to the final assignment for this week! In this assignment you will learn to implement and use gradient checking.  You are part of a team working to make mobile payments availa">
+<meta name="keywords" content="深度学习">
+<meta property="og:type" content="article">
+<meta property="og:title" content="改善深层神经网络-Gradient+Checking">
+<meta property="og:url" content="http://www.wuxiaochun.cn/2018/06/26/改善深层神经网络-Gradient-Checking/index.html">
 <meta property="og:site_name" content="Renewing">
-<meta property="og:description" content="PKU在读，机器学习菜鸟，此博客日常分享技术心得，偶尔吐槽心情。">
+<meta property="og:description" content="Gradient CheckingWelcome to the final assignment for this week! In this assignment you will learn to implement and use gradient checking.  You are part of a team working to make mobile payments availa">
 <meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="http://www.wuxiaochun.cn/img/1Dgrad_kiank.png">
+<meta property="og:image" content="http://www.wuxiaochun.cn/img/NDgrad_kiank.png">
+<meta property="og:image" content="http://www.wuxiaochun.cn/img/dictionary_to_vector.png">
+<meta property="og:updated_time" content="2018-06-26T15:22:50.143Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Renewing">
-<meta name="twitter:description" content="PKU在读，机器学习菜鸟，此博客日常分享技术心得，偶尔吐槽心情。">
+<meta name="twitter:title" content="改善深层神经网络-Gradient+Checking">
+<meta name="twitter:description" content="Gradient CheckingWelcome to the final assignment for this week! In this assignment you will learn to implement and use gradient checking.  You are part of a team working to make mobile payments availa">
+<meta name="twitter:image" content="http://www.wuxiaochun.cn/img/1Dgrad_kiank.png">
   
     <link rel="alternative" href="/atom.xml" title="Renewing" type="application/atom+xml">
   
@@ -180,230 +185,276 @@ var _hmt = _hmt || [];
             <canvas data-colors="#eaeaea" data-sectionHeight="100" data-contentId="js-content" id="myCanvas1" class="anm-canvas"></canvas>
           </div>
           <div id="js-content" class="content-ll">
-            
-  
-  
+            <article id="post-改善深层神经网络-Gradient-Checking" class="article article-type-post " itemscope itemprop="blogPost">
+  <div class="article-inner">
     
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      改善深层神经网络-Gradient+Checking
+    </h1>
+  
+
+        
+        <a href="/2018/06/26/改善深层神经网络-Gradient-Checking/" class="archive-article-date">
+  	<time datetime="2018-06-26T15:16:06.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-06-26</time>
+</a>
+        
+      </header>
     
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="Gradient-Checking"><a href="#Gradient-Checking" class="headerlink" title="Gradient Checking"></a>Gradient Checking</h1><p>Welcome to the final assignment for this week! In this assignment you will learn to implement and use gradient checking. </p>
+<p>You are part of a team working to make mobile payments available globally, and are asked to build a deep learning model to detect fraud–whenever someone makes a payment, you want to see if the payment might be fraudulent, such as if the user’s account has been taken over by a hacker. </p>
+<p>But backpropagation is quite challenging to implement, and sometimes has bugs. Because this is a mission-critical application, your company’s CEO wants to be really certain that your implementation of backpropagation is correct. Your CEO says, “Give me a proof that your backpropagation is actually working!” To give this reassurance, you are going to use “gradient checking”.</p>
+<p>Let’s do it!<br><a id="more"></a></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># Packages</span></span><br><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"><span class="keyword">from</span> testCases <span class="keyword">import</span> *</span><br><span class="line"><span class="keyword">from</span> gc_utils <span class="keyword">import</span> sigmoid, relu, dictionary_to_vector, vector_to_dictionary, gradients_to_vector</span><br></pre></td></tr></table></figure>
+<h2 id="1-How-does-gradient-checking-work"><a href="#1-How-does-gradient-checking-work" class="headerlink" title="1) How does gradient checking work?"></a>1) How does gradient checking work?</h2><p>Backpropagation computes the gradients $\frac{\partial J}{\partial \theta}$, where $\theta$ denotes the parameters of the model. $J$ is computed using forward propagation and your loss function.</p>
+<p>Because forward propagation is relatively easy to implement, you’re confident you got that right, and so you’re almost  100% sure that you’re computing the cost $J$ correctly. Thus, you can use your code for computing $J$ to verify the code for computing $\frac{\partial J}{\partial \theta}$. </p>
+<p>Let’s look back at the definition of a derivative (or gradient):<br>$$ \frac{\partial J}{\partial \theta} = \lim_{\varepsilon \to 0} \frac{J(\theta + \varepsilon) - J(\theta - \varepsilon)}{2 \varepsilon} \tag{1}$$</p>
+<p>If you’re not familiar with the “$\displaystyle \lim_{\varepsilon \to 0}$” notation, it’s just a way of saying “when $\varepsilon$ is really really small.”</p>
+<p>We know the following:</p>
+<ul>
+<li>$\frac{\partial J}{\partial \theta}$ is what you want to make sure you’re computing correctly. </li>
+<li>You can compute $J(\theta + \varepsilon)$ and $J(\theta - \varepsilon)$ (in the case that $\theta$ is a real number), since you’re confident your implementation for $J$ is correct. </li>
+</ul>
+<p>Lets use equation (1) and a small value for $\varepsilon$ to convince your CEO that your code for computing  $\frac{\partial J}{\partial \theta}$ is correct!</p>
+<h2 id="2-1-dimensional-gradient-checking"><a href="#2-1-dimensional-gradient-checking" class="headerlink" title="2) 1-dimensional gradient checking"></a>2) 1-dimensional gradient checking</h2><p>Consider a 1D linear function $J(\theta) = \theta x$. The model contains only a single real-valued parameter $\theta$, and takes $x$ as input.</p>
+<p>You will implement code to compute $J(.)$ and its derivative $\frac{\partial J}{\partial \theta}$. You will then use gradient checking to make sure your derivative computation for $J$ is correct. </p>
+<p><img src="/img/1Dgrad_kiank.png" style="width:600px;height:250px;"></p>
+<caption><center> <u> <strong>Figure 1</strong> </u>: <strong>1D linear model</strong><br> </center></caption>
+
+<p>The diagram above shows the key computation steps: First start with $x$, then evaluate the function $J(x)$ (“forward propagation”). Then compute the derivative $\frac{\partial J}{\partial \theta}$ (“backward propagation”). </p>
+<p><strong>Exercise</strong>: implement “forward propagation” and “backward propagation” for this simple function. I.e., compute both $J(.)$ (“forward propagation”) and its derivative with respect to $\theta$ (“backward propagation”), in two separate functions. </p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># GRADED FUNCTION: forward_propagation</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">forward_propagation</span><span class="params">(x, theta)</span>:</span></span><br><span class="line">    <span class="string">"""</span></span><br><span class="line"><span class="string">    Implement the linear forward propagation (compute J) presented in Figure 1 (J(theta) = theta * x)</span></span><br><span class="line"><span class="string">    </span></span><br><span class="line"><span class="string">    Arguments:</span></span><br><span class="line"><span class="string">    x -- a real-valued input</span></span><br><span class="line"><span class="string">    theta -- our parameter, a real number as well</span></span><br><span class="line"><span class="string">    </span></span><br><span class="line"><span class="string">    Returns:</span></span><br><span class="line"><span class="string">    J -- the value of function J, computed using the formula J(theta) = theta * x</span></span><br><span class="line"><span class="string">    """</span></span><br><span class="line">    </span><br><span class="line">    <span class="comment">### START CODE HERE ### (approx. 1 line)</span></span><br><span class="line">    J = theta * x</span><br><span class="line">    <span class="comment">### END CODE HERE ###</span></span><br><span class="line">    </span><br><span class="line">    <span class="keyword">return</span> J</span><br></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">x, theta = <span class="number">2</span>, <span class="number">4</span></span><br><span class="line">J = forward_propagation(x, theta)</span><br><span class="line"><span class="keyword">print</span> (<span class="string">"J = "</span> + str(J))</span><br></pre></td></tr></table></figure>
+<pre><code>J = 8
+</code></pre><p><strong>Expected Output</strong>:</p>
+<table style=""><br>    <tr><br>        <td>  <strong> J </strong>  </td><br>        <td> 8</td><br>    </tr><br></table>
+
+<p><strong>Exercise</strong>: Now, implement the backward propagation step (derivative computation) of Figure 1. That is, compute the derivative of $J(\theta) = \theta x$ with respect to $\theta$. To save you from doing the calculus, you should get $dtheta = \frac { \partial J }{ \partial \theta} = x$.</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># GRADED FUNCTION: backward_propagation</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">backward_propagation</span><span class="params">(x, theta)</span>:</span></span><br><span class="line">    <span class="string">"""</span></span><br><span class="line"><span class="string">    Computes the derivative of J with respect to theta (see Figure 1).</span></span><br><span class="line"><span class="string">    </span></span><br><span class="line"><span class="string">    Arguments:</span></span><br><span class="line"><span class="string">    x -- a real-valued input</span></span><br><span class="line"><span class="string">    theta -- our parameter, a real number as well</span></span><br><span class="line"><span class="string">    </span></span><br><span class="line"><span class="string">    Returns:</span></span><br><span class="line"><span class="string">    dtheta -- the gradient of the cost with respect to theta</span></span><br><span class="line"><span class="string">    """</span></span><br><span class="line">    </span><br><span class="line">    <span class="comment">### START CODE HERE ### (approx. 1 line)</span></span><br><span class="line">    dtheta = x</span><br><span class="line">    <span class="comment">### END CODE HERE ###</span></span><br><span class="line">    </span><br><span class="line">    <span class="keyword">return</span> dtheta</span><br></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">x, theta = <span class="number">2</span>, <span class="number">4</span></span><br><span class="line">dtheta = backward_propagation(x, theta)</span><br><span class="line"><span class="keyword">print</span> (<span class="string">"dtheta = "</span> + str(dtheta))</span><br></pre></td></tr></table></figure>
+<pre><code>dtheta = 2
+</code></pre><p><strong>Expected Output</strong>:</p>
+<table><br>    <tr><br>        <td>  <strong> dtheta </strong>  </td><br>        <td> 2 </td><br>    </tr><br></table>
+
+<p><strong>Exercise</strong>: To show that the <code>backward_propagation()</code> function is correctly computing the gradient $\frac{\partial J}{\partial \theta}$, let’s implement gradient checking.</p>
+<p><strong>Instructions</strong>:</p>
+<ul>
+<li>First compute “gradapprox” using the formula above (1) and a small value of $\varepsilon$. Here are the Steps to follow:<ol>
+<li>$\theta^{+} = \theta + \varepsilon$</li>
+<li>$\theta^{-} = \theta - \varepsilon$</li>
+<li>$J^{+} = J(\theta^{+})$</li>
+<li>$J^{-} = J(\theta^{-})$</li>
+<li>$gradapprox = \frac{J^{+} - J^{-}}{2  \varepsilon}$</li>
+</ol>
+</li>
+<li>Then compute the gradient using backward propagation, and store the result in a variable “grad”</li>
+<li>Finally, compute the relative difference between “gradapprox” and the “grad” using the following formula:<br>$$ difference = \frac {\mid\mid grad - gradapprox \mid\mid_2}{\mid\mid grad \mid\mid_2 + \mid\mid gradapprox \mid\mid_2} \tag{2}$$<br>You will need 3 Steps to compute this formula:<ul>
+<li>1’. compute the numerator using np.linalg.norm(…)</li>
+<li>2’. compute the denominator. You will need to call np.linalg.norm(…) twice.</li>
+<li>3’. divide them.</li>
+</ul>
+</li>
+<li>If this difference is small (say less than $10^{-7}$), you can be quite confident that you have computed your gradient correctly. Otherwise, there may be a mistake in the gradient computation. </li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># GRADED FUNCTION: gradient_check</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">gradient_check</span><span class="params">(x, theta, epsilon = <span class="number">1e-7</span>)</span>:</span></span><br><span class="line">    <span class="string">"""</span></span><br><span class="line"><span class="string">    Implement the backward propagation presented in Figure 1.</span></span><br><span class="line"><span class="string">    </span></span><br><span class="line"><span class="string">    Arguments:</span></span><br><span class="line"><span class="string">    x -- a real-valued input</span></span><br><span class="line"><span class="string">    theta -- our parameter, a real number as well</span></span><br><span class="line"><span class="string">    epsilon -- tiny shift to the input to compute approximated gradient with formula(1)</span></span><br><span class="line"><span class="string">    </span></span><br><span class="line"><span class="string">    Returns:</span></span><br><span class="line"><span class="string">    difference -- difference (2) between the approximated gradient and the backward propagation gradient</span></span><br><span class="line"><span class="string">    """</span></span><br><span class="line">    </span><br><span class="line">    <span class="comment"># Compute gradapprox using left side of formula (1). epsilon is small enough, you don't need to worry about the limit.</span></span><br><span class="line">    <span class="comment">### START CODE HERE ### (approx. 5 lines)</span></span><br><span class="line">    thetaplus = theta + epsilon                               <span class="comment"># Step 1</span></span><br><span class="line">    thetaminus = theta - epsilon                              <span class="comment"># Step 2</span></span><br><span class="line">    J_plus = forward_propagation(x, thetaplus)                                  <span class="comment"># Step 3</span></span><br><span class="line">    J_minus = forward_propagation(x, thetaminus)                                 <span class="comment"># Step 4</span></span><br><span class="line">    gradapprox = (J_plus - J_minus) / <span class="number">2</span> / epsilon                              <span class="comment"># Step 5</span></span><br><span class="line">    <span class="comment">### END CODE HERE ###</span></span><br><span class="line">    </span><br><span class="line">    <span class="comment"># Check if gradapprox is close enough to the output of backward_propagation()</span></span><br><span class="line">    <span class="comment">### START CODE HERE ### (approx. 1 line)</span></span><br><span class="line">    grad = backward_propagation(x, theta)</span><br><span class="line">    <span class="comment">### END CODE HERE ###</span></span><br><span class="line">    </span><br><span class="line">    <span class="comment">### START CODE HERE ### (approx. 1 line)</span></span><br><span class="line">    numerator = np.linalg.norm(grad-gradapprox)                               <span class="comment"># Step 1'</span></span><br><span class="line">    denominator = np.linalg.norm(grad) + np.linalg.norm(gradapprox)                             <span class="comment"># Step 2'</span></span><br><span class="line">    difference = numerator / denominator                              <span class="comment"># Step 3'</span></span><br><span class="line">    <span class="comment">### END CODE HERE ###</span></span><br><span class="line">    </span><br><span class="line">    <span class="keyword">if</span> difference &lt; <span class="number">1e-7</span>:</span><br><span class="line">        <span class="keyword">print</span> (<span class="string">"The gradient is correct!"</span>)</span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        <span class="keyword">print</span> (<span class="string">"The gradient is wrong!"</span>)</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">return</span> difference</span><br></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">x, theta = <span class="number">2</span>, <span class="number">4</span></span><br><span class="line">difference = gradient_check(x, theta)</span><br><span class="line">print(<span class="string">"difference = "</span> + str(difference))</span><br></pre></td></tr></table></figure>
+<pre><code>The gradient is correct!
+difference = 2.919335883291695e-10
+</code></pre><p><strong>Expected Output</strong>:<br>The gradient is correct!</p>
+<table><br>    <tr><br>        <td>  <strong> difference </strong>  </td><br>        <td> 2.9193358103083e-10 </td><br>    </tr><br></table>
+
+<p>Congrats, the difference is smaller than the $10^{-7}$ threshold. So you can have high confidence that you’ve correctly computed the gradient in <code>backward_propagation()</code>. </p>
+<p>Now, in the more general case, your cost function $J$ has more than a single 1D input. When you are training a neural network, $\theta$ actually consists of multiple matrices $W^{[l]}$ and biases $b^{[l]}$! It is important to know how to do a gradient check with higher-dimensional inputs. Let’s do it!</p>
+<h2 id="3-N-dimensional-gradient-checking"><a href="#3-N-dimensional-gradient-checking" class="headerlink" title="3) N-dimensional gradient checking"></a>3) N-dimensional gradient checking</h2><p>The following figure describes the forward and backward propagation of your fraud detection model.</p>
+<p><img src="/img/NDgrad_kiank.png" style="width:600px;height:400px;"></p>
+<caption><center> <u> <strong>Figure 2</strong> </u>: <strong>deep neural network</strong><br><em>LINEAR -&gt; RELU -&gt; LINEAR -&gt; RELU -&gt; LINEAR -&gt; SIGMOID</em></center></caption>
+
+<p>Let’s look at your implementations for forward propagation and backward propagation. </p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">forward_propagation_n</span><span class="params">(X, Y, parameters)</span>:</span></span><br><span class="line">    <span class="string">"""</span></span><br><span class="line"><span class="string">    Implements the forward propagation (and computes the cost) presented in Figure 3.</span></span><br><span class="line"><span class="string">    </span></span><br><span class="line"><span class="string">    Arguments:</span></span><br><span class="line"><span class="string">    X -- training set for m examples</span></span><br><span class="line"><span class="string">    Y -- labels for m examples </span></span><br><span class="line"><span class="string">    parameters -- python dictionary containing your parameters "W1", "b1", "W2", "b2", "W3", "b3":</span></span><br><span class="line"><span class="string">                    W1 -- weight matrix of shape (5, 4)</span></span><br><span class="line"><span class="string">                    b1 -- bias vector of shape (5, 1)</span></span><br><span class="line"><span class="string">                    W2 -- weight matrix of shape (3, 5)</span></span><br><span class="line"><span class="string">                    b2 -- bias vector of shape (3, 1)</span></span><br><span class="line"><span class="string">                    W3 -- weight matrix of shape (1, 3)</span></span><br><span class="line"><span class="string">                    b3 -- bias vector of shape (1, 1)</span></span><br><span class="line"><span class="string">    </span></span><br><span class="line"><span class="string">    Returns:</span></span><br><span class="line"><span class="string">    cost -- the cost function (logistic cost for one example)</span></span><br><span class="line"><span class="string">    """</span></span><br><span class="line">    </span><br><span class="line">    <span class="comment"># retrieve parameters</span></span><br><span class="line">    m = X.shape[<span class="number">1</span>]</span><br><span class="line">    W1 = parameters[<span class="string">"W1"</span>]</span><br><span class="line">    b1 = parameters[<span class="string">"b1"</span>]</span><br><span class="line">    W2 = parameters[<span class="string">"W2"</span>]</span><br><span class="line">    b2 = parameters[<span class="string">"b2"</span>]</span><br><span class="line">    W3 = parameters[<span class="string">"W3"</span>]</span><br><span class="line">    b3 = parameters[<span class="string">"b3"</span>]</span><br><span class="line"></span><br><span class="line">    <span class="comment"># LINEAR -&gt; RELU -&gt; LINEAR -&gt; RELU -&gt; LINEAR -&gt; SIGMOID</span></span><br><span class="line">    Z1 = np.dot(W1, X) + b1</span><br><span class="line">    A1 = relu(Z1)</span><br><span class="line">    Z2 = np.dot(W2, A1) + b2</span><br><span class="line">    A2 = relu(Z2)</span><br><span class="line">    Z3 = np.dot(W3, A2) + b3</span><br><span class="line">    A3 = sigmoid(Z3)</span><br><span class="line"></span><br><span class="line">    <span class="comment"># Cost</span></span><br><span class="line">    logprobs = np.multiply(-np.log(A3),Y) + np.multiply(-np.log(<span class="number">1</span> - A3), <span class="number">1</span> - Y)</span><br><span class="line">    cost = <span class="number">1.</span>/m * np.sum(logprobs)</span><br><span class="line">    </span><br><span class="line">    cache = (Z1, A1, W1, b1, Z2, A2, W2, b2, Z3, A3, W3, b3)</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">return</span> cost, cache</span><br></pre></td></tr></table></figure>
+<p>Now, run backward propagation.</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">backward_propagation_n</span><span class="params">(X, Y, cache)</span>:</span></span><br><span class="line">    <span class="string">"""</span></span><br><span class="line"><span class="string">    Implement the backward propagation presented in figure 2.</span></span><br><span class="line"><span class="string">    </span></span><br><span class="line"><span class="string">    Arguments:</span></span><br><span class="line"><span class="string">    X -- input datapoint, of shape (input size, 1)</span></span><br><span class="line"><span class="string">    Y -- true "label"</span></span><br><span class="line"><span class="string">    cache -- cache output from forward_propagation_n()</span></span><br><span class="line"><span class="string">    </span></span><br><span class="line"><span class="string">    Returns:</span></span><br><span class="line"><span class="string">    gradients -- A dictionary with the gradients of the cost with respect to each parameter, activation and pre-activation variables.</span></span><br><span class="line"><span class="string">    """</span></span><br><span class="line">    </span><br><span class="line">    m = X.shape[<span class="number">1</span>]</span><br><span class="line">    (Z1, A1, W1, b1, Z2, A2, W2, b2, Z3, A3, W3, b3) = cache</span><br><span class="line">    </span><br><span class="line">    dZ3 = A3 - Y</span><br><span class="line">    dW3 = <span class="number">1.</span>/m * np.dot(dZ3, A2.T)</span><br><span class="line">    db3 = <span class="number">1.</span>/m * np.sum(dZ3, axis=<span class="number">1</span>, keepdims = <span class="keyword">True</span>)</span><br><span class="line">    </span><br><span class="line">    dA2 = np.dot(W3.T, dZ3)</span><br><span class="line">    dZ2 = np.multiply(dA2, np.int64(A2 &gt; <span class="number">0</span>))</span><br><span class="line">    dW2 = <span class="number">1.</span>/m * np.dot(dZ2, A1.T) </span><br><span class="line">    db2 = <span class="number">1.</span>/m * np.sum(dZ2, axis=<span class="number">1</span>, keepdims = <span class="keyword">True</span>)</span><br><span class="line">    </span><br><span class="line">    dA1 = np.dot(W2.T, dZ2)</span><br><span class="line">    dZ1 = np.multiply(dA1, np.int64(A1 &gt; <span class="number">0</span>))</span><br><span class="line">    dW1 = <span class="number">1.</span>/m * np.dot(dZ1, X.T)</span><br><span class="line">    db1 = <span class="number">1.</span>/m * np.sum(dZ1, axis=<span class="number">1</span>, keepdims = <span class="keyword">True</span>)</span><br><span class="line">    </span><br><span class="line">    gradients = &#123;<span class="string">"dZ3"</span>: dZ3, <span class="string">"dW3"</span>: dW3, <span class="string">"db3"</span>: db3,</span><br><span class="line">                 <span class="string">"dA2"</span>: dA2, <span class="string">"dZ2"</span>: dZ2, <span class="string">"dW2"</span>: dW2, <span class="string">"db2"</span>: db2,</span><br><span class="line">                 <span class="string">"dA1"</span>: dA1, <span class="string">"dZ1"</span>: dZ1, <span class="string">"dW1"</span>: dW1, <span class="string">"db1"</span>: db1&#125;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">return</span> gradients</span><br></pre></td></tr></table></figure>
+<p>You obtained some results on the fraud detection test set but you are not 100% sure of your model. Nobody’s perfect! Let’s implement gradient checking to verify if your gradients are correct.</p>
+<p><strong>How does gradient checking work?</strong>.</p>
+<p>As in 1) and 2), you want to compare “gradapprox” to the gradient computed by backpropagation. The formula is still:</p>
+<p>$$ \frac{\partial J}{\partial \theta} = \lim_{\varepsilon \to 0} \frac{J(\theta + \varepsilon) - J(\theta - \varepsilon)}{2 \varepsilon} \tag{1}$$</p>
+<p>However, $\theta$ is not a scalar anymore. It is a dictionary called “parameters”. We implemented a function “<code>dictionary_to_vector()</code>“ for you. It converts the “parameters” dictionary into a vector called “values”, obtained by reshaping all parameters (W1, b1, W2, b2, W3, b3) into vectors and concatenating them.</p>
+<p>The inverse function is “<code>vector_to_dictionary</code>“ which outputs back the “parameters” dictionary.</p>
+<p><img src="/img/dictionary_to_vector.png" style="width:600px;height:400px;"></p>
+<caption><center> <u> <strong>Figure 2</strong> </u>: <strong>dictionary_to_vector() and vector_to_dictionary()</strong><br> You will need these functions in gradient_check_n()</center></caption>
+
+<p>We have also converted the “gradients” dictionary into a vector “grad” using gradients_to_vector(). You don’t need to worry about that.</p>
+<p><strong>Exercise</strong>: Implement gradient_check_n().</p>
+<p><strong>Instructions</strong>: Here is pseudo-code that will help you implement the gradient check.</p>
+<p>For each i in num_parameters:</p>
+<ul>
+<li>To compute <code>J_plus[i]</code>:<ol>
+<li>Set $\theta^{+}$ to <code>np.copy(parameters_values)</code></li>
+<li>Set $\theta^{+}_i$ to $\theta^{+}_i + \varepsilon$</li>
+<li>Calculate $J^{+}_i$ using to <code>forward_propagation_n(x, y, vector_to_dictionary(</code>$\theta^{+}$ <code>))</code>.     </li>
+</ol>
+</li>
+<li>To compute <code>J_minus[i]</code>: do the same thing with $\theta^{-}$</li>
+<li>Compute $gradapprox[i] = \frac{J^{+}_i - J^{-}_i}{2 \varepsilon}$</li>
+</ul>
+<p>Thus, you get a vector gradapprox, where gradapprox[i] is an approximation of the gradient with respect to <code>parameter_values[i]</code>. You can now compare this gradapprox vector to the gradients vector from backpropagation. Just like for the 1D case (Steps 1’, 2’, 3’), compute:<br>$$ difference = \frac {| grad - gradapprox |_2}{| grad |_2 + | gradapprox |_2 } \tag{3}$$</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># GRADED FUNCTION: gradient_check_n</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">gradient_check_n</span><span class="params">(parameters, gradients, X, Y, epsilon = <span class="number">1e-7</span>)</span>:</span></span><br><span class="line">    <span class="string">"""</span></span><br><span class="line"><span class="string">    Checks if backward_propagation_n computes correctly the gradient of the cost output by forward_propagation_n</span></span><br><span class="line"><span class="string">    </span></span><br><span class="line"><span class="string">    Arguments:</span></span><br><span class="line"><span class="string">    parameters -- python dictionary containing your parameters "W1", "b1", "W2", "b2", "W3", "b3":</span></span><br><span class="line"><span class="string">    grad -- output of backward_propagation_n, contains gradients of the cost with respect to the parameters. </span></span><br><span class="line"><span class="string">    x -- input datapoint, of shape (input size, 1)</span></span><br><span class="line"><span class="string">    y -- true "label"</span></span><br><span class="line"><span class="string">    epsilon -- tiny shift to the input to compute approximated gradient with formula(1)</span></span><br><span class="line"><span class="string">    </span></span><br><span class="line"><span class="string">    Returns:</span></span><br><span class="line"><span class="string">    difference -- difference (2) between the approximated gradient and the backward propagation gradient</span></span><br><span class="line"><span class="string">    """</span></span><br><span class="line">    </span><br><span class="line">    <span class="comment"># Set-up variables</span></span><br><span class="line">    parameters_values, _ = dictionary_to_vector(parameters)</span><br><span class="line">    grad = gradients_to_vector(gradients)</span><br><span class="line">    num_parameters = parameters_values.shape[<span class="number">0</span>]</span><br><span class="line">    J_plus = np.zeros((num_parameters, <span class="number">1</span>))</span><br><span class="line">    J_minus = np.zeros((num_parameters, <span class="number">1</span>))</span><br><span class="line">    gradapprox = np.zeros((num_parameters, <span class="number">1</span>))</span><br><span class="line">    </span><br><span class="line">    <span class="comment"># Compute gradapprox</span></span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> range(num_parameters):</span><br><span class="line">        </span><br><span class="line">        <span class="comment"># Compute J_plus[i]. Inputs: "parameters_values, epsilon". Output = "J_plus[i]".</span></span><br><span class="line">        <span class="comment"># "_" is used because the function you have to outputs two parameters but we only care about the first one</span></span><br><span class="line">        <span class="comment">### START CODE HERE ### (approx. 3 lines)</span></span><br><span class="line">        thetaplus = np.copy(parameters_values)                                     <span class="comment"># Step 1</span></span><br><span class="line">        thetaplus[i][<span class="number">0</span>] = thetaplus[i][<span class="number">0</span>] + epsilon                                <span class="comment"># Step 2</span></span><br><span class="line">        J_plus[i], _ = forward_propagation_n(X,Y,vector_to_dictionary(thetaplus))                                   <span class="comment"># Step 3</span></span><br><span class="line">        <span class="comment">### END CODE HERE ###</span></span><br><span class="line">        </span><br><span class="line">        <span class="comment"># Compute J_minus[i]. Inputs: "parameters_values, epsilon". Output = "J_minus[i]".</span></span><br><span class="line">        <span class="comment">### START CODE HERE ### (approx. 3 lines)</span></span><br><span class="line">        thetaminus = np.copy(parameters_values)                                     <span class="comment"># Step 1</span></span><br><span class="line">        thetaminus[i][<span class="number">0</span>] = thetaminus[i][<span class="number">0</span>] - epsilon                               <span class="comment"># Step 2        </span></span><br><span class="line">        J_minus[i], _ = forward_propagation_n(X,Y,vector_to_dictionary(thetaminus))                                  <span class="comment"># Step 3</span></span><br><span class="line">        <span class="comment">### END CODE HERE ###</span></span><br><span class="line">        </span><br><span class="line">        <span class="comment"># Compute gradapprox[i]</span></span><br><span class="line">        <span class="comment">### START CODE HERE ### (approx. 1 line)</span></span><br><span class="line">        gradapprox[i] = (J_plus[i]-J_minus[i]) / (<span class="number">2</span> * epsilon)</span><br><span class="line">        <span class="comment">### END CODE HERE ###</span></span><br><span class="line">    </span><br><span class="line">    <span class="comment"># Compare gradapprox to backward propagation gradients by computing difference.</span></span><br><span class="line">    <span class="comment">### START CODE HERE ### (approx. 1 line)</span></span><br><span class="line">    numerator = np.linalg.norm(grad-gradapprox,ord=<span class="number">2</span>)                                          <span class="comment"># Step 1'</span></span><br><span class="line">    denominator = np.linalg.norm(grad,ord=<span class="number">2</span>) + np.linalg.norm(gradapprox,ord=<span class="number">2</span>)                                         <span class="comment"># Step 2'</span></span><br><span class="line">    difference = numerator / denominator                                          <span class="comment"># Step 3'</span></span><br><span class="line">    <span class="comment">### END CODE HERE ###</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> difference &gt; <span class="number">1e-7</span>:</span><br><span class="line">        <span class="keyword">print</span> (<span class="string">"\033[93m"</span> + <span class="string">"There is a mistake in the backward propagation! difference = "</span> + str(difference) + <span class="string">"\033[0m"</span>)</span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        <span class="keyword">print</span> (<span class="string">"\033[92m"</span> + <span class="string">"Your backward propagation works perfectly fine! difference = "</span> + str(difference) + <span class="string">"\033[0m"</span>)</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">return</span> difference</span><br></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">X, Y, parameters = gradient_check_n_test_case()</span><br><span class="line"></span><br><span class="line">cost, cache = forward_propagation_n(X, Y, parameters)</span><br><span class="line">gradients = backward_propagation_n(X, Y, cache)</span><br><span class="line">difference = gradient_check_n(parameters, gradients, X, Y)</span><br></pre></td></tr></table></figure>
+<pre><code>[93mThere is a mistake in the backward propagation! difference = 1.1885552035482149e-07[0m
+</code></pre><p><strong>Expected output</strong>:</p>
+<table><br>    <tr><br>        <td>  <strong> There is a mistake in the backward propagation!</strong>  </td><br>        <td> difference = 0.285093156781 </td><br>    </tr><br></table>
+
+<p>It seems that there were errors in the <code>backward_propagation_n</code> code we gave you! Good that you’ve implemented the gradient check. Go back to <code>backward_propagation</code> and try to find/correct the errors <em>(Hint: check dW2 and db1)</em>. Rerun the gradient check when you think you’ve fixed it. Remember you’ll need to re-execute the cell defining <code>backward_propagation_n()</code> if you modify the code. </p>
+<p>Can you get gradient check to declare your derivative computation correct? Even though this part of the assignment isn’t graded, we strongly urge you to try to find the bug and re-run gradient check until you’re convinced backprop is now correctly implemented. </p>
+<p><strong>Note</strong> </p>
+<ul>
+<li>Gradient Checking is slow! Approximating the gradient with $\frac{\partial J}{\partial \theta} \approx  \frac{J(\theta + \varepsilon) - J(\theta - \varepsilon)}{2 \varepsilon}$ is computationally costly. For this reason, we don’t run gradient checking at every iteration during training. Just a few times to check if the gradient is correct. </li>
+<li>Gradient Checking, at least as we’ve presented it, doesn’t work with dropout. You would usually run the gradient check algorithm without dropout to make sure your backprop is correct, then add dropout. </li>
+</ul>
+<p>Congrats, you can be confident that your deep learning model for fraud detection is working correctly! You can even use this to convince your CEO. :) </p>
+<p><font color="blue"><br><strong>What you should remember from this notebook</strong>:</font></p>
+<ul>
+<li>Gradient checking verifies closeness between the gradients from backpropagation and the numerical approximation of the gradient (computed using forward propagation).</li>
+<li>Gradient checking is slow, so we don’t run it in every iteration of training. You would usually run it only to make sure your code is correct, then turn it off and use backprop for the actual learning process. </li>
+</ul>
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
       
       
-      <section class="archives-wrap">
-        <div class="archive-year-wrap">
-          <a href="/archives/2018" class="archive-year">2018</a>
-        </div>
-        <div class="archives">
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2018/06/11/梯度提升树-GBDT-概述及sklearn调参/" class="archive-article-date">
-  	<time datetime="2018-06-11T12:03:47.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-06-11</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2018/06/11/梯度提升树-GBDT-概述及sklearn调参/">梯度提升树(GBDT)概述及sklearn调参</a>
-    </h1>
-  
-
-        <div class="article-info info-on-right">
-          
 	<div class="article-tag tagcloud">
 		<i class="icon-price-tags icon"></i>
 		<ul class="article-tag-list">
 			 
         		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">机器学习</a>
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">深度学习</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      <span id="busuanzi_container_page_pv">
+        |阅读量(<span id="busuanzi_value_page_pv"></span>)
+      </span>
+      
+	<div class="article-category tagcloud">
+		<i class="icon-book icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="/categories/深度学习/" class="article-tag-list-link color5">深度学习</a>
         		</li>
       		 
         		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">树模型</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-          
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/机器学习/" class="article-tag-list-link color5">机器学习</a>
+        			<a href="/categories/梯度下降/" class="article-tag-list-link color5">梯度下降</a>
         		</li>
       		
 		</ul>
 	</div>
 
 
+      
+
+      
+        
+<div class="share-btn share-icons tooltip-left">
+  <div class="tooltip tooltip-east">
+    <span class="tooltip-item">
+      <a href="javascript:;" class="share-sns share-outer">
+        <i class="icon icon-share"></i>
+      </a>
+    </span>
+    <span class="tooltip-content">
+      <div class="share-wrap">
+        <div class="share-icons">
+          <a class="weibo share-sns" href="javascript:;" data-type="weibo">
+            <i class="icon icon-weibo"></i>
+          </a>
+          <a class="weixin share-sns wxFab" href="javascript:;" data-type="weixin">
+            <i class="icon icon-weixin"></i>
+          </a>
+          <a class="qq share-sns" href="javascript:;" data-type="qq">
+            <i class="icon icon-qq"></i>
+          </a>
+          <a class="douban share-sns" href="javascript:;" data-type="douban">
+            <i class="icon icon-douban"></i>
+          </a>
+          <a class="qzone share-sns" href="javascript:;" data-type="qzone">
+            <i class="icon icon-qzone"></i>
+          </a>
+          <a class="facebook share-sns" href="javascript:;" data-type="facebook">
+            <i class="icon icon-facebook"></i>
+          </a>
+          <a class="twitter share-sns" href="javascript:;" data-type="twitter">
+            <i class="icon icon-twitter"></i>
+          </a>
+          <a class="google share-sns" href="javascript:;" data-type="google">
+            <i class="icon icon-google"></i>
+          </a>
         </div>
-        <div class="clearfix"></div>
-    </header>
+      </div>
+    </span>
+  </div>
+</div>
+
+<div class="page-modal wx-share js-wx-box">
+    <a class="close js-modal-close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <div class="wx-qrcode">
+      <img src="http://s.jiathis.com/qrcode.php?url=http://www.wuxiaochun.cn/2018/06/26/改善深层神经网络-Gradient-Checking/" alt="微信分享二维码">
+    </div>
+</div>
+
+<div class="mask js-mask"></div>
+      
+      <div class="clearfix"></div>
+    </div>
   </div>
 </article>
+
   
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2018/06/05/Introduction-to-ML-with-Python/" class="archive-article-date">
-  	<time datetime="2018-06-05T08:37:39.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-06-05</time>
-</a>
+<nav id="article-nav">
+  
+  
+    <a href="/2018/06/26/改善深层神经网络-Regularization/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">改善深层神经网络-Regularization</div>
+      <i class="icon-circle-right"></i>
+    </a>
+  
+</nav>
+
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
         </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2018/06/05/Introduction-to-ML-with-Python/">Introduction to ML with Python</a>
-    </h1>
-  
-
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">机器学习</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">特征处理</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-          
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/机器学习/" class="article-tag-list-link color5">机器学习</a>
-        		</li>
-      		
-		</ul>
-	</div>
+        
+        
+    </div>
+</aside>
 
 
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2018/06/05/jupyter-kernel-error/" class="archive-article-date">
-  	<time datetime="2018-06-05T03:30:31.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-06-05</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2018/06/05/jupyter-kernel-error/">jupyter kernel error</a>
-    </h1>
-  
 
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">机器学习</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-          
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/机器学习/" class="article-tag-list-link color5">机器学习</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2018/05/20/数据分箱/" class="archive-article-date">
-  	<time datetime="2018-05-20T05:14:00.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-05-20</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2018/05/20/数据分箱/">数据分箱</a>
-    </h1>
-  
-
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">机器学习</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">特征工程</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-          
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/机器学习/" class="article-tag-list-link color5">机器学习</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
   
   
-    </div></section>
   
 
-    
+  
+
+  
 
 
           </div>
@@ -435,10 +486,10 @@ var _hmt = _hmt || [];
 	var yiliaConfig = {
 		mathjax: true,
 		isHome: false,
-		isPost: false,
+		isPost: true,
 		isArchive: false,
 		isTag: false,
-		isCategory: true,
+		isCategory: false,
 		open_in_new: false,
 		toc_hide_index: true,
 		root: "/",
