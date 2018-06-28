@@ -2,7 +2,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
   <title>Wuxiaochun</title>
   
-  <subtitle>此心安处，便是吾乡。</subtitle>
+  
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://www.wuxiaochun.cn/"/>
@@ -10,7 +10,7 @@
   <id>http://www.wuxiaochun.cn/</id>
   
   <author>
-    <name>Renewing</name>
+    <name>Wuxiaochun</name>
     
   </author>
   
