@@ -22,7 +22,7 @@
 <meta property="og:image" content="http://www.wuxiaochun.cn/img/output_25_0.png">
 <meta property="og:image" content="http://www.wuxiaochun.cn/img/output_32_1.png">
 <meta property="og:image" content="http://www.wuxiaochun.cn/img/output_33_0.png">
-<meta property="og:updated_time" content="2018-06-28T08:11:32.328Z">
+<meta property="og:updated_time" content="2018-06-28T08:28:06.121Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="改善深层神经网络-Initialization">
 <meta name="twitter:description" content="InitializationWelcome to the first assignment of “Improving Deep Neural Networks”.  Training your neural network requires specifying an initial value of the weights. A well chosen initialization metho">
@@ -210,9 +210,10 @@ var _hmt = _hmt || [];
 <p>A well chosen initialization can:</p>
 <ul>
 <li>Speed up the convergence of gradient descent</li>
-<li>Increase the odds of gradient descent converging to a lower training (and generalization) error <a id="more"></a>
-To get started, run the following cell to load the packages and the planar dataset you will try to classify.</li>
+<li>Increase the odds of gradient descent converging to a lower training (and generalization) error </li>
 </ul>
+<a id="more"></a>
+<p>To get started, run the following cell to load the packages and the planar dataset you will try to classify.</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"><span class="keyword">import</span> matplotlib.pyplot <span class="keyword">as</span> plt</span><br><span class="line"><span class="keyword">import</span> sklearn</span><br><span class="line"><span class="keyword">import</span> sklearn.datasets</span><br><span class="line"><span class="keyword">from</span> init_utils <span class="keyword">import</span> sigmoid, relu, compute_loss, forward_propagation, backward_propagation</span><br><span class="line"><span class="keyword">from</span> init_utils <span class="keyword">import</span> update_parameters, predict, load_dataset, plot_decision_boundary, predict_dec</span><br><span class="line"></span><br><span class="line">%matplotlib inline</span><br><span class="line">plt.rcParams[<span class="string">'figure.figsize'</span>] = (<span class="number">7.0</span>, <span class="number">4.0</span>) <span class="comment"># set default size of plots</span></span><br><span class="line">plt.rcParams[<span class="string">'image.interpolation'</span>] = <span class="string">'nearest'</span></span><br><span class="line">plt.rcParams[<span class="string">'image.cmap'</span>] = <span class="string">'gray'</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># load image dataset: blue/red dots in circles</span></span><br><span class="line">train_X, train_Y, test_X, test_Y = load_dataset()</span><br></pre></td></tr></table></figure>
 <pre><code>E:\anaconda3\lib\site-packages\h5py\__init__.py:36: FutureWarning: Conversion of the second argument of issubdtype from `float` to `np.floating` is deprecated. In future, it will be treated as `np.float64 == np.dtype(float).type`.
   from ._conv import register_converters as _register_converters
@@ -672,15 +673,15 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">随笔</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color5">深度学习</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">梯度下降</a>
+                <a href="javascript:void(0)" class="js-tag color1">TensorFlow</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">随笔</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -692,11 +693,7 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">TensorFlow</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">初始化</a>
+                <a href="javascript:void(0)" class="js-tag color5">梯度下降</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -704,11 +701,15 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">L2正则化，He正则化</a>
+                <a href="javascript:void(0)" class="js-tag color4">初始化</a>
               </li>
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color4">树模型</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color2">L2正则化，He正则化</a>
               </li>
             
             <div class="clearfix"></div>
