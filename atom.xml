@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://www.wuxiaochun.cn/"/>
-  <updated>2018-06-28T08:11:20.865Z</updated>
+  <updated>2018-07-02T03:24:20.338Z</updated>
   <id>http://www.wuxiaochun.cn/</id>
   
   <author>
@@ -15,6 +15,32 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>湖人总冠军!</title>
+    <link href="http://www.wuxiaochun.cn/2018/07/02/%E6%B9%96%E4%BA%BA%E6%80%BB%E5%86%A0%E5%86%9B/"/>
+    <id>http://www.wuxiaochun.cn/2018/07/02/湖人总冠军/</id>
+    <published>2018-07-02T03:21:23.000Z</published>
+    <updated>2018-07-02T03:24:20.338Z</updated>
+    
+    <content type="html"><![CDATA[<p>故事的最后老詹竟然来了湖人，希望我湖能够抓住机会，重振威风，不再让湖人总冠军这句话成为别人的笑谈。</p>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;p&gt;故事的最后老詹竟然来了湖人，希望我湖能够抓住机会，重振威风，不再让湖人总冠军这句话成为别人的笑谈。&lt;/p&gt;
+
+      
+    
+    </summary>
+    
+      <category term="随笔" scheme="http://www.wuxiaochun.cn/categories/mind-palace/"/>
+    
+    
+      <category term="随笔" scheme="http://www.wuxiaochun.cn/tags/%E9%9A%8F%E7%AC%94/"/>
+    
+  </entry>
   
   <entry>
     <title>改善深层神经网络-Gradient+Checking</title>
