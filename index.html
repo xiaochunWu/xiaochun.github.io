@@ -268,6 +268,84 @@ var _hmt = _hmt || [];
 
 
   
+    <article id="post-Semantic-Segmentation" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2018/09/03/Semantic-Segmentation/">Semantic Segmentation</a>
+    </h1>
+  
+
+        
+        <a href="/2018/09/03/Semantic-Segmentation/" class="archive-article-date">
+  	<time datetime="2018-09-03T13:06:12.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-09-03</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>最近在做语义分割的研究，就上周汇报做一个简单记录。</p>
+<h1 id="What-exactly-is-Semantic-Segmentation"><a href="#What-exactly-is-Semantic-Segmentation" class="headerlink" title="What exactly is Semantic Segmentation?"></a>What exactly is Semantic Segmentation?</h1><p>所谓语义分割，就是在像素水平上理解一幅图，例如我们想要把图片中的每一个像素都给分类。</p>
+<p>通过语义分割，我们可以把一幅图片中的不同类物体识别出来，并可以区分出边界，从而可以实现像素级别的预测<br>
+        
+          <a class="article-more-a" href="/2018/09/03/Semantic-Segmentation/#more">more >></a>
+        
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">语义分割，深度学习</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2018/09/03/Semantic-Segmentation/">more >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
     <article id="post-Batch-Normalization" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
@@ -646,61 +724,10 @@ var _hmt = _hmt || [];
     <div class="article-entry" itemprop="articleBody">
       
         <p>最近在做一个房态预测的比赛，比赛具体是对具体客户实现预定时有无房间的预测，官方给定的数据集是标准的非均衡样本。</p>
-<p>所以学习了一些分类问题中的样本不均衡算法。</p>
-<ol>
-<li>根据”The strength of weak learnablility” 方法，该方法是一种boosting算法，它递归地训练三个弱学习器，然后将这三个弱学习器结合起形成一个强的学习器。算法流程如下：</li>
-</ol>
-<ul>
-<li>首先使用原始数据集训练第一个学习器L1。</li>
-<li>然后使用50%在L1中学习正确和50%学习错误的样本训练得到学习器L2，即从L1中学习错误的样本集和学习正确的样本集中，循环采样，各占一半。</li>
-<li>接着使用L1和L2不一致的那些样本去训练得到学习器L3。</li>
-<li>最后，使用投票方式来预测测试集。<br>应用到具体问题中，假设是一个二分类问题，大类为true类，流程如下：</li>
-<li>使用60%原始样本来训练L1</li>
-<li>用L1对剩下带标签的原始样本进行预测，取分类正确和错误的样本各50%，生成平衡的L2的样本集</li>
-<li>用其中60%的样本来训练L2，对剩下的样本进行预测</li>
-<li>对L1与L2分类不一样的样本进行训练来得到L3</li>
-<li><p>结合L1，L2，L3，采用投票的方式来决定分类结果<br>代码实现如下：<br>‘’’ python<br>def model_L1(data):<br>  label = ‘LABEL’<br>  IDcol = ‘PERSONID’<br>  predictors = [x for x in data.columns if x not in [label,IDcol]]<br>  X_train, X_test, y_train, y_test = train_test_split(data[predictors],data[label],test_size=0.4,random_state=2018)</p>
-<p>  model = lgb.LGBMClassifier(objective=’binary’,metric=’AUC’,num_leaves=90,depth=8,learning_rate=0.01,</p>
-<pre><code>colsample_bytree=0.8,n_estimators=2000,seed=2018,subsample=0.9,boosting=&apos;rf&apos;,
-boosting_type=&apos;gbdt&apos;,reg_alpha=0.0,reg_lambda=0.7,bagging_fraction=0.7,
-bagging_freq=1)
-</code></pre><p>  model.fit(X_train,y_train,eval_set=[(X_test,y_test)],eval_metric=’AUC’,early_stopping_rounds=0,verbose=False)<br>  prediction_L1 = model.predict(X_test)<br>  prediction1 = model.predict_proba(X_test)<br>  area1 = auc_score(y_test,prediction1[:,1])<br>  print(‘the test score is:{}’.format(area1))<br>  print(classification_report(y_test,prediction_L1,target_names=[“noroom”,”haveroom”]))</p>
-<h1 id="print-‘the-y-test-is-shape-is-’-format-y-test-y-test-shape"><a href="#print-‘the-y-test-is-shape-is-’-format-y-test-y-test-shape" class="headerlink" title="print(‘the y_test is:{},shape is:{}’.format(y_test,y_test.shape))"></a>print(‘the y_test is:{},shape is:{}’.format(y_test,y_test.shape))</h1><p>  prediction2 = model.predict_proba(X_train)<br>  area2 = auc_score(y_train,prediction2[:,1])<br>  print(‘the train score is:{}’.format(area2))</p>
-<p>  i = 0<br>  wrong_index = [] # 得到L1学习器预测错误的所有样本index<br>  for j in y_test.index:</p>
-<pre><code>if (prediction_L1[i] != y_test[j]):
-    wrong_index.append(j)
-    i += 1
-</code></pre><p>  print(“the num of wrong predictions is:{}”.format(i))</p>
-<p>  right_index = [] # 取与预测错误的index数目相同的预测正确的样本index<br>  num = 0<br>  for index in y_test.index:</p>
-<pre><code>if index not in wrong_index:
-    right_index.append(index)
-    num += 1 
-    if num == i: # 82915需要根据新数据集进行更改
-        break
-</code></pre><p>  print(“the num of right index is:{}”.format(len(right_index)))</p>
-<h1 id="for-num-in-range-82915-82915需要根据新数据集进行更改"><a href="#for-num-in-range-82915-82915需要根据新数据集进行更改" class="headerlink" title="for num in range(82915): # 82915需要根据新数据集进行更改"></a>for num in range(82915): # 82915需要根据新数据集进行更改</h1><h1 id="right-index-append-right-indexs-num"><a href="#right-index-append-right-indexs-num" class="headerlink" title="right_index.append(right_indexs[num])"></a>right_index.append(right_indexs[num])</h1><p>  total_index = wrong_index + right_index<br>  return model, predictors,total_index,prediction_L1</p>
-</li>
-</ul>
-<p>def model_L2(data):<br>    label = ‘LABEL’<br>    IDcol = ‘PERSONID’<br>    predictors = [x for x in data.columns if x not in [label,IDcol]]<br>    X_train, X_test, y_train, y_test = train_test_split(data[predictors],data[label],test_size=0.4,random_state=2018)<br>    model = lgb.LGBMClassifier(objective=’binary’,metric=’AUC’,num_leaves=90,depth=8,learning_rate=0.01,<br>                               colsample_bytree=0.8,n_estimators=2000,seed=2018,subsample=0.9,boosting=’rf’,<br>                               boosting_type=’gbdt’,reg_alpha=0.0,reg_lambda=0.0,bagging_fraction=0.7,<br>                               bagging_freq=1)<br>    model.fit(X_train,y_train,eval_set=[(X_test,y_test)],eval_metric=’AUC’,early_stopping_rounds=0,verbose=False)<br>    prediction_L2 = model.predict(X_test)<br>    L3_index = []<br>    i = 0<br>    for index in y_test.index:<br>        if(prediction_L2[i] != y_test[index]):<br>            L3_index.append(index)<br>            i += 1<br>    return model,L3_index,prediction_L2</p>
-<p>def model_L3(data):<br>    label = ‘LABEL’<br>    IDcol = ‘PERSONID’<br>    predictors = [x for x in data.columns if x not in [label,IDcol]]<br>    X_train,X_test,y_train,y_test = train_test_split(data[predictors],data[label],test_size=0.1,random_state=2018)<br>    model = lgb.LGBMClassifier(objective=’binary’,metric=’AUC’,num_leaves=90,depth=8,learning_rate=0.01,<br>                               colsample_bytree=0.8,n_estimators=2000,seed=2018,subsample=0.9,boosting=’rf’,<br>                               boosting_type=’gbdt’,reg_alpha=0.0,reg_lambda=0.0,bagging_fraction=0.7,<br>                               bagging_freq=1)<br>    model.fit(X_train,y_train,eval_set=[(X_test,y_test)],eval_metric=’AUC’,early_stopping_rounds=3000,verbose=False)<br>    return model    </p>
-<p>model_L1,predictors,L2_index,prediction_L1 = model_L1(train)</p>
-<p>#train =train.reset_index()<br>data_L2 = train[train.index.isin(L2_index)]</p>
-<p>#data_L2 = data_L2.set_index(‘orderid’)<br>model_L2,L3_index,prediction_L2 = model_L2(data_L2)<br>data_L3 = train[train.index.isin(L3_index)]</p>
-<p>#data_L3 = data_L3.set_index(‘orderid’)<br>model_L3 = model_L3(data_L3)</p>
-<p>X_train, X_test, y_train, y_test = train_test_split(train[predictors],train[‘LABEL’],test_size=0.4,random_state=2018)</p>
-<p>label = []<br>L1_result = model_L1.predict_proba(X_test)[:,1]<br>L2_result = model_L2.predict_proba(X_test)[:,1]<br>L3_result = model_L3.predict_proba(X_test)[:,1]<br>for i in range(len(X_test)):<br>    if((L1_result[i] &gt;= 0.5) and (L2_result[i] &gt;= 0.5) and (L3_result[i] &gt;= 0.5)) or ((L1_result[i] &lt; 0.5) and (L2_result[i] &lt; 0.5) and (L3_result[i] &lt; 0.5)):<br>        label.append((L1_result[i]+L2_result[i]+L3_result[i])/3.0)<br>    elif ((L1_result[i] &gt;= 0.5) and (L2_result[i] &gt;= 0.5) and (L3_result[i] &lt; 0.5)) or ((L1_result[i] &lt; 0.5) and (L2_result[i] &lt; 0.5) and (L3_result[i] &gt;= 0.5)):<br>        label.append((L1_result[i]+L2_result[i])/2.0)<br>    elif ((L1_result[i] &gt;= 0.5) and (L2_result[i] &lt; 0.5) and (L3_result[i] &lt; 0.5)) or ((L1_result[i] &lt; 0.5) and (L2_result[i] &gt;= 0.5) and (L3_result[i] &gt;= 0.5)):<br>        label.append((L2_result[i]+L3_result[i])/2.0)<br>    elif ((L1_result[i] &gt;= 0.5) and (L2_result[i] &lt; 0.5) and (L3_result[i] &gt;= 0.5)) or ((L1_result[i] &lt; 0.5) and (L2_result[i] &gt;= 0.5) and (L3_result[i] &lt; 0.5)):<br>        label.append((L1_result[i]+L3_result[i])/2.0)</p>
-<h1 id="if-L1-result-i-lt-0-5-and-L2-result-i-gt-0-5-and-L3-result-i-gt-0-5"><a href="#if-L1-result-i-lt-0-5-and-L2-result-i-gt-0-5-and-L3-result-i-gt-0-5" class="headerlink" title="if((L1_result[i] &lt; 0.5) and (L2_result[i] &gt;= 0.5) and (L3_result[i] &gt;= 0.5)):"></a>if((L1_result[i] &lt; 0.5) and (L2_result[i] &gt;= 0.5) and (L3_result[i] &gt;= 0.5)):</h1><h1 id="noroom-append-L2-result-i-L3-result-i-2-0"><a href="#noroom-append-L2-result-i-L3-result-i-2-0" class="headerlink" title="noroom.append((L2_result[i]+L3_result[i])/2.0)"></a>noroom.append((L2_result[i]+L3_result[i])/2.0)</h1><h1 id="else"><a href="#else" class="headerlink" title="else:"></a>else:</h1><h1 id="noroom-append-L1-result-i-L2-result-i-L3-result-i-3-0"><a href="#noroom-append-L1-result-i-L2-result-i-L3-result-i-3-0" class="headerlink" title="noroom.append((L1_result[i]+L2_result[i]+L3_result[i])/3.0)"></a>noroom.append((L1_result[i]+L2_result[i]+L3_result[i])/3.0)</h1><p>‘’’</p>
-<h2 id="以下方法会破坏某些类的样本分布"><a href="#以下方法会破坏某些类的样本分布" class="headerlink" title="以下方法会破坏某些类的样本分布"></a>以下方法会破坏某些类的样本分布</h2><ol start="2">
-<li><p>在训练模型时，可以增加小类样本的权重，降低大类样本的权重，从而使得分类器将重点集中在小类样本上。（这种方法其实改变了原始数据集的样本分布，得到的模型性能甚至会变差）<br>开始时可以设置每个类别的权重为样本个数比例的倒数，然后使用过采样方法进行调优。</p>
-</li>
-<li><p>设大类样本的个数是小类样本的L倍，那么在随机梯度下降算法中，每次遇到一个小类样本进行训练时，训练L次。</p>
-</li>
-<li><p>将大类样本划分到L个聚类，然后训练L个分类器，每个分类器使用大类中的一个簇和所有的小类样本进行训练。最后采用L个分类器投票的方法进行分类，如果是回归问题，则采用平均值。</p>
-</li>
-<li><p>设小类中有N个样本，将大类聚类成N个簇，然后用每个簇的中心组成N个样本，和小类中的所有样本一起训练。</p>
-</li>
-</ol>
-
+<p>所以学习了一些分类问题中的样本不均衡算法。<br>
+        
+          <a class="article-more-a" href="/2018/07/10/分类问题中的样本不均衡算法/#more">more >></a>
+        
       
 
       
@@ -1044,104 +1071,6 @@ bagging_freq=1)
 
 
   
-    <article id="post-改善深层神经网络-Initialization" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2018/06/26/改善深层神经网络-Initialization/">改善深层神经网络-Initialization</a>
-    </h1>
-  
-
-        
-        <a href="/2018/06/26/改善深层神经网络-Initialization/" class="archive-article-date">
-  	<time datetime="2018-06-26T14:51:26.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-06-26</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h1 id="Initialization"><a href="#Initialization" class="headerlink" title="Initialization"></a>Initialization</h1><p>Welcome to the first assignment of “Improving Deep Neural Networks”. </p>
-<p>Training your neural network requires specifying an initial value of the weights. A well chosen initialization method will help learning.  </p>
-<p>If you completed the previous course of this specialization, you probably followed our instructions for weight initialization, and it has worked out so far. But how do you choose the initialization for a new neural network? In this notebook, you will see how different initializations lead to different results. </p>
-<p>A well chosen initialization can:</p>
-<ul>
-<li>Speed up the convergence of gradient descent</li>
-<li>Increase the odds of gradient descent converging to a lower training (and generalization) error </li>
-</ul>
-        
-          <a class="article-more-a" href="/2018/06/26/改善深层神经网络-Initialization/#more">more >></a>
-        
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">深度学习</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">初始化</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/deep-learning//" class="article-tag-list-link color5">深度学习</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2018/06/26/改善深层神经网络-Initialization/">more >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
   
     <nav id="page-nav">
       <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="extend next" rel="next" href="/page/2/">Next &raquo;</a>
@@ -1256,19 +1185,7 @@ MathJax.Hub.Queue(function() {
           <ul class="article-tag-list" q-show="showTags">
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">深度学习，BN</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">机器学习</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">特征处理</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">随笔</a>
+                <a href="javascript:void(0)" class="js-tag color5">语义分割，深度学习</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -1276,15 +1193,11 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">损失优化方法</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">association analysis</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color1">TensorFlow</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">机器学习</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -1296,19 +1209,19 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">L2正则化，He正则化</a>
+                <a href="javascript:void(0)" class="js-tag color3">随笔</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">初始化</a>
+                <a href="javascript:void(0)" class="js-tag color5">特征处理</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">梯度下降</a>
+                <a href="javascript:void(0)" class="js-tag color2">损失优化方法</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">特征工程</a>
+                <a href="javascript:void(0)" class="js-tag color3">深度学习，BN</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -1320,7 +1233,27 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">梯度下降</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color4">树模型</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color2">L2正则化，He正则化</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">特征工程</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">初始化</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">association analysis</a>
               </li>
             
             <div class="clearfix"></div>

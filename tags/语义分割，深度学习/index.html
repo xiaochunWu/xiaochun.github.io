@@ -6,23 +6,19 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge" >
   <link rel="dns-prefetch" href="http://www.wuxiaochun.cn">
-  <title>关联规则分析 | Wuxiaochun</title>
+  <title>Tag: 语义分割，深度学习 | Wuxiaochun</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="这两天做了两道笔试题，第一道题是常规的结构化数据分类问题，用一个觉得效果最好的分类算法来算AUC，并给出参数优化的过程。第二题我之前还没有碰到过类似的问题，是对结构化的数据进行挖掘，找出其中的association rules，并且Rule的左侧少于等于两项，Support在0.1以上，Confidence在0.7以上。">
-<meta name="keywords" content="机器学习,association analysis">
-<meta property="og:type" content="article">
-<meta property="og:title" content="关联规则分析">
-<meta property="og:url" content="http://www.wuxiaochun.cn/2018/08/14/关联规则分析/index.html">
+  <meta name="description" content="PKU在读，机器学习菜鸟，此博客日常分享技术心得，偶尔吐槽心情。">
+<meta name="keywords" content="机器学习,python,html,code">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Wuxiaochun">
+<meta property="og:url" content="http://www.wuxiaochun.cn/tags/语义分割，深度学习/index.html">
 <meta property="og:site_name" content="Wuxiaochun">
-<meta property="og:description" content="这两天做了两道笔试题，第一道题是常规的结构化数据分类问题，用一个觉得效果最好的分类算法来算AUC，并给出参数优化的过程。第二题我之前还没有碰到过类似的问题，是对结构化的数据进行挖掘，找出其中的association rules，并且Rule的左侧少于等于两项，Support在0.1以上，Confidence在0.7以上。">
+<meta property="og:description" content="PKU在读，机器学习菜鸟，此博客日常分享技术心得，偶尔吐槽心情。">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:image" content="http://www.wuxiaochun.cn/img/rule1.png">
-<meta property="og:image" content="http://www.wuxiaochun.cn/img/rule2.png">
-<meta property="og:updated_time" content="2018-08-15T09:20:52.704Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="关联规则分析">
-<meta name="twitter:description" content="这两天做了两道笔试题，第一道题是常规的结构化数据分类问题，用一个觉得效果最好的分类算法来算AUC，并给出参数优化的过程。第二题我之前还没有碰到过类似的问题，是对结构化的数据进行挖掘，找出其中的association rules，并且Rule的左侧少于等于两项，Support在0.1以上，Confidence在0.7以上。">
-<meta name="twitter:image" content="http://www.wuxiaochun.cn/img/rule1.png">
+<meta name="twitter:title" content="Wuxiaochun">
+<meta name="twitter:description" content="PKU在读，机器学习菜鸟，此博客日常分享技术心得，偶尔吐槽心情。">
   
     <link rel="alternative" href="/atom.xml" title="Wuxiaochun" type="application/atom+xml">
   
@@ -180,237 +176,60 @@ var _hmt = _hmt || [];
             <canvas data-colors="#eaeaea" data-sectionHeight="100" data-contentId="js-content" id="myCanvas1" class="anm-canvas"></canvas>
           </div>
           <div id="js-content" class="content-ll">
-            <article id="post-关联规则分析" class="article article-type-post " itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
+            
   
-    <h1 class="article-title" itemprop="name">
-      关联规则分析
+  
+    
+    
+      
+      
+      <section class="archives-wrap">
+        <div class="archive-year-wrap">
+          <a href="/archives/2018" class="archive-year">2018</a>
+        </div>
+        <div class="archives">
+    
+    <article class="archive-article archive-type-post">
+  <div class="archive-article-inner">
+    <header class="archive-article-header">
+      	<div class="article-meta">
+	      	<a href="/2018/09/03/Semantic-Segmentation/" class="archive-article-date">
+  	<time datetime="2018-09-03T13:06:12.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-09-03</time>
+</a>
+        </div>
+    	 
+  
+    <h1 itemprop="name">
+      <a class="archive-article-title" href="/2018/09/03/Semantic-Segmentation/">Semantic Segmentation</a>
     </h1>
   
 
-        
-        <a href="/2018/08/14/关联规则分析/" class="archive-article-date">
-  	<time datetime="2018-08-14T13:38:48.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-08-14</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>这两天做了两道笔试题，第一道题是常规的结构化数据分类问题，用一个觉得效果最好的分类算法来算AUC，<br>并给出参数优化的过程。<br>第二题我之前还没有碰到过类似的问题，是对结构化的数据进行挖掘，找出其中的association rules，并且Rule<br>的左侧少于等于两项，Support在0.1以上，Confidence在0.7以上。<br><a id="more"></a></p>
-<h1 id="关联规则分析"><a href="#关联规则分析" class="headerlink" title="关联规则分析"></a>关联规则分析</h1><p>整个过程是：</p>
-<ol>
-<li>先对原始数据进行处理，将值和特征名称组合起来构成新的词项</li>
-<li>将原始的DataFrame转换成为提取频繁项集时所需要的列表</li>
-<li>采用Apriori算法或者FP-growth算法生成频繁项集</li>
-<li>对频繁项集进行规则查找</li>
-</ol>
-<h1 id="Apriori算法"><a href="#Apriori算法" class="headerlink" title="Apriori算法"></a>Apriori算法</h1><h2 id="原理"><a href="#原理" class="headerlink" title="原理"></a>原理</h2><p>如果某个项集是频繁的，那么它的所有子集势必也是频繁的，这个原理从表面上看没什么大用，但是反过来，如果一个项集是非频繁项集，<br>那么它所对应的超集就全都是非频繁项集。这样在确定了一个项集是非频繁项集了之后，它所对应的超集的支持度我们就可以不去计算了，<br>这在很大程度上避免了项集数目的指数增长，可以更加合理的计算频繁项集。</p>
-<h2 id="实现过程"><a href="#实现过程" class="headerlink" title="实现过程"></a>实现过程</h2><p>(1) 发现频繁项集</p>
-<p>Apriori算法的两个输入参数分别是最小支持度和数据集。该算法首先生成所有单个物品的项集列表，遍历之后去掉不满足最小支持度要求<br>的项集；接下来对剩下的集合进行组合生成包含两个元素的项集，去掉不满足最小支持度的项集；重复该过程直到去掉所有不满足最小支<br>持度的项集。</p>
-<p>(2) 从频繁项集中挖掘关联规则</p>
-<p>假设有一个频繁项集，它们之间就有可能有一条关联规则，即可以表示为：”…—&gt;…”，但反过来并不一定成立（其中箭头左边对应的集合为前件，箭头右边对应的集合为后件）。<br>在上一节，我们使用最小支持度来量化频繁项集，对应的，采用可信度来量化关联规则。其中一条规则p—&gt;H的可信度定义为：support(P|H)/support(P)，为找到其中的关联规则，<br>我们可以先生成一个可能的规则列表，然后测试每条规则的可信度，结合可信度的最小要求，得到关联规则。同寻找频繁项集类似，我们可以为每个频繁项集产生许多关联规则，<br>这样就会有很多的关联规则产生。结合Apriori原理，如果某条规则不满足最小可信度要求，那么该规则的所有子集也就不满足最小可信度要求，据此我们可以减少需要测试的规则数目，简化问题。<br>寻找关联规则的思想是：从一个频繁项集开始，创建一个规则列表，首先将规则的右边限定为一个元素，对这些规则进行测试，接下来合并剩下的规则来创建一个新的规则列表，<br>规则的右边限定为两个元素，就这样一步一步实现。</p>
-<h1 id="FP-growth算法"><a href="#FP-growth算法" class="headerlink" title="FP-growth算法"></a>FP-growth算法</h1><p>FP-growth(Frequent Pattern Growth，频繁模式增长)，它比Apriori算法效率更高，在整个算法执行过程中，只需要遍历数据集2次，就<br>可完成频繁模式的发现。</p>
-<h2 id="计算过程"><a href="#计算过程" class="headerlink" title="计算过程"></a>计算过程</h2><p>(1) 创建FP-tree</p>
-<p>对于输入的dataset，统计所有事项中各元素的出现频次，即各个1项集的频数，并将各元素按照频数降序排序，删除那些出现频数少于设定<br>支持度sup的元素，形成列表L，留下来的元素就构成了频繁1项集。(这是对数据集的第一遍扫描)</p>
-<p>对数据集中每个事物的元素按照列表L排序(按支持度降序排列)，开始构造FP-tree。树的根节点为空，每个事务中的所有元素形成一条<br>从根节点到叶子节点的路径。若几个事务的元素按列表L排序后，具有相同的前m个元素，则它们在FP-tree中共享前m个元素代表的节点。<br>树中每个节点的计数为路径经过该节点的事务集的个数。(这是对数据集的第二遍扫描)</p>
-<p>在创建FP-tree的同时，headTable也就创建好了，headTable可以理解为一个具有三列的表。第一列为元素(项ID)，第二列为支持度计数，<br>第三列为节点链。如下所示</p>
-<table>
-<thead>
-<tr>
-<th>项ID</th>
-<th style="text-align:center">支持度计数</th>
-<th style="text-align:right">节点链 </th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>啤酒</td>
-<td style="text-align:center">4</td>
-<td style="text-align:right">nodelink1</td>
-</tr>
-<tr>
-<td>尿不湿</td>
-<td style="text-align:center">3</td>
-<td style="text-align:right">nodelink2</td>
-</tr>
-<tr>
-<td>…</td>
-<td style="text-align:center">…</td>
-<td style="text-align:right">…</td>
-</tr>
-<tr>
-<td>牛奶</td>
-<td style="text-align:center">2</td>
-<td style="text-align:right">nodelinkn</td>
-</tr>
-</tbody>
-</table>
-<p>headTable中的项也是按照支持度计数从大到小排列的。节点链则链接到FP-tree中这一项所在的各个叶子结点上，后面频繁项集的发现就是靠的这些节点链。</p>
-<p>(2) 寻找FP</p>
-<p>从headTable中的最后一行开始，依次往上取项，比如最开始我们取‘牛奶’。寻找‘牛奶’的所有前缀路径，这些前缀路径形成‘牛奶’的CPB(Condition Pattern Base，条件模式基)，<br>而这些CPB又形成新的事务数据库。将‘牛奶’这一项添加到我们的集合中，此时，‘牛奶’这个频繁1-项集的支持度就是headTable中的支持度计数。然后用‘牛奶’的CPB形成的事务数据构造FP-tree，<br>构造的过程中将不满足支持度的项删除，而满足支持度的项又会构成另外一个FP-tree和headTable，我们记为FP-tree1和headTable1。同样的从headTable1的最后一行开始，<br>比如是可乐，那么把‘可乐’和之前的‘牛奶’就形成了频繁2-项集，此时，{‘牛奶’，‘可乐’}这个频繁2-项集的支持度就是headTable1中‘可乐’的支持度。<br>同时，我们也要寻找‘可乐’的前缀路径形成的CPB构成的又一个事务数据集，仍旧是构造FP-tree，从headTable取元素项，将元素项加集合</p>
-<p>所以，FP的发现过程就是一个循环里不断递归的操作。循环，循环的是headTable中的各个元素项；递归，递归的是元素项的CPB构成的事务数据集形成的FP-tree中发现FP。</p>
-<p>原理就介绍到这，下面是具体实践。</p>
-<p>经过一番搜索，我查到两种算法对应的实现过程如下：</p>
-<ul>
-<li>pymining：根据Apriori算法进行关联规则挖掘</li>
-<li>Orange3：根据FP-growth算法进行关联规则挖掘<br>但是按照CSDN上的教程实现下来出现了一些问题，在提取频繁项集的时候报错提示输入应该是int型的列表，但是教程中输入的是<br>str型的列表，花了很久也没有解决，随放弃。</li>
-</ul>
-<p>后来采用apyori.apriori来进行处理，得到了结果，但是在运行过程中炒鸡慢 = = 我一度怀疑是我的代码写的有问题，最终只跑了<br>两侧各为1的Rule，代码如下：<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># -*- coding: utf-8 -*-</span></span><br><span class="line"><span class="string">"""</span></span><br><span class="line"><span class="string">Created on Mon Aug 13 21:47:59 2018</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">@author: ims</span></span><br><span class="line"><span class="string">"""</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> pandas <span class="keyword">as</span> pd</span><br><span class="line"><span class="keyword">from</span> apyori <span class="keyword">import</span> apriori</span><br><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"><span class="keyword">import</span> time</span><br><span class="line"></span><br><span class="line"><span class="comment"># 加载数据</span></span><br><span class="line">start_time = time.time()</span><br><span class="line">df = pd.read_csv(<span class="string">r'Test2_data.csv'</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 将原始数据处理组合出新词项后生成列表</span></span><br><span class="line">transactions = []</span><br><span class="line">listToStore = []</span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> range(df.iloc[:,<span class="number">0</span>].size):             <span class="comment">#df.iloc[:,0].size</span></span><br><span class="line">    <span class="keyword">for</span> col <span class="keyword">in</span> df.columns:</span><br><span class="line">        s = df.iloc[i][col]</span><br><span class="line">        s = str(s)</span><br><span class="line">        s = col + <span class="string">'_'</span> + s</span><br><span class="line">        listToStore.append(s)</span><br><span class="line">    transactions.append(listToStore)</span><br><span class="line">    print(i)</span><br><span class="line">    listToStore = []</span><br><span class="line"></span><br><span class="line"><span class="comment"># 利用apriori算法生成规则</span></span><br><span class="line">rules = apriori(transactions,min_support=<span class="number">0.1</span>,min_confidence=<span class="number">0.7</span>,min_lift=<span class="number">1</span>,max_length=<span class="number">2</span>)</span><br><span class="line">results = list(rules)</span><br><span class="line">final_results = pd.DataFrame(np.random.randint(low=<span class="number">0</span>,high=<span class="number">1</span>,size=(len(results),<span class="number">6</span>)),columns=[<span class="string">'GeneralRules'</span>,\</span><br><span class="line">                             <span class="string">'LeftRules'</span>,<span class="string">'RightRules'</span>,<span class="string">'Support'</span>,<span class="string">'Confidence'</span>,<span class="string">'Lift'</span>])</span><br><span class="line"></span><br><span class="line"><span class="comment"># 将规则提取成dataframe形式</span></span><br><span class="line">index = <span class="number">0</span></span><br><span class="line"><span class="keyword">for</span> g, s, i <span class="keyword">in</span> results:</span><br><span class="line">    final_results.iloc[index] = [<span class="string">' _&amp;&amp;_ '</span>.join(list(g)), <span class="string">' _&amp;&amp;_ '</span>.join(list(i[<span class="number">0</span>][<span class="number">0</span>])), <span class="string">' _&amp;&amp;_ '</span>.join(list(i[<span class="number">0</span>][<span class="number">1</span>])), s, i[<span class="number">0</span>][<span class="number">2</span>], i[<span class="number">0</span>][<span class="number">3</span>]]</span><br><span class="line">    index = index + <span class="number">1</span></span><br><span class="line">final_results = final_results.sort_values(<span class="string">'Lift'</span>,ascending=<span class="number">0</span>)</span><br><span class="line">final_rules = final_results[final_results[<span class="string">'RightRules'</span>]==<span class="string">'Label'</span>]</span><br><span class="line">end_time = time.time()</span><br><span class="line">print(<span class="string">'The total time is:&#123;&#125;'</span>.format(end_time-start_time))</span><br></pre></td></tr></table></figure></p>
-<p>提取出的规则如图：</p>
-<h3 id="正向规则"><a href="#正向规则" class="headerlink" title="正向规则"></a>正向规则</h3><p><img src="/img/rule1.png" alt="png"></p>
-<h3 id="反向规则"><a href="#反向规则" class="headerlink" title="反向规则"></a>反向规则</h3><p><img src="/img/rule2.png" alt="png"></p>
-<h2 id="参考文献"><a href="#参考文献" class="headerlink" title="参考文献"></a>参考文献</h2><ul>
-<li><a href="https://blog.csdn.net/qq_19528953/article/details/79412245" target="_blank" rel="noopener">使用python进行数据关联分析</a></li>
-<li><a href="https://www.kaggle.com/asamir/online-retail-analyze-with-association-rules/notebook" target="_blank" rel="noopener">Online Retail Analyze With Association Rules</a></li>
-<li>机器学习实战，Peter Harrington</li>
-</ul>
-
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
+        <div class="article-info info-on-right">
+          
 	<div class="article-tag tagcloud">
 		<i class="icon-price-tags icon"></i>
 		<ul class="article-tag-list">
 			 
         		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">机器学习</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">association analysis</a>
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">语义分割，深度学习</a>
         		</li>
       		
 		</ul>
 	</div>
 
-      
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/machine-learning//" class="article-tag-list-link color5">机器学习</a>
-        		</li>
-      		
-		</ul>
-	</div>
+          
 
-
-      
-
-      
-        
-<div class="share-btn share-icons tooltip-left">
-  <div class="tooltip tooltip-east">
-    <span class="tooltip-item">
-      <a href="javascript:;" class="share-sns share-outer">
-        <i class="icon icon-share"></i>
-      </a>
-    </span>
-    <span class="tooltip-content">
-      <div class="share-wrap">
-        <div class="share-icons">
-          <a class="weibo share-sns" href="javascript:;" data-type="weibo">
-            <i class="icon icon-weibo"></i>
-          </a>
-          <a class="weixin share-sns wxFab" href="javascript:;" data-type="weixin">
-            <i class="icon icon-weixin"></i>
-          </a>
-          <a class="qq share-sns" href="javascript:;" data-type="qq">
-            <i class="icon icon-qq"></i>
-          </a>
-          <a class="douban share-sns" href="javascript:;" data-type="douban">
-            <i class="icon icon-douban"></i>
-          </a>
-          <a class="qzone share-sns" href="javascript:;" data-type="qzone">
-            <i class="icon icon-qzone"></i>
-          </a>
-          <a class="facebook share-sns" href="javascript:;" data-type="facebook">
-            <i class="icon icon-facebook"></i>
-          </a>
-          <a class="twitter share-sns" href="javascript:;" data-type="twitter">
-            <i class="icon icon-twitter"></i>
-          </a>
-          <a class="google share-sns" href="javascript:;" data-type="google">
-            <i class="icon icon-google"></i>
-          </a>
         </div>
-      </div>
-    </span>
-  </div>
-</div>
-
-<div class="page-modal wx-share js-wx-box">
-    <a class="close js-modal-close" href="javascript:;"><i class="icon icon-close"></i></a>
-    <p>扫一扫，分享到微信</p>
-    <div class="wx-qrcode">
-      <img src="//pan.baidu.com/share/qrcode?url=http://www.wuxiaochun.cn/2018/08/14/关联规则分析/" alt="微信分享二维码">
-    </div>
-</div>
-
-<div class="mask js-mask"></div>
-      
-      <div class="clearfix"></div>
-    </div>
+        <div class="clearfix"></div>
+    </header>
   </div>
 </article>
-
-  
-<nav id="article-nav">
-  
-    <a href="/2018/08/20/Batch-Normalization/" id="article-nav-newer" class="article-nav-link-wrap">
-      <i class="icon-circle-left"></i>
-      <div class="article-nav-title">
-        
-          Batch Normalization
-        
-      </div>
-    </a>
   
   
-    <a href="/2018/08/12/Optimization-methods/" id="article-nav-older" class="article-nav-link-wrap">
-      <div class="article-nav-title">改善深层神经网络-Optimization+methods</div>
-      <i class="icon-circle-right"></i>
-    </a>
-  
-</nav>
-
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-  
-  
+    </div></section>
   
 
-  
-
-  
-
-  
+    
 
 
           </div>
@@ -433,9 +252,9 @@ var _hmt = _hmt || [];
 	var yiliaConfig = {
 		mathjax: true,
 		isHome: false,
-		isPost: true,
+		isPost: false,
 		isArchive: false,
-		isTag: false,
+		isTag: true,
 		isCategory: false,
 		open_in_new: false,
 		toc_hide_index: true,
