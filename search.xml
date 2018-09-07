@@ -17,9 +17,9 @@
       
         <tags>
             
-            <tag> 语义分割 </tag>
-            
             <tag> 深度学习 </tag>
+            
+            <tag> 语义分割 </tag>
             
         </tags>
       
@@ -40,7 +40,9 @@
       
         <tags>
             
-            <tag> 深度学习，BN </tag>
+            <tag> 深度学习 </tag>
+            
+            <tag> BN </tag>
             
         </tags>
       
@@ -199,7 +201,9 @@
             
             <tag> 深度学习 </tag>
             
-            <tag> L2正则化，He正则化 </tag>
+            <tag> L2正则化 </tag>
+            
+            <tag> He正则化 </tag>
             
         </tags>
       
