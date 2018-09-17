@@ -6,19 +6,20 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge" >
   <link rel="dns-prefetch" href="http://www.wuxiaochun.cn">
-  <title>Category: 机器学习 | Wuxiaochun</title>
+  <title>MS-COCO dataset | Wuxiaochun</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="PKU在读，机器学习菜鸟，此博客日常分享技术心得，偶尔吐槽心情。">
-<meta name="keywords" content="机器学习,python,html,code">
-<meta property="og:type" content="website">
-<meta property="og:title" content="Wuxiaochun">
-<meta property="og:url" content="http://www.wuxiaochun.cn/categories/machine-learning/index.html">
+  <meta name="description" content="最近在复现deeplab-v3时想在MS-COCO数据集上pretrain，所以鼓捣了很久的数据集，做个记录。 数据集简介及下载MS-COCO是微软持续更新的一个可以用来图像recognition+segmentation+captioning的数据集，其中训练集有118287张图片和测试集有5000张图片，其官方说明地址：http://mscoco.org/">
+<meta name="keywords" content="深度学习,数据集">
+<meta property="og:type" content="article">
+<meta property="og:title" content="MS-COCO dataset">
+<meta property="og:url" content="http://www.wuxiaochun.cn/2018/09/17/MS-COCO-dataset/index.html">
 <meta property="og:site_name" content="Wuxiaochun">
-<meta property="og:description" content="PKU在读，机器学习菜鸟，此博客日常分享技术心得，偶尔吐槽心情。">
+<meta property="og:description" content="最近在复现deeplab-v3时想在MS-COCO数据集上pretrain，所以鼓捣了很久的数据集，做个记录。 数据集简介及下载MS-COCO是微软持续更新的一个可以用来图像recognition+segmentation+captioning的数据集，其中训练集有118287张图片和测试集有5000张图片，其官方说明地址：http://mscoco.org/">
 <meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2018-09-17T14:29:48.780Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Wuxiaochun">
-<meta name="twitter:description" content="PKU在读，机器学习菜鸟，此博客日常分享技术心得，偶尔吐槽心情。">
+<meta name="twitter:title" content="MS-COCO dataset">
+<meta name="twitter:description" content="最近在复现deeplab-v3时想在MS-COCO数据集上pretrain，所以鼓捣了很久的数据集，做个记录。 数据集简介及下载MS-COCO是微软持续更新的一个可以用来图像recognition+segmentation+captioning的数据集，其中训练集有118287张图片和测试集有5000张图片，其官方说明地址：http://mscoco.org/">
   
     <link rel="alternative" href="/atom.xml" title="Wuxiaochun" type="application/atom+xml">
   
@@ -176,340 +177,169 @@ var _hmt = _hmt || [];
             <canvas data-colors="#eaeaea" data-sectionHeight="100" data-contentId="js-content" id="myCanvas1" class="anm-canvas"></canvas>
           </div>
           <div id="js-content" class="content-ll">
-            
-  
-  
+            <article id="post-MS-COCO-dataset" class="article article-type-post " itemscope itemprop="blogPost">
+  <div class="article-inner">
     
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      MS-COCO dataset
+    </h1>
+  
+
+        
+        <a href="/2018/09/17/MS-COCO-dataset/" class="archive-article-date">
+  	<time datetime="2018-09-17T14:28:43.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-09-17</time>
+</a>
+        
+      </header>
     
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>最近在复现deeplab-v3时想在MS-COCO数据集上pretrain，所以鼓捣了很久的数据集，做个记录。</p>
+<h1 id="数据集简介及下载"><a href="#数据集简介及下载" class="headerlink" title="数据集简介及下载"></a>数据集简介及下载</h1><p>MS-COCO是微软持续更新的一个可以用来图像recognition+segmentation+captioning的数据集，<br>其中训练集有118287张图片和测试集有5000张图片，其官方说明地址：<a href="http://mscoco.org/" target="_blank" rel="noopener">http://mscoco.org/</a><br><a id="more"></a><br>官网被墙了，所以直接从下载链接下载，速度还可以。linux下wget很方便，建议用断点续传命令 wget -c http<br><a href="http://images.cocodataset.org/zips/train2017.zip" target="_blank" rel="noopener">训练集</a><br><a href="http://images.cocodataset.org/annotations/annotations_trainval2017.zip" target="_blank" rel="noopener">训练集注释</a></p>
+<p><a href="http://images.cocodataset.org/zips/val2017.zip" target="_blank" rel="noopener">验证集</a><br><a href="http://images.cocodataset.org/annotations/stuff_annotations_trainval2017.zip" target="_blank" rel="noopener">验证集注释</a></p>
+<p><a href="http://images.cocodataset.org/zips/test2017.zip" target="_blank" rel="noopener">测试集</a><br><a href="http://images.cocodataset.org/annotations/image_info_test2017.zip" target="_blank" rel="noopener">测试集注释</a></p>
+<p>由于云服务器是内部网的(T_T)，所以先ssh到本地的服务器，然后通过堡垒机作为中转终于传到云服务器上了。</p>
+<h1 id="cocoAPI"><a href="#cocoAPI" class="headerlink" title="cocoAPI"></a>cocoAPI</h1><p>coco数据集的注释是以json格式存储的，coco配置了数据读取的API，下载链接：<a href="https://github.com/nightrome/cocostuffapi" target="_blank" rel="noopener">https://github.com/nightrome/cocostuffapi</a></p>
+<p>下载之后cd到PythonAPI路径下执行命令make就行</p>
+<p>我在用的时候碰到了gcc错误</p>
+<figure class="highlight groovy"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">python setup.py build_ext --inplace</span><br><span class="line">running build_ext</span><br><span class="line">building <span class="string">'pycocotools._mask'</span> extension</span><br><span class="line">gcc -pthread -fno-strict-aliasing -g -O2 -DNDEBUG -g -fwrapv -O3 -Wall -Wstrict-prototypes -fPIC -I<span class="regexp">/home/</span>rizqi-okta<span class="regexp">/miniconda2/</span>lib<span class="regexp">/python2.7/</span>site-packages<span class="regexp">/numpy/</span>core<span class="regexp">/include -I../</span>common -I<span class="regexp">/home/</span>rizqi-okta<span class="regexp">/miniconda2/</span>include<span class="regexp">/python2.7 -c pycocotools/</span>_mask.c -o build<span class="regexp">/temp.linux-x86_64-2.7/</span>pycocotools/_mask.o -Wno-cpp -Wno-unused-function -std=c99</span><br><span class="line">pycocotools/_mask.<span class="string">c:</span><span class="number">547</span>:<span class="number">21</span>: fatal <span class="string">error:</span> maskApi.<span class="string">h:</span> No such file or directory</span><br><span class="line">compilation terminated.</span><br><span class="line"><span class="string">error:</span> command <span class="string">'gcc'</span> failed with exit status <span class="number">1</span></span><br><span class="line"><span class="string">Makefile:</span><span class="number">3</span>: recipe <span class="keyword">for</span> target <span class="string">'all'</span> failed</span><br><span class="line"><span class="string">make:</span> *** [all] Error <span class="number">1</span></span><br></pre></td></tr></table></figure>
+<p>也重装了Cython，还是不行，最后发现是自己挪动了PythonAPI文件夹的位置，从而找不到_maskApi.c等配置文件，重新调整路径后终于搞定。<br>如果有遇到其他问题，可以参考这个issue：<a href="https://github.com/cocodataset/cocoapi/issues/141" target="_blank" rel="noopener">https://github.com/cocodataset/cocoapi/issues/141</a></p>
+<h1 id="用cocoAPI来生成segmentation的label"><a href="#用cocoAPI来生成segmentation的label" class="headerlink" title="用cocoAPI来生成segmentation的label"></a>用cocoAPI来生成segmentation的label</h1><p>因为我的环境是python3，所以在以下地方有修改：</p>
+<ol>
+<li>在PythonAPI/cocostuff/cocoSegmentationToPngDemo.py中line.68 修改xrange为range</li>
+<li>在PythonAPI/cocostuff/cocoSegmentationToPngDemo.py中注释掉line.62-64，这是示例限制生成label个数<br>再注释掉line.76-88</li>
+<li>设置好annPath为自己的stuff_train/val2017.json路径，运行即可</li>
+</ol>
+<h2 id="参考文献"><a href="#参考文献" class="headerlink" title="参考文献"></a>参考文献</h2><ul>
+<li><a href="https://blog.csdn.net/qq_33000225/article/details/78985635" target="_blank" rel="noopener">MS-COCO数据集来做semantic segmentation</a></li>
+<li><a href="https://arxiv.org/abs/1504.00325" target="_blank" rel="noopener">Microsoft COCO Captions: Data Collection and Evaluation Server</a></li>
+</ul>
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
       
       
-      <section class="archives-wrap">
-        <div class="archive-year-wrap">
-          <a href="/archives/2018" class="archive-year">2018</a>
-        </div>
-        <div class="archives">
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2018/08/14/关联规则分析/" class="archive-article-date">
-  	<time datetime="2018-08-14T13:38:48.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-08-14</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2018/08/14/关联规则分析/">关联规则分析</a>
-    </h1>
-  
-
-        <div class="article-info info-on-right">
-          
 	<div class="article-tag tagcloud">
 		<i class="icon-price-tags icon"></i>
 		<ul class="article-tag-list">
 			 
         		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">机器学习</a>
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">深度学习</a>
         		</li>
       		 
         		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">association analysis</a>
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">数据集</a>
         		</li>
       		
 		</ul>
 	</div>
 
-          
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/machine-learning//" class="article-tag-list-link color5">机器学习</a>
-        		</li>
-      		
-		</ul>
-	</div>
+      
 
+      
 
+      
+        
+<div class="share-btn share-icons tooltip-left">
+  <div class="tooltip tooltip-east">
+    <span class="tooltip-item">
+      <a href="javascript:;" class="share-sns share-outer">
+        <i class="icon icon-share"></i>
+      </a>
+    </span>
+    <span class="tooltip-content">
+      <div class="share-wrap">
+        <div class="share-icons">
+          <a class="weibo share-sns" href="javascript:;" data-type="weibo">
+            <i class="icon icon-weibo"></i>
+          </a>
+          <a class="weixin share-sns wxFab" href="javascript:;" data-type="weixin">
+            <i class="icon icon-weixin"></i>
+          </a>
+          <a class="qq share-sns" href="javascript:;" data-type="qq">
+            <i class="icon icon-qq"></i>
+          </a>
+          <a class="douban share-sns" href="javascript:;" data-type="douban">
+            <i class="icon icon-douban"></i>
+          </a>
+          <a class="qzone share-sns" href="javascript:;" data-type="qzone">
+            <i class="icon icon-qzone"></i>
+          </a>
+          <a class="facebook share-sns" href="javascript:;" data-type="facebook">
+            <i class="icon icon-facebook"></i>
+          </a>
+          <a class="twitter share-sns" href="javascript:;" data-type="twitter">
+            <i class="icon icon-twitter"></i>
+          </a>
+          <a class="google share-sns" href="javascript:;" data-type="google">
+            <i class="icon icon-google"></i>
+          </a>
         </div>
-        <div class="clearfix"></div>
-    </header>
+      </div>
+    </span>
+  </div>
+</div>
+
+<div class="page-modal wx-share js-wx-box">
+    <a class="close js-modal-close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <div class="wx-qrcode">
+      <img src="//pan.baidu.com/share/qrcode?url=http://www.wuxiaochun.cn/2018/09/17/MS-COCO-dataset/" alt="微信分享二维码">
+    </div>
+</div>
+
+<div class="mask js-mask"></div>
+      
+      <div class="clearfix"></div>
+    </div>
   </div>
 </article>
+
   
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2018/07/10/分类问题中的样本不均衡算法/" class="archive-article-date">
-  	<time datetime="2018-07-10T08:53:30.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-07-10</time>
-</a>
+<nav id="article-nav">
+  
+  
+    <a href="/2018/09/03/Semantic-Segmentation/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">Semantic Segmentation</div>
+      <i class="icon-circle-right"></i>
+    </a>
+  
+</nav>
+
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
         </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2018/07/10/分类问题中的样本不均衡算法/">分类问题中的样本不均衡算法</a>
-    </h1>
-  
-
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">机器学习</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">非均衡样本</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">模型训练</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-          
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/machine-learning//" class="article-tag-list-link color5">机器学习</a>
-        		</li>
-      		
-		</ul>
-	</div>
+        
+        
+    </div>
+</aside>
 
 
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2018/06/11/梯度提升树-GBDT-概述及sklearn调参/" class="archive-article-date">
-  	<time datetime="2018-06-11T12:03:47.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-06-11</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2018/06/11/梯度提升树-GBDT-概述及sklearn调参/">梯度提升树(GBDT)概述及sklearn调参</a>
-    </h1>
-  
 
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">机器学习</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">树模型</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-          
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/machine-learning//" class="article-tag-list-link color5">机器学习</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2018/06/05/Introduction-to-ML-with-Python/" class="archive-article-date">
-  	<time datetime="2018-06-05T08:37:39.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-06-05</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2018/06/05/Introduction-to-ML-with-Python/">Introduction to ML with Python</a>
-    </h1>
-  
-
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">机器学习</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">特征处理</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-          
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/machine-learning//" class="article-tag-list-link color5">机器学习</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2018/06/05/jupyter-kernel-error/" class="archive-article-date">
-  	<time datetime="2018-06-05T03:30:31.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-06-05</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2018/06/05/jupyter-kernel-error/">jupyter kernel error</a>
-    </h1>
-  
-
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">机器学习</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-          
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/machine-learning//" class="article-tag-list-link color5">机器学习</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2018/05/20/数据分箱/" class="archive-article-date">
-  	<time datetime="2018-05-20T05:14:00.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-05-20</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2018/05/20/数据分箱/">数据分箱</a>
-    </h1>
-  
-
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">机器学习</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">特征工程</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-          
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/machine-learning//" class="article-tag-list-link color5">机器学习</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
   
   
-    </div></section>
   
 
-    
+  
+
+  
+
+  
 
 
           </div>
@@ -532,10 +362,10 @@ var _hmt = _hmt || [];
 	var yiliaConfig = {
 		mathjax: true,
 		isHome: false,
-		isPost: false,
+		isPost: true,
 		isArchive: false,
 		isTag: false,
-		isCategory: true,
+		isCategory: false,
 		open_in_new: false,
 		toc_hide_index: true,
 		root: "/",
