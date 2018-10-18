@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://www.wuxiaochun.cn/"/>
-  <updated>2018-10-05T07:16:14.210Z</updated>
+  <updated>2018-10-18T01:11:55.019Z</updated>
   <id>http://www.wuxiaochun.cn/</id>
   
   <author>
@@ -15,6 +15,34 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>checkpoint</title>
+    <link href="http://www.wuxiaochun.cn/2018/10/12/checkpoint/"/>
+    <id>http://www.wuxiaochun.cn/2018/10/12/checkpoint/</id>
+    <published>2018-10-12T01:10:33.000Z</published>
+    <updated>2018-10-18T01:11:55.019Z</updated>
+    
+    <content type="html"><![CDATA[<h1 id="检查点"><a href="#检查点" class="headerlink" title="检查点"></a>检查点</h1><p>本文介绍如何保存和恢复编译有 Estimator 的 TensorFlow 模型。TensorFlow 提供两种模型格式：</p><ul><li>检查点（checkpoints）：这是一种依赖于创建模型代码的格式。</li><li>SavedModel：这是一种与创建模型代码无关的格式。</li></ul><p><a href="//tensorflow.juejin.im/programmers_guide/saved_model.html">保存和恢复</a></p><h2 id="示例代码"><a href="#示例代码" class="headerlink" title="示例代码"></a>示例代码</h2><p><a href="//tensorflow.juejin.im/get_started/premade_estimators.html">Premade Estimators</a></p><pre><code>git clone https://github.com/tensorflow/models/cd models/samples/core/get_started</code></pre><p>本文中大部分代码片断都是在 <code>premade_estimator.py</code> 基础上少量修改的版本。</p><h2 id="保存未训练完的模型"><a href="#保存未训练完的模型" class="headerlink" title="保存未训练完的模型"></a>保存未训练完的模型</h2><p>Estimators 自动将下列内容写到磁盘上：</p><ul><li><strong>检查点</strong>：训练过程中生成的不同版本的模型。</li><li><strong>事件文件</strong>：包含一些用于 <a href="https://developers.google.com/machine-learning/glossary/#TensorBoard" target="_blank" rel="noopener">TensorBoard</a> 可视化的信息</li></ul><p>为指定 Estimator 存储信息的顶层目录，将其赋值给任何一个 Estimator 的构造函数的可选参数 <code>model_dir</code>。比如 ，下列代码将 <code>model_dir</code> 参数设置为 <code>models/iris</code> 目录：</p><pre><code>classifier = tf.estimator.DNNClassifier(    feature_columns=my_feature_columns,    hidden_units=[10, 10],    n_classes=3,    model_dir=&apos;models/iris&apos;)</code></pre><p>假定你调用 Estimator 的 <code>train</code> 方法。比如：</p><pre><code>classifier.train(        input_fn=lambda:train_input_fn(train_x, train_y, batch_size=100),                steps=200)</code></pre><p>如下列图表所示，第一次调用 <code>train</code> 将检查点和其它文件添加到 <code>model_dir</code> 目录中：</p><p><img src="../images/first_train_calls.png" alt=""></p><p>第一次调用 train()。</p><p>在一个类 UNIX 系统中，可用命令 <code>ls</code> 来查看 <code>model_dir</code> 目录中的对象：</p><pre><code>$ ls -1 models/irischeckpointevents.out.tfevents.timestamp.hostnamegraph.pbtxtmodel.ckpt-1.data-00000-of-00001model.ckpt-1.indexmodel.ckpt-1.metamodel.ckpt-200.data-00000-of-00001model.ckpt-200.indexmodel.ckpt-200.meta</code></pre><p>上面的 <code>ls</code> 命令显示，此 Estimator 在第 1 步（训练开始时）和第 200 步（训练结束时）生成了检查点。</p><h3 id="默认检查点目录"><a href="#默认检查点目录" class="headerlink" title="默认检查点目录"></a>默认检查点目录</h3><p>如果你在一个 Estimator 构造函数中指定 <code>model_dir</code> 参数，此 Estimator 将检查点文件写到一个临时目录中，此目录由 Python 的 <a href="https://docs.python.org/3/library/tempfile.html#tempfile.mkdtemp" target="_blank" rel="noopener">tempfile.mkdtemp</a> 函数指定。比如，下面的 Estimator 构造函数并没有指定 <code>model_dir</code> 参数：</p><pre><code>classifier = tf.estimator.DNNClassifier(    feature_columns=my_feature_columns,    hidden_units=[10, 10],    n_classes=3)print(classifier.model_dir)</code></pre><p><code>tempfile.mkdtemp</code> 函数会为你在操作系统中选择一个安全的临时目录。比如，在 macOS 操作系统中，一个典型的临时目录为：</p><pre><code>/var/folders/0s/5q9kfzfj3gx2knj0vj8p68yc00dhcr/T/tmpYm1Rwa</code></pre><h3 id="检查点的保存频率"><a href="#检查点的保存频率" class="headerlink" title="检查点的保存频率"></a>检查点的保存频率</h3><p>默认情况下， Estimator 会在 <code>model_dir</code> 目录中保存 <a href="https://developers.google.com/machine-learning/glossary/#checkpoint" target="_blank" rel="noopener">检查点</a>，并且采用如下策略：</p><ul><li>每隔 10 分钟保存一个检查点（即 600 秒）。</li><li>当 <code>train</code> 方法开始执行（即第一次循环）和执行结束（最后一次循环）时，会各保存一个检查点。</li><li>保留目录中最近 5 个检查点。</li></ul><p>你可以用如下步骤改变上述默认策略：</p><ol><li><a href="https://www.tensorflow.org/api_docs/python/tf/estimator/RunConfig" target="_blank" rel="noopener"><code>tf.estimator.RunConfig</code></a></li><li>当实例化 Estimator 时，将此 <code>RunConfig</code> 对象传递给 Estimator 的 <code>config</code> 参数。</li></ol><p>比如，下面的代码将检查点保存策略修改为每隔 20 分钟保存一次，且保留最近 10 个检查点：</p><pre><code>my_checkpointing_config = tf.estimator.RunConfig(    save_checkpoints_secs = 20*60,  # Save checkpoints every 20 minutes.    keep_checkpoint_max = 10,       # Retain the 10 most recent checkpoints.)classifier = tf.estimator.DNNClassifier(    feature_columns=my_feature_columns,    hidden_units=[10, 10],    n_classes=3,    model_dir=&apos;models/iris&apos;,    config=my_checkpointing_config)</code></pre><h2 id="恢复你的模型"><a href="#恢复你的模型" class="headerlink" title="恢复你的模型"></a>恢复你的模型</h2><p>当第一次调用一个 Estimator 的 <code>train</code> 方法时，TensorFlow 会在 <code>model_dir</code> 目录中保存一个检查点。后续每调用一次 Estimator 的 <code>train</code> 、 <code>evaluate</code> 或 <code>predict</code> 方法，都会发生如下的行为：</p><ol><li><a href="//tensorflow.juejin.im/get_started/custom_estimators.html">创建定制化 Estimator</a></li><li>这个 Estimator 从最近的检查点中恢复出数据，用于初始化新模型的权重值。</li></ol><p>换句话说，如下图所示，一旦检查点文件存在，TensorFlow 总会在你调用 <code>train()</code> 、 <code>evaluation()</code> 或 <code>predict()</code> 时重建模型。</p><p><img src="../images/subsequent_calls.png" alt=""></p><p>后续对 train()、evaluate() 或 predict() 的调用</p><h3 id="避免不好的恢复"><a href="#避免不好的恢复" class="headerlink" title="避免不好的恢复"></a>避免不好的恢复</h3><p>只有当模型与检查点兼容时，我们才可以从这个检查点中恢复出模型的状态。比如，假设你训练了一个称为 <code>DNNClassifier</code> 的 Estimator，它包含两个隐藏层，每个有 10 个结点：</p><pre><code>classifier = tf.estimator.DNNClassifier(    feature_columns=feature_columns,    hidden_units=[10, 10],    n_classes=3,    model_dir=&apos;models/iris&apos;)classifier.train(    input_fn=lambda:train_input_fn(train_x, train_y, batch_size=100),        steps=200)</code></pre><p>经过训练之后（当然，也会同时在 <code>models/iris</code> 目录中创建检查点），假如你将每个隐藏层中的 10 个结点改成 20 个，然后再尝试恢复模型：</p><pre><code>classifier2 = tf.estimator.DNNClassifier(    feature_columns=my_feature_columns,    hidden_units=[20, 20],  # 修改模型中的神经元个数    n_classes=3,    model_dir=&apos;models/iris&apos;)classifier.train(    input_fn=lambda:train_input_fn(train_x, train_y, batch_size=100),        steps=200)</code></pre><p>因为检查点的状态与 <code>classifier2</code> 所描述的模型的状态不兼容，恢复模型会失败，错误信息如下：</p><pre><code>...InvalidArgumentError (see above for traceback): tensor_name =dnn/hiddenlayer_1/bias/t_0/Adagrad; shape in shape_and_slice spec [10]does not match the shape stored in checkpoint: [20]</code></pre><p>当你在做实验时训练并比较版本稍有不同的模型时，记得保存创建每个 <code>model_dir</code> 的代码。比如，你可以为每个版本创建一个独立的 git 分支。这种分隔的做法可以保证你的检查点是可恢复的。</p><h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>检查点提供了一种容易的保存和恢复由 Estimator 生成的模型的自动化机制。</p><p><a href="//tensorflow.juejin.im/programmers_guide/saved_model.html">保存和恢复</a></p><ul><li>使用底层 TensorFlow API 来保存和恢复模型。</li><li><p>在 SavedModel 模式中导出和导入模型，这是一种语言无关、可恢复、可序列化格式。</p></li><li><p><a href="#toc-0">检查点</a></p><ul><li><a href="#toc-1">示例代码</a></li><li><a href="#toc-2">保存未训练完的模型</a></li><li><a href="#toc-5">恢复你的模型</a></li><li><a href="#toc-7">总结</a></li></ul></li></ul>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;h1 id=&quot;检查点&quot;&gt;&lt;a href=&quot;#检查点&quot; class=&quot;headerlink&quot; title=&quot;检查点&quot;&gt;&lt;/a&gt;检查点&lt;/h1&gt;&lt;p&gt;本文介绍如何保存和恢复编译有 Estimator 的 TensorFlow 模型。TensorFlow 提供两种模型格式：&lt;/p&gt;
+
+      
+    
+    </summary>
+    
+      <category term="深度学习" scheme="http://www.wuxiaochun.cn/categories/deep-learning/"/>
+    
+    
+      <category term="深度学习" scheme="http://www.wuxiaochun.cn/tags/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/"/>
+    
+      <category term="训练过程" scheme="http://www.wuxiaochun.cn/tags/%E8%AE%AD%E7%BB%83%E8%BF%87%E7%A8%8B/"/>
+    
+  </entry>
   
   <entry>
     <title>MS-COCO dataset</title>

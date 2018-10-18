@@ -6,19 +6,23 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge" >
   <link rel="dns-prefetch" href="http://www.wuxiaochun.cn">
-  <title>Category: 机器学习 | Wuxiaochun</title>
+  <title>checkpoint | Wuxiaochun</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="PKU在读，机器学习菜鸟，此博客日常分享技术心得，偶尔吐槽心情。">
-<meta name="keywords" content="机器学习,python,html,code">
-<meta property="og:type" content="website">
-<meta property="og:title" content="Wuxiaochun">
-<meta property="og:url" content="http://www.wuxiaochun.cn/categories/machine-learning/index.html">
+  <meta name="description" content="检查点本文介绍如何保存和恢复编译有 Estimator 的 TensorFlow 模型。TensorFlow 提供两种模型格式：  检查点（checkpoints）：这是一种依赖于创建模型代码的格式。 SavedModel：这是一种与创建模型代码无关的格式。  保存和恢复 示例代码Premade Estimators git clone https://github.com/tensorflow/">
+<meta name="keywords" content="深度学习,训练过程">
+<meta property="og:type" content="article">
+<meta property="og:title" content="checkpoint">
+<meta property="og:url" content="http://www.wuxiaochun.cn/2018/10/12/checkpoint/index.html">
 <meta property="og:site_name" content="Wuxiaochun">
-<meta property="og:description" content="PKU在读，机器学习菜鸟，此博客日常分享技术心得，偶尔吐槽心情。">
+<meta property="og:description" content="检查点本文介绍如何保存和恢复编译有 Estimator 的 TensorFlow 模型。TensorFlow 提供两种模型格式：  检查点（checkpoints）：这是一种依赖于创建模型代码的格式。 SavedModel：这是一种与创建模型代码无关的格式。  保存和恢复 示例代码Premade Estimators git clone https://github.com/tensorflow/">
 <meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="http://www.wuxiaochun.cn/2018/10/12/images/first_train_calls.png">
+<meta property="og:image" content="http://www.wuxiaochun.cn/2018/10/12/images/subsequent_calls.png">
+<meta property="og:updated_time" content="2018-10-18T01:11:55.019Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Wuxiaochun">
-<meta name="twitter:description" content="PKU在读，机器学习菜鸟，此博客日常分享技术心得，偶尔吐槽心情。">
+<meta name="twitter:title" content="checkpoint">
+<meta name="twitter:description" content="检查点本文介绍如何保存和恢复编译有 Estimator 的 TensorFlow 模型。TensorFlow 提供两种模型格式：  检查点（checkpoints）：这是一种依赖于创建模型代码的格式。 SavedModel：这是一种与创建模型代码无关的格式。  保存和恢复 示例代码Premade Estimators git clone https://github.com/tensorflow/">
+<meta name="twitter:image" content="http://www.wuxiaochun.cn/2018/10/12/images/first_train_calls.png">
   
     <link rel="alternative" href="/atom.xml" title="Wuxiaochun" type="application/atom+xml">
   
@@ -176,340 +180,281 @@ var _hmt = _hmt || [];
             <canvas data-colors="#eaeaea" data-sectionHeight="100" data-contentId="js-content" id="myCanvas1" class="anm-canvas"></canvas>
           </div>
           <div id="js-content" class="content-ll">
-            
-  
-  
+            <article id="post-checkpoint" class="article article-type-post " itemscope itemprop="blogPost">
+  <div class="article-inner">
     
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      checkpoint
+    </h1>
+  
+
+        
+        <a href="/2018/10/12/checkpoint/" class="archive-article-date">
+  	<time datetime="2018-10-12T01:10:33.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-10-12</time>
+</a>
+        
+      </header>
     
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="检查点"><a href="#检查点" class="headerlink" title="检查点"></a>检查点</h1><p>本文介绍如何保存和恢复编译有 Estimator 的 TensorFlow 模型。TensorFlow 提供两种模型格式：</p>
+<ul>
+<li>检查点（checkpoints）：这是一种依赖于创建模型代码的格式。</li>
+<li>SavedModel：这是一种与创建模型代码无关的格式。</li>
+</ul>
+<p><a href="//tensorflow.juejin.im/programmers_guide/saved_model.html">保存和恢复</a></p>
+<h2 id="示例代码"><a href="#示例代码" class="headerlink" title="示例代码"></a>示例代码</h2><p><a href="//tensorflow.juejin.im/get_started/premade_estimators.html">Premade Estimators</a></p>
+<pre><code>git clone https://github.com/tensorflow/models/
+cd models/samples/core/get_started
+</code></pre><p>本文中大部分代码片断都是在 <code>premade_estimator.py</code> 基础上少量修改的版本。</p>
+<h2 id="保存未训练完的模型"><a href="#保存未训练完的模型" class="headerlink" title="保存未训练完的模型"></a>保存未训练完的模型</h2><p>Estimators 自动将下列内容写到磁盘上：</p>
+<ul>
+<li><strong>检查点</strong>：训练过程中生成的不同版本的模型。</li>
+<li><strong>事件文件</strong>：包含一些用于 <a href="https://developers.google.com/machine-learning/glossary/#TensorBoard" target="_blank" rel="noopener">TensorBoard</a> 可视化的信息</li>
+</ul>
+<p>为指定 Estimator 存储信息的顶层目录，将其赋值给任何一个 Estimator 的构造函数的可选参数 <code>model_dir</code>。比如 ，下列代码将 <code>model_dir</code> 参数设置为 <code>models/iris</code> 目录：</p>
+<pre><code>classifier = tf.estimator.DNNClassifier(
+    feature_columns=my_feature_columns,
+    hidden_units=[10, 10],
+    n_classes=3,
+    model_dir=&apos;models/iris&apos;)
+</code></pre><p>假定你调用 Estimator 的 <code>train</code> 方法。比如：</p>
+<pre><code>classifier.train(
+        input_fn=lambda:train_input_fn(train_x, train_y, batch_size=100),
+                steps=200)
+</code></pre><p>如下列图表所示，第一次调用 <code>train</code> 将检查点和其它文件添加到 <code>model_dir</code> 目录中：</p>
+<p><img src="../images/first_train_calls.png" alt=""></p>
+<p>第一次调用 train()。</p>
+<p>在一个类 UNIX 系统中，可用命令 <code>ls</code> 来查看 <code>model_dir</code> 目录中的对象：</p>
+<pre><code>$ ls -1 models/iris
+checkpoint
+events.out.tfevents.timestamp.hostname
+graph.pbtxt
+model.ckpt-1.data-00000-of-00001
+model.ckpt-1.index
+model.ckpt-1.meta
+model.ckpt-200.data-00000-of-00001
+model.ckpt-200.index
+model.ckpt-200.meta
+</code></pre><p>上面的 <code>ls</code> 命令显示，此 Estimator 在第 1 步（训练开始时）和第 200 步（训练结束时）生成了检查点。</p>
+<h3 id="默认检查点目录"><a href="#默认检查点目录" class="headerlink" title="默认检查点目录"></a>默认检查点目录</h3><p>如果你在一个 Estimator 构造函数中指定 <code>model_dir</code> 参数，此 Estimator 将检查点文件写到一个临时目录中，此目录由 Python 的 <a href="https://docs.python.org/3/library/tempfile.html#tempfile.mkdtemp" target="_blank" rel="noopener">tempfile.mkdtemp</a> 函数指定。比如，下面的 Estimator 构造函数并没有指定 <code>model_dir</code> 参数：</p>
+<pre><code>classifier = tf.estimator.DNNClassifier(
+    feature_columns=my_feature_columns,
+    hidden_units=[10, 10],
+    n_classes=3)
+
+print(classifier.model_dir)
+</code></pre><p><code>tempfile.mkdtemp</code> 函数会为你在操作系统中选择一个安全的临时目录。比如，在 macOS 操作系统中，一个典型的临时目录为：</p>
+<pre><code>/var/folders/0s/5q9kfzfj3gx2knj0vj8p68yc00dhcr/T/tmpYm1Rwa
+</code></pre><h3 id="检查点的保存频率"><a href="#检查点的保存频率" class="headerlink" title="检查点的保存频率"></a>检查点的保存频率</h3><p>默认情况下， Estimator 会在 <code>model_dir</code> 目录中保存 <a href="https://developers.google.com/machine-learning/glossary/#checkpoint" target="_blank" rel="noopener">检查点</a>，并且采用如下策略：</p>
+<ul>
+<li>每隔 10 分钟保存一个检查点（即 600 秒）。</li>
+<li>当 <code>train</code> 方法开始执行（即第一次循环）和执行结束（最后一次循环）时，会各保存一个检查点。</li>
+<li>保留目录中最近 5 个检查点。</li>
+</ul>
+<p>你可以用如下步骤改变上述默认策略：</p>
+<ol>
+<li><a href="https://www.tensorflow.org/api_docs/python/tf/estimator/RunConfig" target="_blank" rel="noopener"><code>tf.estimator.RunConfig</code></a></li>
+<li>当实例化 Estimator 时，将此 <code>RunConfig</code> 对象传递给 Estimator 的 <code>config</code> 参数。</li>
+</ol>
+<p>比如，下面的代码将检查点保存策略修改为每隔 20 分钟保存一次，且保留最近 10 个检查点：</p>
+<pre><code>my_checkpointing_config = tf.estimator.RunConfig(
+    save_checkpoints_secs = 20*60,  # Save checkpoints every 20 minutes.
+    keep_checkpoint_max = 10,       # Retain the 10 most recent checkpoints.
+)
+
+classifier = tf.estimator.DNNClassifier(
+    feature_columns=my_feature_columns,
+    hidden_units=[10, 10],
+    n_classes=3,
+    model_dir=&apos;models/iris&apos;,
+    config=my_checkpointing_config)
+</code></pre><h2 id="恢复你的模型"><a href="#恢复你的模型" class="headerlink" title="恢复你的模型"></a>恢复你的模型</h2><p>当第一次调用一个 Estimator 的 <code>train</code> 方法时，TensorFlow 会在 <code>model_dir</code> 目录中保存一个检查点。后续每调用一次 Estimator 的 <code>train</code> 、 <code>evaluate</code> 或 <code>predict</code> 方法，都会发生如下的行为：</p>
+<ol>
+<li><a href="//tensorflow.juejin.im/get_started/custom_estimators.html">创建定制化 Estimator</a></li>
+<li>这个 Estimator 从最近的检查点中恢复出数据，用于初始化新模型的权重值。</li>
+</ol>
+<p>换句话说，如下图所示，一旦检查点文件存在，TensorFlow 总会在你调用 <code>train()</code> 、 <code>evaluation()</code> 或 <code>predict()</code> 时重建模型。</p>
+<p><img src="../images/subsequent_calls.png" alt=""></p>
+<p>后续对 train()、evaluate() 或 predict() 的调用</p>
+<h3 id="避免不好的恢复"><a href="#避免不好的恢复" class="headerlink" title="避免不好的恢复"></a>避免不好的恢复</h3><p>只有当模型与检查点兼容时，我们才可以从这个检查点中恢复出模型的状态。比如，假设你训练了一个称为 <code>DNNClassifier</code> 的 Estimator，它包含两个隐藏层，每个有 10 个结点：</p>
+<pre><code>classifier = tf.estimator.DNNClassifier(
+    feature_columns=feature_columns,
+    hidden_units=[10, 10],
+    n_classes=3,
+    model_dir=&apos;models/iris&apos;)
+
+classifier.train(
+    input_fn=lambda:train_input_fn(train_x, train_y, batch_size=100),
+        steps=200)
+</code></pre><p>经过训练之后（当然，也会同时在 <code>models/iris</code> 目录中创建检查点），假如你将每个隐藏层中的 10 个结点改成 20 个，然后再尝试恢复模型：</p>
+<pre><code>classifier2 = tf.estimator.DNNClassifier(
+    feature_columns=my_feature_columns,
+    hidden_units=[20, 20],  # 修改模型中的神经元个数
+    n_classes=3,
+    model_dir=&apos;models/iris&apos;)
+
+classifier.train(
+    input_fn=lambda:train_input_fn(train_x, train_y, batch_size=100),
+        steps=200)
+</code></pre><p>因为检查点的状态与 <code>classifier2</code> 所描述的模型的状态不兼容，恢复模型会失败，错误信息如下：</p>
+<pre><code>...
+InvalidArgumentError (see above for traceback): tensor_name =
+dnn/hiddenlayer_1/bias/t_0/Adagrad; shape in shape_and_slice spec [10]
+does not match the shape stored in checkpoint: [20]
+</code></pre><p>当你在做实验时训练并比较版本稍有不同的模型时，记得保存创建每个 <code>model_dir</code> 的代码。比如，你可以为每个版本创建一个独立的 git 分支。这种分隔的做法可以保证你的检查点是可恢复的。</p>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>检查点提供了一种容易的保存和恢复由 Estimator 生成的模型的自动化机制。</p>
+<p><a href="//tensorflow.juejin.im/programmers_guide/saved_model.html">保存和恢复</a></p>
+<ul>
+<li>使用底层 TensorFlow API 来保存和恢复模型。</li>
+<li><p>在 SavedModel 模式中导出和导入模型，这是一种语言无关、可恢复、可序列化格式。</p>
+</li>
+<li><p><a href="#toc-0">检查点</a></p>
+<ul>
+<li><a href="#toc-1">示例代码</a></li>
+<li><a href="#toc-2">保存未训练完的模型</a></li>
+<li><a href="#toc-5">恢复你的模型</a></li>
+<li><a href="#toc-7">总结</a></li>
+</ul>
+</li>
+</ul>
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
       
       
-      <section class="archives-wrap">
-        <div class="archive-year-wrap">
-          <a href="/archives/2018" class="archive-year">2018</a>
-        </div>
-        <div class="archives">
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2018/08/14/关联规则分析/" class="archive-article-date">
-  	<time datetime="2018-08-14T13:38:48.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-08-14</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2018/08/14/关联规则分析/">关联规则分析</a>
-    </h1>
-  
-
-        <div class="article-info info-on-right">
-          
 	<div class="article-tag tagcloud">
 		<i class="icon-price-tags icon"></i>
 		<ul class="article-tag-list">
 			 
         		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">机器学习</a>
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">深度学习</a>
         		</li>
       		 
         		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">association analysis</a>
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">训练过程</a>
         		</li>
       		
 		</ul>
 	</div>
 
-          
+      
 	<div class="article-category tagcloud">
 		<i class="icon-book icon"></i>
 		<ul class="article-tag-list">
 			 
         		<li class="article-tag-list-item">
-        			<a href="/categories/machine-learning//" class="article-tag-list-link color5">机器学习</a>
+        			<a href="/categories/deep-learning//" class="article-tag-list-link color5">深度学习</a>
         		</li>
       		
 		</ul>
 	</div>
 
 
+      
+
+      
+        
+<div class="share-btn share-icons tooltip-left">
+  <div class="tooltip tooltip-east">
+    <span class="tooltip-item">
+      <a href="javascript:;" class="share-sns share-outer">
+        <i class="icon icon-share"></i>
+      </a>
+    </span>
+    <span class="tooltip-content">
+      <div class="share-wrap">
+        <div class="share-icons">
+          <a class="weibo share-sns" href="javascript:;" data-type="weibo">
+            <i class="icon icon-weibo"></i>
+          </a>
+          <a class="weixin share-sns wxFab" href="javascript:;" data-type="weixin">
+            <i class="icon icon-weixin"></i>
+          </a>
+          <a class="qq share-sns" href="javascript:;" data-type="qq">
+            <i class="icon icon-qq"></i>
+          </a>
+          <a class="douban share-sns" href="javascript:;" data-type="douban">
+            <i class="icon icon-douban"></i>
+          </a>
+          <a class="qzone share-sns" href="javascript:;" data-type="qzone">
+            <i class="icon icon-qzone"></i>
+          </a>
+          <a class="facebook share-sns" href="javascript:;" data-type="facebook">
+            <i class="icon icon-facebook"></i>
+          </a>
+          <a class="twitter share-sns" href="javascript:;" data-type="twitter">
+            <i class="icon icon-twitter"></i>
+          </a>
+          <a class="google share-sns" href="javascript:;" data-type="google">
+            <i class="icon icon-google"></i>
+          </a>
         </div>
-        <div class="clearfix"></div>
-    </header>
+      </div>
+    </span>
+  </div>
+</div>
+
+<div class="page-modal wx-share js-wx-box">
+    <a class="close js-modal-close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <div class="wx-qrcode">
+      <img src="//pan.baidu.com/share/qrcode?url=http://www.wuxiaochun.cn/2018/10/12/checkpoint/" alt="微信分享二维码">
+    </div>
+</div>
+
+<div class="mask js-mask"></div>
+      
+      <div class="clearfix"></div>
+    </div>
   </div>
 </article>
+
   
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2018/07/10/分类问题中的样本不均衡算法/" class="archive-article-date">
-  	<time datetime="2018-07-10T08:53:30.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-07-10</time>
-</a>
+<nav id="article-nav">
+  
+  
+    <a href="/2018/09/17/MS-COCO-dataset/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">MS-COCO dataset</div>
+      <i class="icon-circle-right"></i>
+    </a>
+  
+</nav>
+
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
         </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2018/07/10/分类问题中的样本不均衡算法/">分类问题中的样本不均衡算法</a>
-    </h1>
-  
-
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">机器学习</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">非均衡样本</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">模型训练</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-          
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/machine-learning//" class="article-tag-list-link color5">机器学习</a>
-        		</li>
-      		
-		</ul>
-	</div>
+        
+        
+    </div>
+</aside>
 
 
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2018/06/11/梯度提升树-GBDT-概述及sklearn调参/" class="archive-article-date">
-  	<time datetime="2018-06-11T12:03:47.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-06-11</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2018/06/11/梯度提升树-GBDT-概述及sklearn调参/">梯度提升树(GBDT)概述及sklearn调参</a>
-    </h1>
-  
 
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">机器学习</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">树模型</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-          
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/machine-learning//" class="article-tag-list-link color5">机器学习</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2018/06/05/Introduction-to-ML-with-Python/" class="archive-article-date">
-  	<time datetime="2018-06-05T08:37:39.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-06-05</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2018/06/05/Introduction-to-ML-with-Python/">Introduction to ML with Python</a>
-    </h1>
-  
-
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">机器学习</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">特征处理</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-          
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/machine-learning//" class="article-tag-list-link color5">机器学习</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2018/06/05/jupyter-kernel-error/" class="archive-article-date">
-  	<time datetime="2018-06-05T03:30:31.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-06-05</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2018/06/05/jupyter-kernel-error/">jupyter kernel error</a>
-    </h1>
-  
-
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">机器学习</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-          
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/machine-learning//" class="article-tag-list-link color5">机器学习</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2018/05/20/数据分箱/" class="archive-article-date">
-  	<time datetime="2018-05-20T05:14:00.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-05-20</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2018/05/20/数据分箱/">数据分箱</a>
-    </h1>
-  
-
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">机器学习</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">特征工程</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-          
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/machine-learning//" class="article-tag-list-link color5">机器学习</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
   
   
-    </div></section>
   
 
-    
+  
+
+  
+
+  
 
 
           </div>
@@ -532,10 +477,10 @@ var _hmt = _hmt || [];
 	var yiliaConfig = {
 		mathjax: true,
 		isHome: false,
-		isPost: false,
+		isPost: true,
 		isArchive: false,
 		isTag: false,
-		isCategory: true,
+		isCategory: false,
 		open_in_new: false,
 		toc_hide_index: true,
 		root: "/",
