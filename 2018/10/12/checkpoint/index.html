@@ -8,20 +8,20 @@
   <link rel="dns-prefetch" href="http://www.wuxiaochun.cn">
   <title>checkpoint | Wuxiaochun</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="检查点本文介绍如何保存和恢复编译有 Estimator 的 TensorFlow 模型。TensorFlow 提供两种模型格式：  检查点（checkpoints）：这是一种依赖于创建模型代码的格式。 SavedModel：这是一种与创建模型代码无关的格式。  保存和恢复 示例代码Premade Estimators git clone https://github.com/tensorflow/">
+  <meta name="description" content="检查点本文介绍如何保存和恢复编译有 Estimator 的 TensorFlow 模型。TensorFlow 提供两种模型格式：  检查点（checkpoints）：这是一种依赖于创建模型代码的格式。 SavedModel：这是一种与创建模型代码无关的格式。">
 <meta name="keywords" content="深度学习,训练过程">
 <meta property="og:type" content="article">
 <meta property="og:title" content="checkpoint">
 <meta property="og:url" content="http://www.wuxiaochun.cn/2018/10/12/checkpoint/index.html">
 <meta property="og:site_name" content="Wuxiaochun">
-<meta property="og:description" content="检查点本文介绍如何保存和恢复编译有 Estimator 的 TensorFlow 模型。TensorFlow 提供两种模型格式：  检查点（checkpoints）：这是一种依赖于创建模型代码的格式。 SavedModel：这是一种与创建模型代码无关的格式。  保存和恢复 示例代码Premade Estimators git clone https://github.com/tensorflow/">
+<meta property="og:description" content="检查点本文介绍如何保存和恢复编译有 Estimator 的 TensorFlow 模型。TensorFlow 提供两种模型格式：  检查点（checkpoints）：这是一种依赖于创建模型代码的格式。 SavedModel：这是一种与创建模型代码无关的格式。">
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="http://www.wuxiaochun.cn/2018/10/12/images/first_train_calls.png">
 <meta property="og:image" content="http://www.wuxiaochun.cn/2018/10/12/images/subsequent_calls.png">
-<meta property="og:updated_time" content="2018-10-18T01:11:55.019Z">
+<meta property="og:updated_time" content="2018-10-23T12:02:07.752Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="checkpoint">
-<meta name="twitter:description" content="检查点本文介绍如何保存和恢复编译有 Estimator 的 TensorFlow 模型。TensorFlow 提供两种模型格式：  检查点（checkpoints）：这是一种依赖于创建模型代码的格式。 SavedModel：这是一种与创建模型代码无关的格式。  保存和恢复 示例代码Premade Estimators git clone https://github.com/tensorflow/">
+<meta name="twitter:description" content="检查点本文介绍如何保存和恢复编译有 Estimator 的 TensorFlow 模型。TensorFlow 提供两种模型格式：  检查点（checkpoints）：这是一种依赖于创建模型代码的格式。 SavedModel：这是一种与创建模型代码无关的格式。">
 <meta name="twitter:image" content="http://www.wuxiaochun.cn/2018/10/12/images/first_train_calls.png">
   
     <link rel="alternative" href="/atom.xml" title="Wuxiaochun" type="application/atom+xml">
@@ -203,9 +203,9 @@ var _hmt = _hmt || [];
         <h1 id="检查点"><a href="#检查点" class="headerlink" title="检查点"></a>检查点</h1><p>本文介绍如何保存和恢复编译有 Estimator 的 TensorFlow 模型。TensorFlow 提供两种模型格式：</p>
 <ul>
 <li>检查点（checkpoints）：这是一种依赖于创建模型代码的格式。</li>
-<li>SavedModel：这是一种与创建模型代码无关的格式。</li>
+<li>SavedModel：这是一种与创建模型代码无关的格式。<a id="more"></a>
+<a href="//tensorflow.juejin.im/programmers_guide/saved_model.html">保存和恢复</a></li>
 </ul>
-<p><a href="//tensorflow.juejin.im/programmers_guide/saved_model.html">保存和恢复</a></p>
 <h2 id="示例代码"><a href="#示例代码" class="headerlink" title="示例代码"></a>示例代码</h2><p><a href="//tensorflow.juejin.im/get_started/premade_estimators.html">Premade Estimators</a></p>
 <pre><code>git clone https://github.com/tensorflow/models/
 cd models/samples/core/get_started
@@ -572,6 +572,22 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color2">损失优化方法</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">数据集</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">训练过程</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">语义分割</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color5">机器学习</a>
               </li>
              
@@ -580,23 +596,7 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">数据集</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">TensorFlow</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">损失优化方法</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">语义分割</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">训练过程</a>
+                <a href="javascript:void(0)" class="js-tag color1">association analysis</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -604,7 +604,19 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">association analysis</a>
+                <a href="javascript:void(0)" class="js-tag color4">初始化</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">特征工程</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">L2正则化</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">He正则化</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -616,7 +628,7 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">初始化</a>
+                <a href="javascript:void(0)" class="js-tag color1">TensorFlow</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -629,18 +641,6 @@ MathJax.Hub.Queue(function() {
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color5">梯度下降</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">L2正则化</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">He正则化</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">特征工程</a>
               </li>
              
               <li class="article-tag-list-item">
