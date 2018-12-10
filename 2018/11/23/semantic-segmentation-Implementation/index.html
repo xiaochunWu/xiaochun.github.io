@@ -27,7 +27,8 @@
 <meta property="og:image" content="http://www.wuxiaochun.cn/img/crf-1.png">
 <meta property="og:image" content="http://www.wuxiaochun.cn/img/crf-2.png">
 <meta property="og:image" content="http://www.wuxiaochun.cn/img/crf-3.png">
-<meta property="og:updated_time" content="2018-12-10T07:57:40.373Z">
+<meta property="og:image" content="http://www.wuxiaochun.cn/img/continue.jpg">
+<meta property="og:updated_time" content="2018-12-10T08:00:02.942Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="semantic-segmentation Implementation">
 <meta name="twitter:description" content="实习结束啦，终于有时间来整理下这几个月做的事情，主要是针对语义分割方向的一些模型复现和改进。">
@@ -354,7 +355,7 @@ var _hmt = _hmt || [];
 <h1 id="To-Be-Continued"><a href="#To-Be-Continued" class="headerlink" title="To Be Continued"></a>To Be Continued</h1><h2 id="Model-Level"><a href="#Model-Level" class="headerlink" title="Model Level"></a>Model Level</h2><ul>
 <li>采用更多层次的融合，如果低级特征包含很少的语义信息，高级特征包含不够多的空间信息，那么只融合最低和最高的话效果不会达到最好。</li>
 <li>我是在生成图片的基础上进行融合的，我觉得在logits的基础上融合的效果可能更好，而且可以详细设计下第二层的神经网络结构。</li>
-<li>我觉得可以用两个模型来分别保留原图像的空间信息和语义信息，放一幅图来作为指引<br>[continue.jpg]<h2 id="Data-Level"><a href="#Data-Level" class="headerlink" title="Data Level"></a>Data Level</h2></li>
+<li>我觉得可以用两个模型来分别保留原图像的空间信息和语义信息，放一幅图来作为指引<br><img src="/img/continue.jpg" alt="头脑风暴"><h2 id="Data-Level"><a href="#Data-Level" class="headerlink" title="Data Level"></a>Data Level</h2></li>
 <li>可以针对bad image和bad class增加一些图片和标注，主要是bicycle、chair、pottedplant、sofa类</li>
 <li>可以对原训练集做更多augmentation的工作，比如锐化，模糊</li>
 </ul>
@@ -602,23 +603,19 @@ MathJax.Hub.Queue(function() {
           <ul class="article-tag-list" q-show="showTags">
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">深度学习</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">BN</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">数据集</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color5">机器学习</a>
               </li>
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color5">特征处理</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">深度学习</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">BN</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -630,6 +627,14 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">数据集</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">随笔</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color1">TensorFlow</a>
               </li>
              
@@ -638,23 +643,11 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">随笔</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">association analysis</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color2">semantic-segmentation</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">非均衡样本</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">模型训练</a>
+                <a href="javascript:void(0)" class="js-tag color1">association analysis</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -670,6 +663,14 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">非均衡样本</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">模型训练</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color1">L2正则化</a>
               </li>
              
@@ -678,11 +679,11 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">特征工程</a>
+                <a href="javascript:void(0)" class="js-tag color4">初始化</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">初始化</a>
+                <a href="javascript:void(0)" class="js-tag color5">特征工程</a>
               </li>
              
               <li class="article-tag-list-item">
