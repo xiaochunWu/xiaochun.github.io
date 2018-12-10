@@ -246,6 +246,34 @@
   </entry>
   
   <entry>
+    <title>Random forest</title>
+    <link href="http://www.wuxiaochun.cn/2018/07/15/Random-forest/"/>
+    <id>http://www.wuxiaochun.cn/2018/07/15/Random-forest/</id>
+    <published>2018-07-15T09:01:08.000Z</published>
+    <updated>2018-12-10T09:02:56.621Z</updated>
+    
+    <content type="html"><![CDATA[<p>随机森林是用随机的方式建立一个森林，其中，森林的基本单元是一棵棵决策树，并且每一棵决策树之间不存在关联，随机森林就是通过集成学习的思想将多棵树集成的一种算法，它的本质属于机器学习的一大分支——集成学习（Ensemble Learning）方法。</p><p>集成学习通过建立几个模型组合的来解决单一预测问题。它的工作原理是生成多个分类器/模型，各自独立地学习和作出预测。这些预测最后结合成单预测，因此优于任何一个单分类的做出预测。</p><p>坦白来讲，在森林中，每棵决策树都是一个分类器（假设现在针对的是分类问题），那么对于一个输入样本，N棵树会有N个分类结果。而随机森林集成了所有的分类投票结果，将投票次数最多的类别指定为最终的输出。</p><p>从一棵树到一片森林，其生成规则如下：</p><ol><li>如果训练集大小为N，对于每棵树而言，随机且有放回地从训练集中的抽取N个训练样本（bootstrap抽样方法），作为该树的训练集；每棵树的训练集都是不同的，但里面包含重复的训练样本。</li><li>如果每个样本的特征维度为M，指定一个常数m，且m&lt;&lt;M，随机地从M个特征中选取m个特征子集，每次树进行分裂时，从这m个特征中选择最优的；</li><li>每棵树都尽最大程度的生长，并且没有剪枝过程。<br>在森林中，每棵树都是独立的，99.9%不相关的树做出的预测结果涵盖了所有的情况，这些预测结果将会彼此抵消。少数优秀的树的预测结果将会超脱于芸芸“噪音”，做出一个好的预测。将若干个弱分类器的分类结果进行投票选择，从而组成一个强分类器，这就是随机森林bagging的思想。<br>不过我们需要认识到：bagging不用单棵决策树来做预测，具体哪个变量起到重要作用变得未知，所以bagging改进了预测准确率但损失了解释性。</li></ol><p>在生成随机森林时，为什么要有放回的抽样？<br>如果不是有放回的抽样，那么每棵树的训练样本都是不同的，都是没有交集的，这样每棵树都是”有偏的”，都是绝对”片面的”（当然这样说可能不对），也就是说每棵树训练出来都是有很大的差异的；而随机森林最后分类取决于多棵树（弱分类器）的投票表决，这种表决应该是”求同”，因此使用完全不同的训练集来训练每棵树这样对最终分类结果是没有帮助的，这样无异于是”盲人摸象”。</p><p>随机森林中的“随机”主要包含两个方面：随机抽取样本，随机抽取特征。这两个随机性的引入对随机森林的分类性能至关重要。由于它们的引入，使得随机森林不容易陷入过度拟合，并具有很好的抗噪能力。</p><p>参数说明：<br>    • max_features：<br>    随机森林允许单个决策树使用特征的最大数量。Python为最大特征数提供了多个可选项。下面是其中的几个：<br>    Auto/None：简单地选取所有特征，每棵树都可以利用他们。这种情况下，每棵树都没有任何的限制。<br>    sqrt：此选项是每颗子树可以利用总特征数的平方根个。log2是另一种相似类型的选项。<br>    0.2：此选项允许每个随机森林的子树可以利用变量（特征）数的20%。如果想考察特征数的x%的作用，我们可以使用”0.x”的格式。</p><pre><code>增加max_features一般能提高模型的性能，因为在每个节点上，有更多的选择可以考虑。然而，这未必完全是对的，因为它降低了单个树的多样性，而这正是随机森林独特的优点。但是，可以肯定，通过增加max_features会降低算法的速度。因此，需要适当的平衡和选择最佳max_features• n_estimators：在利用最大投票数或平均值来预测之前，你想要建立子树的数量。较多的子树可以让模型有更好的性能，但同时让你的代码变慢。应该选择尽可能高的值，只要你的cpu可以刚得住，因为这使你的预测更好更稳定。• min_sample_leaf：最小样本叶片大小阈值。叶是决策树的末端节点。较小的叶子使模型更容易捕捉训练数据中的噪声。• max_depth：决策树最大深度。默认可以不输入，如果不输入的话，决策树在建立子树的时候不会限制子树的深度。一般来说，数据少或者特征少的时候可以不管这个值。如果模型样本量多，特征也多的情况下，推荐限制这个最大深度，具体的取值取决于数据的分布。常用的取值在10-100之间。• min_samples_split：内部节点再划分所需最小样本数。这个值限制了子树继续划分的条件，如果某节点的样本数小于阈值，则不会继续再尝试选择最优特征来进行划分。默认是2，如果样本量不大，不需要管这个值。如果样本量数量级非常大，则推荐增大这个值• min_weight_fraction_leaf：叶子节点最小的样本权重和。这个值限制了叶子节点所有样本权重和的最小值，如果小于这个值，则会和兄弟节点一起被剪枝。默认是0，就是不考虑权重问题。一般来说，如果我们有较多样本有缺失值，或者分类树样本的分布类别偏差很大，就会引入样本权重，这时就要注意这个值。• max_leaf_nodes：最大叶子节点数。通过限制最大叶子节点数，可以防止过拟合，默认是&quot;None&quot;，即不限制最大的叶子节点数。如果加了限制，算法会建立在最大叶子节点数内最优的决策树。如果特征不多，可以不考虑这个值，但是如果特征分成多的话，可以加以限制，具体的值可以通过交叉验证得到。• min_impurity_split：节点划分最小不纯度。这个值限制了决策树的增长，如果某节点的不纯度（基于基尼系数，均方差）小于这个阈值，则该节点不再生成子节点。即为叶子节点。</code></pre>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;p&gt;随机森林是用随机的方式建立一个森林，其中，森林的基本单元是一棵棵决策树，并且每一棵决策树之间不存在关联，随机森林就是通过集成学习的思想将多棵树集成的一种算法，它的本质属于机器学习的一大分支——集成学习（Ensemble Learning）方法。&lt;/p&gt;
+&lt;p&gt;集成学习通过建
+      
+    
+    </summary>
+    
+      <category term="机器学习" scheme="http://www.wuxiaochun.cn/categories/machine-learning/"/>
+    
+    
+      <category term="机器学习" scheme="http://www.wuxiaochun.cn/tags/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/"/>
+    
+      <category term="随机森林" scheme="http://www.wuxiaochun.cn/tags/%E9%9A%8F%E6%9C%BA%E6%A3%AE%E6%9E%97/"/>
+    
+  </entry>
+  
+  <entry>
     <title>分类问题中的样本不均衡算法</title>
     <link href="http://www.wuxiaochun.cn/2018/07/10/%E5%88%86%E7%B1%BB%E9%97%AE%E9%A2%98%E4%B8%AD%E7%9A%84%E6%A0%B7%E6%9C%AC%E4%B8%8D%E5%9D%87%E8%A1%A1%E7%AE%97%E6%B3%95/"/>
     <id>http://www.wuxiaochun.cn/2018/07/10/分类问题中的样本不均衡算法/</id>
@@ -521,34 +549,6 @@
       <category term="机器学习" scheme="http://www.wuxiaochun.cn/tags/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/"/>
     
       <category term="特征工程" scheme="http://www.wuxiaochun.cn/tags/%E7%89%B9%E5%BE%81%E5%B7%A5%E7%A8%8B/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>如何选取卷积生成序列中的有用部分</title>
-    <link href="http://www.wuxiaochun.cn/2018/05/08/%E5%A6%82%E4%BD%95%E9%80%89%E5%8F%96%E5%8D%B7%E7%A7%AF%E7%94%9F%E6%88%90%E5%BA%8F%E5%88%97%E4%B8%AD%E7%9A%84%E6%9C%89%E7%94%A8%E9%83%A8%E5%88%86/"/>
-    <id>http://www.wuxiaochun.cn/2018/05/08/如何选取卷积生成序列中的有用部分/</id>
-    <published>2018-05-07T16:03:18.000Z</published>
-    <updated>2018-06-05T08:40:11.276Z</updated>
-    
-    <content type="html"><![CDATA[<h1 id="卷积原理"><a href="#卷积原理" class="headerlink" title="卷积原理"></a>卷积原理</h1><p>在信号与系统中，卷积积分是线性时不变系统分析的一个重要工具，具体是通过两个函数f和g生成第三个函数，表征函数f与g经过翻转和平移的重叠部分的面积。</p><p>卷积是两个变量在某范围内相乘后求和的结果。如果卷积的变量是序列x(n)和h(n)，则卷积的结果y(n)=x(n)<em>h(n)，其中星号</em>表示卷积。当时序n=0时，序列h(-i)是h(i)的时序i取反的结果；时序取反使得h(i)以纵轴为中心翻转180度，所以这种相乘后求和的计算法称为卷积和，简称卷积。另外，n是使h(-i)位移的量，不同的n对应不同的卷积结果。</p><p>如果卷积的变量是函数x(t)和h(t)，则卷积的计算变为y(t)=x(t)<em>h(t)，其中p是积分变量，积分也是求和，t是使函数h(-p)位移的量，星号</em>表示卷积。</p><p>已知信号长度为M的时间序列{x(i), i=1,M}与长度为N的近似理想脉冲响应滤波器{h(i),i=1,N}的卷积长度为M+N-1的序列{y(i),i=1,M+N-1}。实际上只有中间的M-N+1的长度是有效卷积的内容。而两端各有N/2的长度,是部分{h(i)}和{x(i)}乘积求和的结果，是两个脉冲函数，这两端的部分不是我们想要的。</p><p>在实际应用中，我们希望得到的{y(i)}，不仅能够在长度上与{x(i)}一致，而且在内容上也全部是有效的。MATLAB中conv(x,h,flag)的函数flag有三个选项“full”,”same”和“valid”。在默认情况下是“full”全部长度即M+N-1,完整的调用格式为conv(x,h,’full’)。 ‘valid’选项的长度只M-N+1, 其内容就是’same’和‘full’的中间M-N+1的部分。而‘same’中的前首尾两端各N/2不是我们想要的，’full’首尾两端各N的长度也不是我们想要的。<br><a id="more"></a></p><h1 id="解决方法"><a href="#解决方法" class="headerlink" title="解决方法"></a>解决方法</h1><h2 id="1-周期延拓"><a href="#1-周期延拓" class="headerlink" title="1.周期延拓"></a>1.周期延拓</h2><p>将原始的{x(i)}中尾部N/2长度的数据接在其前面，并且将原始{x(i)}中头部的数据接在其后面，即完成了周期延拓。再使用conv(x, h, ‘valid’)就可以得到与原始{x(i)}在长度上相同，重要的是有效地卷积序列。</p><h2 id="2-多条数据首尾相接法"><a href="#2-多条数据首尾相接法" class="headerlink" title="2.多条数据首尾相接法"></a>2.多条数据首尾相接法</h2><p>如果{x(i)}是一条数据的长度，那么可将前条数据末尾的N/2长度接在当条数据的前面，将下一条数据头部的N/2长度接在当条的尾部，再进行conv(x, h, ‘valid’)就可以得到与原始{x(i)}在长度上相同，重要的是有效地卷积序列。<br>两种方法的差别在于有效部分开始的少量结果有一致，到中间有效部分的长度就是完全一样的了。</p><h2 id="matlab实现代码"><a href="#matlab实现代码" class="headerlink" title="matlab实现代码"></a>matlab实现代码</h2><p><code>`</code>matlab</p><pre><code>h=load(&apos;hfilter.dat&apos;); N=length(h);  d1=load(&apos;MZL3_20080101Hx.dat&apos;); d2=load(&apos;MZL3_20080102Hx.dat&apos;); d3=load(&apos;MZL3_20080103Hx.dat&apos;); M=length(d1);    Figure   % 用当条的数据周期延拓  dd1=[d2(M-N/2+1:end); d2; d2(1:N/2)]; % 使用三条的数据接起来  dd2=[d1(M-N/2+1:end); d2; d3(1:N/2)]; plot(dd1,&apos;r&apos;);hold on; plot(dd2);   figure  y1=conv(dd1,h,&apos;valid&apos;); y2=conv(dd2,h,&apos;valid&apos;);  plot(y1(1:N/2),&apos;ro&apos;);hold on; plot(y2(1:N/2),&apos;*&apos;);    figure   y11=conv(dd1,h,&apos;same&apos;); y22=conv(dd2,h,&apos;same&apos;); plot(y11,&apos;ro&apos;);hold on; plot(y22,&apos;*&apos;); figure  y111=conv(d2,h,&apos;same&apos;);  yy111=[zeros(N/2,1); y111;zeros(N/2,1)]; y222=conv(d3,h,&apos;full&apos;); plot(yy111 ,&apos;r&apos;);hold on; plot(y222);</code></pre><h2 id="C语言实现"><a href="#C语言实现" class="headerlink" title="C语言实现"></a>C语言实现</h2><p>在用c语言来实现带通滤波器时我们遇到了这个问题，最终使用的是只计算两个序列对齐时的卷积值当作总的卷积值，代码如下：</p><p><code>`</code>c</p><pre><code>int coefficient_bp[length_bp] ={165, 115, 121, 101, 56, -6, -71, -129, -173, -204, -231, -268, -321, -393, -467,-517, -510, -417, -226, 54, 386, 715, 981, 1129, 1129, 981, 715, 386, 54, -226,-417, -510, -517, -467, -393, -321, -268, -231, -204, -173, -129, -71, -6, 56,101, 121, 115, 165};int data_before_filter_array[length_bp];int num_fir_bp=0;int get_num_fir_bp(){    return num_fir_bp;}</code></pre><p>//<strong><strong><strong><strong><strong>*</strong></strong></strong></strong></strong>带通滤波函数<strong><strong><strong><strong><strong>**</strong></strong></strong></strong></strong></p><pre><code>int fir_bp(int data_before_filter){    int data_filtered_bp = 0;    if (num_fir_bp &lt; length_bp)      //输入数据数组未填满时，不计算结果    {        data_before_filter_array[num_fir_bp] = data_before_filter;        num_fir_bp++;        if (num_fir_bp == length_bp)  //输入数据数组刚好填满时，计算第一个结果        {            for (int i = 0; i &lt; length_bp; i++)            {                data_filtered_bp = data_filtered_bp + coefficient_bp[i] * data_before_filter_array[i];            }            data_filtered_bp=data_filtered_bp&gt;&gt;13;  //恢复原来的大小            // chenhao0620 限幅            data_filtered_bp = data_filtered_bp&gt;32767 ? 32767:(data_filtered_bp&lt;-32768?-32767:data_filtered_bp);            return data_filtered_bp;        }        return 0;    }    else    {        for (int i = 1; i &lt; length_bp; i++) //输入数据数组填满之后更新与移动        {            data_before_filter_array[i - 1] = data_before_filter_array[i];        }     //原代码有bug，提前将新数据灌进去了，导致46和47(最后两个)是一样的        data_before_filter_array[length_bp-1] = data_before_filter;        for (int i = 0; i &lt; length_bp; i++) //卷积计算        {            data_filtered_bp = data_filtered_bp + coefficient_bp[i] * data_before_filter_array[i];        }        data_filtered_bp=data_filtered_bp&gt;&gt;13;  //因为滤波器函数为了取整扩大了2^13倍，现在移位来恢复原来的大小    //限幅        data_filtered_bp = data_filtered_bp&gt;32767 ? 32767:(data_filtered_bp&lt;-32768?-32767:data_filtered_bp);        return data_filtered_bp;    }}</code></pre>]]></content>
-    
-    <summary type="html">
-    
-      &lt;h1 id=&quot;卷积原理&quot;&gt;&lt;a href=&quot;#卷积原理&quot; class=&quot;headerlink&quot; title=&quot;卷积原理&quot;&gt;&lt;/a&gt;卷积原理&lt;/h1&gt;&lt;p&gt;在信号与系统中，卷积积分是线性时不变系统分析的一个重要工具，具体是通过两个函数f和g生成第三个函数，表征函数f与g经过翻转和平移的重叠部分的面积。&lt;/p&gt;
-&lt;p&gt;卷积是两个变量在某范围内相乘后求和的结果。如果卷积的变量是序列x(n)和h(n)，则卷积的结果y(n)=x(n)&lt;em&gt;h(n)，其中星号&lt;/em&gt;表示卷积。当时序n=0时，序列h(-i)是h(i)的时序i取反的结果；时序取反使得h(i)以纵轴为中心翻转180度，所以这种相乘后求和的计算法称为卷积和，简称卷积。另外，n是使h(-i)位移的量，不同的n对应不同的卷积结果。&lt;/p&gt;
-&lt;p&gt;如果卷积的变量是函数x(t)和h(t)，则卷积的计算变为y(t)=x(t)&lt;em&gt;h(t)，其中p是积分变量，积分也是求和，t是使函数h(-p)位移的量，星号&lt;/em&gt;表示卷积。&lt;/p&gt;
-&lt;p&gt;已知信号长度为M的时间序列{x(i), i=1,M}与长度为N的近似理想脉冲响应滤波器{h(i),i=1,N}的卷积长度为M+N-1的序列{y(i),i=1,M+N-1}。实际上只有中间的M-N+1的长度是有效卷积的内容。而两端各有N/2的长度,是部分{h(i)}和{x(i)}乘积求和的结果，是两个脉冲函数，这两端的部分不是我们想要的。&lt;/p&gt;
-&lt;p&gt;在实际应用中，我们希望得到的{y(i)}，不仅能够在长度上与{x(i)}一致，而且在内容上也全部是有效的。MATLAB中conv(x,h,flag)的函数flag有三个选项“full”,”same”和“valid”。在默认情况下是“full”全部长度即M+N-1,完整的调用格式为conv(x,h,’full’)。 ‘valid’选项的长度只M-N+1, 其内容就是’same’和‘full’的中间M-N+1的部分。而‘same’中的前首尾两端各N/2不是我们想要的，’full’首尾两端各N的长度也不是我们想要的。&lt;br&gt;
-    
-    </summary>
-    
-      <category term="信号处理" scheme="http://www.wuxiaochun.cn/categories/signal-processing/"/>
-    
-    
-      <category term="信号处理" scheme="http://www.wuxiaochun.cn/tags/%E4%BF%A1%E5%8F%B7%E5%A4%84%E7%90%86/"/>
-    
-      <category term="卷积序列" scheme="http://www.wuxiaochun.cn/tags/%E5%8D%B7%E7%A7%AF%E5%BA%8F%E5%88%97/"/>
     
   </entry>
   

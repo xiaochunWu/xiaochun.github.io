@@ -178,6 +178,98 @@ var _hmt = _hmt || [];
           <div id="js-content" class="content-ll">
             
   
+    <article id="post-数据分箱" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2018/05/20/数据分箱/">数据分箱</a>
+    </h1>
+  
+
+        
+        <a href="/2018/05/20/数据分箱/" class="archive-article-date">
+  	<time datetime="2018-05-20T05:14:00.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-05-20</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="数据分箱的适用情形"><a href="#数据分箱的适用情形" class="headerlink" title="数据分箱的适用情形"></a>数据分箱的适用情形</h1><p>数据分箱是下列情形下常用的方法：<br>1.某些数值自变量在测量时存在随机误差，需要对数值进行平滑以消除噪音。<br>2.有些数值自变量有大量不重复的取值，对于使用&lt;、&gt;、=等基本操作符的算法（如决策树）而言，如果能减少这些不重复取值的个数，就能提高算法的速度。<br>3.有些算法只能使用分类自变量，需要把数值变量离散化。<br>数据被归入几个分箱之后，可以用每个分箱内数值的均值、中位数或边界值来替代该分箱内各观测的数值，也可以把每个分箱作为离散化后的一个类别。例如，某个自变量的观测值为1，2.1，2.5，3.4，4，5.6，7，7.4，8.2.假设将它们分为三个分箱，（1，2.1，2.5），（3.4，4，5.6），（7，7.4，8.2），那么使用分箱均值替代后所得值为（1.87，1.87，1.87），（4.33，4.33，4.33），（7.53，7.53，7.53），使用分箱中位数替代后所得值为（2.1，2.1，2.1），（4，4，4），（7.4，7.4，7.4），使用边界值替代后所得值为（1，2.5，2.5），（3.4，3.4，5.6），（7，7，8.2）（每个观测值由其所属分箱的两个边界值中较近的值替代）。</p>
+<h1 id="数据分箱的常用方法"><a href="#数据分箱的常用方法" class="headerlink" title="数据分箱的常用方法"></a>数据分箱的常用方法</h1><h2 id="有监督的卡方分箱法-ChiMerge"><a href="#有监督的卡方分箱法-ChiMerge" class="headerlink" title="有监督的卡方分箱法(ChiMerge)"></a>有监督的卡方分箱法(ChiMerge)</h2><p>自底向上的(即基于合并的)数据离散化方法。<br>它依赖于卡方检验:具有最小卡方值的相邻区间合并在一起,直到满足确定的停止准则。<br>
+        
+          <a class="article-more-a" href="/2018/05/20/数据分箱/#more">more >></a>
+        
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">机器学习</a>
+        		</li>
+      		 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">特征工程</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+	<div class="article-category tagcloud">
+		<i class="icon-book icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="/categories/machine-learning//" class="article-tag-list-link color5">机器学习</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2018/05/20/数据分箱/">more >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
     <article id="post-如何选取卷积生成序列中的有用部分" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
@@ -407,7 +499,15 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color2">损失优化方法</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color5">语义分割</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">随机森林</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -415,15 +515,11 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">损失优化方法</a>
+                <a href="javascript:void(0)" class="js-tag color3">随笔</a>
               </li>
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color5">训练过程</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">随笔</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -439,6 +535,14 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">信号处理</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">卷积序列</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color1">association analysis</a>
               </li>
              
@@ -451,14 +555,6 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">信号处理</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">卷积序列</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color5">梯度下降</a>
               </li>
              
@@ -467,19 +563,19 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">L2正则化</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">He正则化</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color5">特征工程</a>
               </li>
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color4">树模型</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">L2正则化</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">He正则化</a>
               </li>
             
             <div class="clearfix"></div>

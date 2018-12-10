@@ -6,19 +6,20 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge" >
   <link rel="dns-prefetch" href="http://www.wuxiaochun.cn">
-  <title>Category: 信号处理 | Wuxiaochun</title>
+  <title>Random forest | Wuxiaochun</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="PKU在读，机器学习菜鸟，此博客日常分享技术心得，偶尔吐槽心情。">
-<meta name="keywords" content="机器学习,python,html,code">
-<meta property="og:type" content="website">
-<meta property="og:title" content="Wuxiaochun">
-<meta property="og:url" content="http://www.wuxiaochun.cn/categories/signal-processing/index.html">
+  <meta name="description" content="随机森林是用随机的方式建立一个森林，其中，森林的基本单元是一棵棵决策树，并且每一棵决策树之间不存在关联，随机森林就是通过集成学习的思想将多棵树集成的一种算法，它的本质属于机器学习的一大分支——集成学习（Ensemble Learning）方法。 集成学习通过建立几个模型组合的来解决单一预测问题。它的工作原理是生成多个分类器/模型，各自独立地学习和作出预测。这些预测最后结合成单预测，因此优于任何一个">
+<meta name="keywords" content="机器学习,随机森林">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Random forest">
+<meta property="og:url" content="http://www.wuxiaochun.cn/2018/07/15/Random-forest/index.html">
 <meta property="og:site_name" content="Wuxiaochun">
-<meta property="og:description" content="PKU在读，机器学习菜鸟，此博客日常分享技术心得，偶尔吐槽心情。">
+<meta property="og:description" content="随机森林是用随机的方式建立一个森林，其中，森林的基本单元是一棵棵决策树，并且每一棵决策树之间不存在关联，随机森林就是通过集成学习的思想将多棵树集成的一种算法，它的本质属于机器学习的一大分支——集成学习（Ensemble Learning）方法。 集成学习通过建立几个模型组合的来解决单一预测问题。它的工作原理是生成多个分类器/模型，各自独立地学习和作出预测。这些预测最后结合成单预测，因此优于任何一个">
 <meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2018-12-10T09:02:56.621Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Wuxiaochun">
-<meta name="twitter:description" content="PKU在读，机器学习菜鸟，此博客日常分享技术心得，偶尔吐槽心情。">
+<meta name="twitter:title" content="Random forest">
+<meta name="twitter:description" content="随机森林是用随机的方式建立一个森林，其中，森林的基本单元是一棵棵决策树，并且每一棵决策树之间不存在关联，随机森林就是通过集成学习的思想将多棵树集成的一种算法，它的本质属于机器学习的一大分支——集成学习（Ensemble Learning）方法。 集成学习通过建立几个模型组合的来解决单一预测问题。它的工作原理是生成多个分类器/模型，各自独立地学习和作出预测。这些预测最后结合成单预测，因此优于任何一个">
   
     <link rel="alternative" href="/atom.xml" title="Wuxiaochun" type="application/atom+xml">
   
@@ -176,75 +177,196 @@ var _hmt = _hmt || [];
             <canvas data-colors="#eaeaea" data-sectionHeight="100" data-contentId="js-content" id="myCanvas1" class="anm-canvas"></canvas>
           </div>
           <div id="js-content" class="content-ll">
-            
-  
-  
+            <article id="post-Random-forest" class="article article-type-post " itemscope itemprop="blogPost">
+  <div class="article-inner">
     
-    
-      
-      
-      <section class="archives-wrap">
-        <div class="archive-year-wrap">
-          <a href="/archives/2018" class="archive-year">2018</a>
-        </div>
-        <div class="archives">
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2018/05/08/如何选取卷积生成序列中的有用部分/" class="archive-article-date">
-  	<time datetime="2018-05-07T16:03:18.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-05-08</time>
-</a>
-        </div>
-    	 
+      <header class="article-header">
+        
   
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2018/05/08/如何选取卷积生成序列中的有用部分/">如何选取卷积生成序列中的有用部分</a>
+    <h1 class="article-title" itemprop="name">
+      Random forest
     </h1>
   
 
-        <div class="article-info info-on-right">
-          
+        
+        <a href="/2018/07/15/Random-forest/" class="archive-article-date">
+  	<time datetime="2018-07-15T09:01:08.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-07-15</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>随机森林是用随机的方式建立一个森林，其中，森林的基本单元是一棵棵决策树，并且每一棵决策树之间不存在关联，随机森林就是通过集成学习的思想将多棵树集成的一种算法，它的本质属于机器学习的一大分支——集成学习（Ensemble Learning）方法。</p>
+<p>集成学习通过建立几个模型组合的来解决单一预测问题。它的工作原理是生成多个分类器/模型，各自独立地学习和作出预测。这些预测最后结合成单预测，因此优于任何一个单分类的做出预测。</p>
+<p>坦白来讲，在森林中，每棵决策树都是一个分类器（假设现在针对的是分类问题），那么对于一个输入样本，N棵树会有N个分类结果。而随机森林集成了所有的分类投票结果，将投票次数最多的类别指定为最终的输出。</p>
+<p>从一棵树到一片森林，其生成规则如下：</p>
+<ol>
+<li>如果训练集大小为N，对于每棵树而言，随机且有放回地从训练集中的抽取N个训练样本（bootstrap抽样方法），作为该树的训练集；每棵树的训练集都是不同的，但里面包含重复的训练样本。</li>
+<li>如果每个样本的特征维度为M，指定一个常数m，且m&lt;&lt;M，随机地从M个特征中选取m个特征子集，每次树进行分裂时，从这m个特征中选择最优的；</li>
+<li>每棵树都尽最大程度的生长，并且没有剪枝过程。<br>在森林中，每棵树都是独立的，99.9%不相关的树做出的预测结果涵盖了所有的情况，这些预测结果将会彼此抵消。少数优秀的树的预测结果将会超脱于芸芸“噪音”，做出一个好的预测。将若干个弱分类器的分类结果进行投票选择，从而组成一个强分类器，这就是随机森林bagging的思想。<br>不过我们需要认识到：bagging不用单棵决策树来做预测，具体哪个变量起到重要作用变得未知，所以bagging改进了预测准确率但损失了解释性。</li>
+</ol>
+<p>在生成随机森林时，为什么要有放回的抽样？<br>如果不是有放回的抽样，那么每棵树的训练样本都是不同的，都是没有交集的，这样每棵树都是”有偏的”，都是绝对”片面的”（当然这样说可能不对），也就是说每棵树训练出来都是有很大的差异的；而随机森林最后分类取决于多棵树（弱分类器）的投票表决，这种表决应该是”求同”，因此使用完全不同的训练集来训练每棵树这样对最终分类结果是没有帮助的，这样无异于是”盲人摸象”。</p>
+<p>随机森林中的“随机”主要包含两个方面：随机抽取样本，随机抽取特征。这两个随机性的引入对随机森林的分类性能至关重要。由于它们的引入，使得随机森林不容易陷入过度拟合，并具有很好的抗噪能力。</p>
+<p>参数说明：<br>    • max_features：<br>    随机森林允许单个决策树使用特征的最大数量。Python为最大特征数提供了多个可选项。下面是其中的几个：<br>    Auto/None：简单地选取所有特征，每棵树都可以利用他们。这种情况下，每棵树都没有任何的限制。<br>    sqrt：此选项是每颗子树可以利用总特征数的平方根个。log2是另一种相似类型的选项。<br>    0.2：此选项允许每个随机森林的子树可以利用变量（特征）数的20%。如果想考察特征数的x%的作用，我们可以使用”0.x”的格式。</p>
+<pre><code>增加max_features一般能提高模型的性能，因为在每个节点上，有更多的选择可以考虑。然而，这未必完全是对的，因为它降低了单个树的多样性，而这正是随机森林独特的优点。但是，可以肯定，通过增加max_features会降低算法的速度。因此，需要适当的平衡和选择最佳max_features
+• n_estimators：
+在利用最大投票数或平均值来预测之前，你想要建立子树的数量。较多的子树可以让模型有更好的性能，但同时让你的代码变慢。应该选择尽可能高的值，只要你的cpu可以刚得住，因为这使你的预测更好更稳定。
+• min_sample_leaf：
+最小样本叶片大小阈值。叶是决策树的末端节点。较小的叶子使模型更容易捕捉训练数据中的噪声。
+• max_depth：
+决策树最大深度。默认可以不输入，如果不输入的话，决策树在建立子树的时候不会限制子树的深度。一般来说，数据少或者特征少的时候可以不管这个值。如果模型样本量多，特征也多的情况下，推荐限制这个最大深度，具体的取值取决于数据的分布。常用的取值在10-100之间。
+• min_samples_split：
+内部节点再划分所需最小样本数。这个值限制了子树继续划分的条件，如果某节点的样本数小于阈值，则不会继续再尝试选择最优特征来进行划分。默认是2，如果样本量不大，不需要管这个值。如果样本量数量级非常大，则推荐增大这个值
+• min_weight_fraction_leaf：
+叶子节点最小的样本权重和。这个值限制了叶子节点所有样本权重和的最小值，如果小于这个值，则会和兄弟节点一起被剪枝。默认是0，就是不考虑权重问题。一般来说，如果我们有较多样本有缺失值，或者分类树样本的分布类别偏差很大，就会引入样本权重，这时就要注意这个值。
+• max_leaf_nodes：
+最大叶子节点数。通过限制最大叶子节点数，可以防止过拟合，默认是&quot;None&quot;，即不限制最大的叶子节点数。如果加了限制，算法会建立在最大叶子节点数内最优的决策树。如果特征不多，可以不考虑这个值，但是如果特征分成多的话，可以加以限制，具体的值可以通过交叉验证得到。
+• min_impurity_split：
+节点划分最小不纯度。这个值限制了决策树的增长，如果某节点的不纯度（基于基尼系数，均方差）小于这个阈值，则该节点不再生成子节点。即为叶子节点。
+</code></pre>
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
 	<div class="article-tag tagcloud">
 		<i class="icon-price-tags icon"></i>
 		<ul class="article-tag-list">
 			 
         		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">信号处理</a>
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">机器学习</a>
         		</li>
       		 
         		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">卷积序列</a>
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">随机森林</a>
         		</li>
       		
 		</ul>
 	</div>
 
-          
+      
 	<div class="article-category tagcloud">
 		<i class="icon-book icon"></i>
 		<ul class="article-tag-list">
 			 
         		<li class="article-tag-list-item">
-        			<a href="/categories/signal-processing//" class="article-tag-list-link color5">信号处理</a>
+        			<a href="/categories/machine-learning//" class="article-tag-list-link color5">机器学习</a>
         		</li>
       		
 		</ul>
 	</div>
 
 
+      
+
+      
+        
+<div class="share-btn share-icons tooltip-left">
+  <div class="tooltip tooltip-east">
+    <span class="tooltip-item">
+      <a href="javascript:;" class="share-sns share-outer">
+        <i class="icon icon-share"></i>
+      </a>
+    </span>
+    <span class="tooltip-content">
+      <div class="share-wrap">
+        <div class="share-icons">
+          <a class="weibo share-sns" href="javascript:;" data-type="weibo">
+            <i class="icon icon-weibo"></i>
+          </a>
+          <a class="weixin share-sns wxFab" href="javascript:;" data-type="weixin">
+            <i class="icon icon-weixin"></i>
+          </a>
+          <a class="qq share-sns" href="javascript:;" data-type="qq">
+            <i class="icon icon-qq"></i>
+          </a>
+          <a class="douban share-sns" href="javascript:;" data-type="douban">
+            <i class="icon icon-douban"></i>
+          </a>
+          <a class="qzone share-sns" href="javascript:;" data-type="qzone">
+            <i class="icon icon-qzone"></i>
+          </a>
+          <a class="facebook share-sns" href="javascript:;" data-type="facebook">
+            <i class="icon icon-facebook"></i>
+          </a>
+          <a class="twitter share-sns" href="javascript:;" data-type="twitter">
+            <i class="icon icon-twitter"></i>
+          </a>
+          <a class="google share-sns" href="javascript:;" data-type="google">
+            <i class="icon icon-google"></i>
+          </a>
         </div>
-        <div class="clearfix"></div>
-    </header>
+      </div>
+    </span>
+  </div>
+</div>
+
+<div class="page-modal wx-share js-wx-box">
+    <a class="close js-modal-close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <div class="wx-qrcode">
+      <img src="//pan.baidu.com/share/qrcode?url=http://www.wuxiaochun.cn/2018/07/15/Random-forest/" alt="微信分享二维码">
+    </div>
+</div>
+
+<div class="mask js-mask"></div>
+      
+      <div class="clearfix"></div>
+    </div>
   </div>
 </article>
+
+  
+<nav id="article-nav">
+  
+    <a href="/2018/08/08/新学期-新征程/" id="article-nav-newer" class="article-nav-link-wrap">
+      <i class="icon-circle-left"></i>
+      <div class="article-nav-title">
+        
+          新学期  新征程
+        
+      </div>
+    </a>
   
   
-    </div></section>
+    <a href="/2018/07/10/分类问题中的样本不均衡算法/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">分类问题中的样本不均衡算法</div>
+      <i class="icon-circle-right"></i>
+    </a>
+  
+</nav>
+
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+  
+  
   
 
-    
+  
+
+  
+
+  
 
 
           </div>
@@ -267,10 +389,10 @@ var _hmt = _hmt || [];
 	var yiliaConfig = {
 		mathjax: true,
 		isHome: false,
-		isPost: false,
+		isPost: true,
 		isArchive: false,
 		isTag: false,
-		isCategory: true,
+		isCategory: false,
 		open_in_new: false,
 		toc_hide_index: true,
 		root: "/",
