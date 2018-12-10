@@ -26,6 +26,31 @@
     </entry>
     
     <entry>
+      <title>multi-gpu</title>
+      <link href="/2018/11/01/multi-gpu/"/>
+      <url>/2018/11/01/multi-gpu/</url>
+      <content type="html"><![CDATA[<h1 id="multi-gpu-的原理"><a href="#multi-gpu-的原理" class="headerlink" title="multi-gpu 的原理"></a>multi-gpu 的原理</h1><p>数据并行的原理很简单，如下图，其中CPU主要负责梯度平均和参数更新，而GPU1和GPU2主要负责训练model replica。<br><a id="more"></a><br><img src="/img/multi-gpu.png" alt="训练步骤如图"></p><ol><li>在GPU1、GPU2上分别定义模型参数变量，网络结构</li><li>对于单独的GPU，分别从数据管道读取不同的数据块，然后做forward propagation来计算出loss，再计算在当前variables下的gradients</li><li>把所有GPU输出的梯度数据转移到CPU上，先进行梯度取平均操作，然后进行模型参数的更新</li><li>重复1-3，直到模型收敛</li></ol><p>在1中定义模型参数时，要考虑到不同model replica之间要能够share variables，因此要采用tf.get_variable()函数而不是直接tf.Variables()。另外，因为tensorflow和theano类似，都是先定义好tensor Graph，再基于已经定义好的Graph进行模型迭代式训练的。因此在每次迭代过程中，只会对当前的模型参数进行更新，而不会调用tf.get_variable()函数重新定义模型变量，因此变量共享只是存在于模型定义阶段的一个概念。</p><p>在实际使用过程中我发现其实不用在模型构建的时候考虑并行架构也可以实现multi-gpu，因为google有放出multi-gpu的api，详情见<a href="https://github.com/tensorflow/models/blob/master/research/slim/deployment/model_deploy.py" target="_blank" rel="noopener">multi-gpu</a></p><h1 id="Tensorflow切换使用CPU-GPU"><a href="#Tensorflow切换使用CPU-GPU" class="headerlink" title="Tensorflow切换使用CPU/GPU"></a>Tensorflow切换使用CPU/GPU</h1><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">config = tf.ConfigProto(device_count=&#123;<span class="string">'GPU'</span>: <span class="number">0</span>&#125;) <span class="comment"># 0表示使用CPU, 1则是GPU</span></span><br></pre></td></tr></table></figure><p>或者修改model_deploy.DeploymentConfig(clone_on_cpu=True)</p><h1 id="Tensorflow多GPU训练"><a href="#Tensorflow多GPU训练" class="headerlink" title="Tensorflow多GPU训练"></a>Tensorflow多GPU训练</h1><p>在/models/research/slim/depolyment/model_deploy.py中，有说明：</p><blockquote><p>DeploymentConfig parameters: </p><ul><li>num_clones: Number of model clones to deploy in each replica. </li><li>clone_on_cpu: True if clones should be placed on CPU. </li><li>replica_id: Integer. Index of the replica for which the model is deployed. Usually 0 for the chief replica. </li><li>num_replicas: Number of replicas to use. </li><li>num_ps_tasks: Number of tasks for the ps job. 0 to not use replicas. </li><li>worker_job_name: A name for the worker job. </li><li>ps_job_name: A name for the parameter server job.</li></ul></blockquote><p>Example:</p><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">config = model_deploy.DeploymentConfig(</span><br><span class="line">    num_clones=FLAGS.num_clones,</span><br><span class="line">    clone_on_cpu=FLAGS.clone_on_cpu,</span><br><span class="line">    replica_id=FLAGS.task,</span><br><span class="line">    num_replicas=FLAGS.num_replicas,</span><br><span class="line">    num_ps_tasks=FLAGS.num_ps_tasks)</span><br></pre></td></tr></table></figure><p>**在terminal还是要设置CUDA_VISIBLE_DEVICES=(),要不会占用剩下GPU的显存。</p>]]></content>
+      
+      <categories>
+          
+          <category> 深度学习 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> 深度学习 </tag>
+            
+            <tag> 模型构建 </tag>
+            
+            <tag> tricks </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    <entry>
       <title>checkpoint</title>
       <link href="/2018/10/12/checkpoint/"/>
       <url>/2018/10/12/checkpoint/</url>
