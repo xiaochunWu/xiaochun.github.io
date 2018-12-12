@@ -27,7 +27,7 @@
 <meta property="og:image" content="http://www.wuxiaochun.cn/img/paddle_8.jpg">
 <meta property="og:image" content="http://www.wuxiaochun.cn/img/paddle_9.jpg">
 <meta property="og:image" content="http://www.wuxiaochun.cn/img/paddle_10.jpg">
-<meta property="og:updated_time" content="2018-12-12T14:21:58.643Z">
+<meta property="og:updated_time" content="2018-12-12T14:27:13.759Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="用PaddlePaddle实现目标检测任务——Paddle Fluid v1.1深度测评">
 <meta name="twitter:description" content="近期师兄叫我一起评测百度之前发布的PaddlePaddle深度学习框架，我一起划了划水，评测结果如下。 1. 前言11月1日，百度发布了Paddle Fluid的1.1版本，作为国内首个深度学习框架，PaddlePaddle对中文社区非常友好，有完善的中文社区、项目为导向的中文教程，可以让更多中文使用者更方便地进行深度学习、机器学习相关的研究和实践。我本人也非常希望PaddlePaddle能够不断">
@@ -217,9 +217,9 @@ var _hmt = _hmt || [];
 <p><img src="/img/paddle-car1.jpg" alt=""></p>
 <p>我们的任务就是给定一张图像或是一个视频帧，让计算机找出其中所有目标的位置，并给出每个目标的具体类别。对于人类来说，目标检测是一个非常简单的任务。然而，<br>计算机能够“看到”的是图像被编码之后的数字，很难解图像或是视频帧中出现了人或是物体这样的高层语义概念，也就更加难以定位目标出现在图像中哪个区域。</p>
 <p>与此同时，由于目标会出现在图像或是视频帧中的任何位置，目标的形态千变万化，图像或是视频帧的背景千差万别，诸多因素都使得目标检测对计算机来说是一个具有挑战性的问题。<br>目前主流的方法是FasterRCNN、YOLO和SSD，本文使用SSD进行实验。</p>
-<h1 id="3-PaddlePaddle简介"><a href="#3-PaddlePaddle简介" class="headerlink" title="3. PaddlePaddle简介"></a>3. PaddlePaddle简介</h1><p>第一次听到PaddlePaddle是在CCF前线研讨会上，当时几个人聊起来关于机器学习算法平台的事情，有一位小伙伴提起了这个名字，所以一段时间以来我一直认为这是一个机器学习算法平台。<br>直到16年百度开源了PaddlePaddle我才知道，原来这是一个可以跟TensorFlow媲美的深度学习框架，主打“易用、高效、灵活、可扩展”。所以，简单来说，PaddlePaddle就是百度自研的一套<br>深度学习框架（看过发布会后了解到，百度为此建立了一套覆盖面非常广的生态，包括金融、推荐、决策等，但笔者主要是对PaddlePaddle的核心框架进行测评，不在此浪费过多笔墨了）。</p>
+<h1 id="3-PaddlePaddle简介"><a href="#3-PaddlePaddle简介" class="headerlink" title="3. PaddlePaddle简介"></a>3. PaddlePaddle简介</h1><p>第一次听到PaddlePaddle是在CCF前线研讨会上，当时几个人聊起来关于机器学习算法平台的事情，有一位小伙伴提起了这个名字，所以一段时间以来我一直认为这是一个机器学习算法平台。<br>直到16年百度开源了PaddlePaddle我才知道，原来这是一个可以跟TensorFlow媲美的深度学习框架，主打“易用、高效、灵活、可扩展”。所以，简单来说，PaddlePaddle就是百度自研的一套深度学习框架(看过发布会后了解到，百度为此建立了一套覆盖面非常广的生态，包括金融、推荐、决策等，但笔者主要是对PaddlePaddle的核心框架进行测评，不在此浪费过多笔墨了)。</p>
 <h2 id="3-1-如何安装"><a href="#3-1-如何安装" class="headerlink" title="3.1 如何安装"></a>3.1 如何安装</h2><p>笔者的工作站是Ubuntu 16.04系统，PaddlePaddle在CentOS和Ubuntu都支持pip安装和docker安装，GPU版本在Linux下也可以完美适配。下面来看一下具体的安装步骤。</p>
-<p>首先我们使用cat /proc/cpuinfo | grep avx2来查看我们的Ubuntu系统是否支持avx2指令集，如果发现系统返回了如下一系列信息，就说明系统是支持avx2指令集的，可以放心进行后续安装。<br>如果不支持也没关系，在官网上可以直接下载no_avx的whl包进行安装。</p>
+<p>首先我们使用cat /proc/cpuinfo | grep avx2来查看我们的Ubuntu系统是否支持avx2指令集，如果发现系统返回了如下一系列信息，就说明系统是支持avx2指令集的，可以放心进行后续安装。如果不支持也没关系，在官网上可以直接下载no_avx的whl包进行安装。</p>
 <p><img src="/img/paddle_2.jpg" alt=""></p>
 <p>接下来使用pip安装最新的Fluid v1.1版本的PaddlePaddle(GPU)，在安装前注意，需要在机器上安装python3.5-dev才可以用pip安装PaddlePaddle。下载速度会比较慢，需要20分钟左右的下载时间。</p>
 <p>安装完成后，在python里import paddle测试一下，如果成功导入则说明安装成功！</p>
@@ -234,23 +234,23 @@ var _hmt = _hmt || [];
 <p>这样就用PaddlePaddle实现了简单的计算流程，个人感觉使用起来跟TensorFlow的相似度较高，习惯在TensorFlow上跑模型的小伙伴应该很容易适应PaddlePaddle的这一套生态。</p>
 <p>关于PaddlePaddle计算描述的详情可以参考Fluid编程指南：<a href="http://www.paddlepaddle.org/documentation/docs/zh/1.1/beginners_guide/programming_guide/programming_guide.html" target="_blank" rel="noopener">fluid</a></p>
 <h2 id="3-3-PaddlePaddle的模型库简介"><a href="#3-3-PaddlePaddle的模型库简介" class="headerlink" title="3.3 PaddlePaddle的模型库简介"></a>3.3 PaddlePaddle的模型库简介</h2><p>PaddlePaddle的核心框架内置了非常多的经典模型和网络，涵盖了几乎所有主流的机器学习/深度学习任务，包括图像、语音、自然语言处理、推荐等诸多方面。<br>因为本文是做目标检测，所以主要调研了一下图像方面的模型库，在此大致介绍一下。</p>
-<h3 id="3-3-1-分类"><a href="#3-3-1-分类" class="headerlink" title="3.3.1 分类"></a>3.3.1 分类</h3><p>分类任务中的模型库是最全面的，AlexNet、VGG、GoogleNet、ResNet、Inception、MobileNet、Dual Path Network以及SE-ResNeXt，2012年以来的经典图像识别网络都包含其中，<br>每个网络模型是一个独立的py文件，里面是这个网络模型的类，类里面公用的方法是net()，在调用时初始化对应的类之后调用.net()方法，就可以得到对应网络的Program描述，<br>之后只需要给网络feed数据、定义损失函数、优化方法等就可以轻松使用了。分类模型作为图像任务的基础任务，在目标检测、语义分割等任务中都会重复利用这些模型，<br>所以这样一个模型库可以为大大简化后续任务的开发工作。这部分的模型库里的写法比较统一，只要了解网络结构，用.net()方法调用就可以，这里就不一一介绍了，具体可以参考：<a href="https://github.com/PaddlePaddle/models/tree/develop/fluid/PaddleCV/image_classification/models" target="_blank" rel="noopener">PaddleCV</a></p>
+<h3 id="3-3-1-分类"><a href="#3-3-1-分类" class="headerlink" title="3.3.1 分类"></a>3.3.1 分类</h3><p>分类任务中的模型库是最全面的，AlexNet、VGG、GoogleNet、ResNet、Inception、MobileNet、Dual Path Network以及SE-ResNeXt，2012年以来的经典图像识别网络都包含其中，每个网络模型是一个独立的py文件，里面是这个网络模型的类，类里面公用的方法是net()，在调用时初始化对应的类之后调用.net()方法，就可以得到对应网络的Program描述，<br>之后只需要给网络feed数据、定义损失函数、优化方法等就可以轻松使用了。分类模型作为图像任务的基础任务，在目标检测、语义分割等任务中都会重复利用这些模型，<br>所以这样一个模型库可以为大大简化后续任务的开发工作。这部分的模型库里的写法比较统一，只要了解网络结构，用.net()方法调用就可以，这里就不一一介绍了，具体可以参考：<a href="https://github.com/PaddlePaddle/models/tree/develop/fluid/PaddleCV/image_classification/models" target="_blank" rel="noopener">PaddleCV</a></p>
 <h3 id="3-3-2-目标检测"><a href="#3-3-2-目标检测" class="headerlink" title="3.3.2 目标检测"></a>3.3.2 目标检测</h3><p><strong>SSD</strong></p>
-<p>Single Shot MultiBox Detector (SSD) 是一种单阶段的目标检测器。与两阶段的检测方法不同，单阶段目标检测并不进行区域推荐，而是直接从特征图回归出目标的边界框和分类概率。<br>SSD 运用了这种单阶段检测的思想，并且对其进行改进：在不同尺度的特征图上检测对应尺度的目标。如下图所示，SSD 在六个尺度的特征图上进行了不同层级的预测。每个层级由两个3x3卷<br>积分别对目标类别和边界框偏移进行回归。因此对于每个类别，SSD 的六个层级一共会产生 38x38x4 + 19x19x6 + 10x10x6 + 5x5x6 + 3x3x4 + 1x1x4 = 8732 个检测结果。</p>
+<p>Single Shot MultiBox Detector (SSD) 是一种单阶段的目标检测器。与两阶段的检测方法不同，单阶段目标检测并不进行区域推荐，而是直接从特征图回归出目标的边界框和分类概率。<br>SSD 运用了这种单阶段检测的思想，并且对其进行改进：在不同尺度的特征图上检测对应尺度的目标。如下图所示，SSD 在六个尺度的特征图上进行了不同层级的预测。每个层级由两个3x3卷积分别对目标类别和边界框偏移进行回归。因此对于每个类别，SSD 的六个层级一共会产生 38x38x4 + 19x19x6 + 10x10x6 + 5x5x6 + 3x3x4 + 1x1x4 = 8732 个检测结果。</p>
 <p><img src="/img/paddle_3.jpg" alt="SSD目标检测模型"></p>
 <p>SSD 可以方便地插入到任何一种标准卷积网络中，比如 VGG、ResNet 或者 MobileNet，这些网络被称作检测器的基网络。PaddlePaddle里的SSD使用Google的MobileNet作为基网络。</p>
 <p>目标检测模型库不同于分类模型库，PaddlePaddle是以一个工程的形式提供SSD的模型库。工程里面包含如下文件：</p>
 <p><img src="/img/paddle_4.jpg" alt=""></p>
-<p>其中，train.py、reader.py、mobilenet_ssd.py是与网络训练相关的文件，包括数据读取、网络结构、训练参数等过程的定义都在这3个文件中；eval.py、eval_coco_map.py是网络预测评估相关文件；<br>infer.py是可视化预测结果相关文件。Data文件夹用于存储数据集，使用时可以把训练集、测试集、验证集放在data目录下，reader会在data目录下寻找图片数据加载；pretrained目录存放预训练模型，<br>如果不想从头训练一个SSD，可以把预训练好的模型放在这个目录下，方便进行迁移学习。</p>
+<p>其中，train.py、reader.py、mobilenet_ssd.py是与网络训练相关的文件，包括数据读取、网络结构、训练参数等过程的定义都在这3个文件中；eval.py、eval_coco_map.py是网络预测评估相关文件；<br>infer.py是可视化预测结果相关文件。Data文件夹用于存储数据集，使用时可以把训练集、测试集、验证集放在data目录下，reader会在data目录下寻找图片数据加载；pretrained目录存放预训练模型，如果不想从头训练一个SSD，可以把预训练好的模型放在这个目录下，方便进行迁移学习。</p>
 <h1 id="4-PaddlePaddle实现SSD的目标检测"><a href="#4-PaddlePaddle实现SSD的目标检测" class="headerlink" title="4. PaddlePaddle实现SSD的目标检测"></a>4. PaddlePaddle实现SSD的目标检测</h1><p>有了上述的一些基础，我们就可以轻松使用PaddlePaddle上手一些项目了。现在我们就来实现一个基于SSD的目标检测任务。</p>
 <h2 id="4-1-服务器配置"><a href="#4-1-服务器配置" class="headerlink" title="4.1 服务器配置"></a>4.1 服务器配置</h2><p>系统：Ubuntu 16.04</p>
 <p>GPU：NVIDIA GTX 1080*4 </p>
 <p>环境：python3.5</p>
 <h2 id="4-2-框架配置"><a href="#4-2-框架配置" class="headerlink" title="4.2 框架配置"></a>4.2 框架配置</h2><p>Paddle Fluid v1.1 GPU版本</p>
-<h2 id="4-3-数据准备"><a href="#4-3-数据准备" class="headerlink" title="4.3 数据准备"></a>4.3 数据准备</h2><p>我们使用微软的COCO2017数据集来预训练模型(PaddlePaddle提供了一个基于COCO的预训练模型，可以直接使用)，COCO数据集是微软团队获取的一个可以用来图像recognition+segmentation+captioning 数据集，<br>其官方说明网址：<a href="http://mscoco.org/" target="_blank" rel="noopener">COCO</a>。微软在ECCV Workshops里发表文章《Microsoft COCO: Common Objects in Context》更充分地介绍了该数据集。COCO以场景理解为目标，从复杂场景中截<br>取了328,000张影像，包括了91类目标和2,500,000个label。整个COCO2017数据集20G，官网下载非常慢，可以在国内找一些镜像站下载，数据集里分好了训练集、测试集和验证集，标注和file_list用json文件<br>保存。</p>
+<h2 id="4-3-数据准备"><a href="#4-3-数据准备" class="headerlink" title="4.3 数据准备"></a>4.3 数据准备</h2><p>我们使用微软的COCO2017数据集来预训练模型(PaddlePaddle提供了一个基于COCO的预训练模型，可以直接使用)，COCO数据集是微软团队获取的一个可以用来图像recognition+segmentation+captioning 数据集，其官方说明网址：<a href="http://mscoco.org/" target="_blank" rel="noopener">COCO</a>。微软在ECCV Workshops里发表文章《Microsoft COCO: Common Objects in Context》更充分地介绍了该数据集。COCO以场景理解为目标，从复杂场景中截取了28,000张影像，包括了91类目标和2,500,000个label。整个COCO2017数据集20G，官网下载非常慢，可以在国内找一些镜像站下载，数据集里分好了训练集、测试集和验证集，标注和file_list用json文件保存。</p>
 <p><img src="/img/paddle_5.jpg" alt=""></p>
 <p>拿到预训练数据集后，我们在Pascal VOC数据集上对模型进行进一步训练，做一下微调。Pascal VOC数据集相较COCO数据集来说图片数量和种类小很多，共计20类，11540张训练图片，标注采用xml格式文件保存。</p>
-<h2 id="4-4-数据读取"><a href="#4-4-数据读取" class="headerlink" title="4.4 数据读取"></a>4.4 数据读取</h2><p>图片格式为jpg，需要对图像进行转码读取，SSD中的reader.py文件帮助我们实现了这个功能，内置的数据读取使用了一个生成器来逐个batch读取图片并转码，这样内存占用率非常低。由于我们机器内存不大，<br>设置的batch为32，在此情况下load十万张图片的annotation只需要17秒左右，每一个batch的load+train时间只需要0.3秒左右。</p>
+<h2 id="4-4-数据读取"><a href="#4-4-数据读取" class="headerlink" title="4.4 数据读取"></a>4.4 数据读取</h2><p>图片格式为jpg，需要对图像进行转码读取，SSD中的reader.py文件帮助我们实现了这个功能，内置的数据读取使用了一个生成器来逐个batch读取图片并转码，这样内存占用率非常低。由于我们机器内存不大，设置的batch为32，在此情况下load十万张图片的annotation只需要17秒左右，每一个batch的load+train时间只需要0.3秒左右。</p>
 <p><img src="/img/paddle_6.jpg" alt=""></p>
 <p>可以看一下这个reader的核心代码：<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">reader</span><span class="params">()</span>:</span></span><br><span class="line">    <span class="keyword">if</span> mode == <span class="string">'train'</span> <span class="keyword">and</span> shuffle:</span><br><span class="line">        np.random.shuffle(images)</span><br><span class="line">    batch_out = []</span><br><span class="line">    <span class="keyword">for</span> image <span class="keyword">in</span> images:</span><br><span class="line">        image_name = image[<span class="string">'file_name'</span>]</span><br><span class="line">        image_path = os.path.join(settings.data_dir, image_name)</span><br><span class="line"></span><br><span class="line">        im = Image.open(image_path)</span><br><span class="line">        <span class="keyword">if</span> im.mode == <span class="string">'L'</span>:</span><br><span class="line">            im = im.convert(<span class="string">'RGB'</span>)</span><br><span class="line">        im_width, im_height = im.size</span><br><span class="line">        im_id = image[<span class="string">'id'</span>]</span><br><span class="line"></span><br><span class="line">        <span class="comment"># layout: category_id | xmin | ymin | xmax | ymax | iscrowd</span></span><br><span class="line">        bbox_labels = []</span><br><span class="line">        annIds = coco.getAnnIds(imgIds=image[<span class="string">'id'</span>])</span><br><span class="line">        anns = coco.loadAnns(annIds)</span><br><span class="line">        <span class="keyword">for</span> ann <span class="keyword">in</span> anns:</span><br><span class="line">            bbox_sample = []</span><br><span class="line">            <span class="comment"># start from 1, leave 0 to background</span></span><br><span class="line">            bbox_sample.append(float(ann[<span class="string">'category_id'</span>]))</span><br><span class="line">            bbox = ann[<span class="string">'bbox'</span>]</span><br><span class="line">            xmin, ymin, w, h = bbox</span><br><span class="line">            xmax = xmin + w</span><br><span class="line">            ymax = ymin + h</span><br><span class="line">            bbox_sample.append(float(xmin) / im_width)</span><br><span class="line">            bbox_sample.append(float(ymin) / im_height)</span><br><span class="line">            bbox_sample.append(float(xmax) / im_width)</span><br><span class="line">            bbox_sample.append(float(ymax) / im_height)</span><br><span class="line">            bbox_sample.append(float(ann[<span class="string">'iscrowd'</span>]))</span><br><span class="line">            bbox_labels.append(bbox_sample)</span><br><span class="line">        im, sample_labels = preprocess(im, bbox_labels, mode, settings)</span><br><span class="line">        sample_labels = np.array(sample_labels)</span><br><span class="line">        <span class="keyword">if</span> len(sample_labels) == <span class="number">0</span>: <span class="keyword">continue</span></span><br><span class="line">        im = im.astype(<span class="string">'float32'</span>)</span><br><span class="line">        boxes = sample_labels[:, <span class="number">1</span>:<span class="number">5</span>]</span><br><span class="line">        lbls = sample_labels[:, <span class="number">0</span>].astype(<span class="string">'int32'</span>)</span><br><span class="line">        iscrowd = sample_labels[:, <span class="number">-1</span>].astype(<span class="string">'int32'</span>)</span><br><span class="line">        <span class="keyword">if</span> <span class="string">'cocoMAP'</span> <span class="keyword">in</span> settings.ap_version:</span><br><span class="line">            batch_out.append((im, boxes, lbls, iscrowd,</span><br><span class="line">                              [im_id, im_width, im_height]))</span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            batch_out.append((im, boxes, lbls, iscrowd))</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> len(batch_out) == batch_size:</span><br><span class="line">            <span class="keyword">yield</span> batch_out</span><br><span class="line">            batch_out = []</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> mode == <span class="string">'test'</span> <span class="keyword">and</span> len(batch_out) &gt; <span class="number">1</span>:</span><br><span class="line">        <span class="keyword">yield</span> batch_out</span><br><span class="line">        batch_out = []</span><br><span class="line"></span><br><span class="line"><span class="keyword">return</span> reader</span><br></pre></td></tr></table></figure></p>
 <p>可以看到，这里的reader是一个生成器，逐个batch把数据load进内存。在数据读取过程中，需要注意一下几点：</p>
@@ -326,7 +326,7 @@ var _hmt = _hmt || [];
 <p>在执行脚本时，传入相应的参数值即可，例如：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">python -u train.py --batch_size=16 \</span><br><span class="line">                   --epoc_num=1 \</span><br><span class="line">                   --dataset=<span class="string">'pascalvoc'</span> \</span><br><span class="line">                   --pretrained_model=<span class="string">'pretrain/ssd_mobilenet_v1_coco/'</span></span><br></pre></td></tr></table></figure></p>
 <p><img src="/img/paddle_7.jpg" alt=""></p>
 <h3 id="4-5-1-单机多卡配置"><a href="#4-5-1-单机多卡配置" class="headerlink" title="4.5.1 单机多卡配置"></a>4.5.1 单机多卡配置</h3><p>单机多卡的配置相较于多机多卡配置较为简单，参数需要先在GPU0上初始化，再经由fluid.ParallelExecutor() 分发到多张显卡上。<br>这里可以使用fluid.core.get_cuda_device_count()得到可用显卡数量，也可以自己定义用几张显卡。<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">train_exe = fluid.ParallelExecutor(use_cuda=<span class="keyword">True</span>, loss_name=loss.name,</span><br><span class="line">                                   main_program=fluid.default_main_program())</span><br><span class="line">train_exe.run(fetch_list=[loss.name], feed=&#123;...&#125;)</span><br></pre></td></tr></table></figure></p>
-<h3 id="4-5-2-参数调整"><a href="#4-5-2-参数调整" class="headerlink" title="4.5.2 参数调整"></a>4.5.2 参数调整</h3><p>PaddlePaddle这一套SSD模型给了使用者非常大的自由度，可以对网络结构、损失函数、优化方法等多个角度对模型进行调整。本文采用的是基于MobileNet的SSD，<br>如果想使用基于VGG的SSD，可以自己修改工程中的mobilenet_ssd.py文件，把里面定义的MobileNet Program更改为VGG的Program描述就可以了；如果需要修改损失函数或优化方法，<br>则在train.py中找到build_program()函数，在<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">with</span> fluid.unique_name.guard(<span class="string">"train"</span>):</span><br><span class="line">    loss = fluid.layers.ssd_loss(locs, confs, gt_box, gt_label, box,</span><br><span class="line">                                 box_var)</span><br><span class="line">    loss = fluid.layers.reduce_sum(loss)</span><br><span class="line">    optimizer = optimizer_setting(train_params)</span><br><span class="line">    optimizer.minimize(loss)</span><br></pre></td></tr></table></figure></p>
+<h3 id="4-5-2-参数调整"><a href="#4-5-2-参数调整" class="headerlink" title="4.5.2 参数调整"></a>4.5.2 参数调整</h3><p>PaddlePaddle这一套SSD模型给了使用者非常大的自由度，可以对网络结构、损失函数、优化方法等多个角度对模型进行调整。本文采用的是基于MobileNet的SSD，如果想使用基于VGG的SSD，可以自己修改工程中的mobilenet_ssd.py文件，把里面定义的MobileNet Program更改为VGG的Program描述就可以了；如果需要修改损失函数或优化方法，则在train.py中找到build_program()函数，在<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">with</span> fluid.unique_name.guard(<span class="string">"train"</span>):</span><br><span class="line">    loss = fluid.layers.ssd_loss(locs, confs, gt_box, gt_label, box,</span><br><span class="line">                                 box_var)</span><br><span class="line">    loss = fluid.layers.reduce_sum(loss)</span><br><span class="line">    optimizer = optimizer_setting(train_params)</span><br><span class="line">    optimizer.minimize(loss)</span><br></pre></td></tr></table></figure></p>
 <p>里修改损失函数或优化器即可；修改batch_num、epoch_num、learning rate等参数可以直接在train.py传入参数中进行。</p>
 <h3 id="4-5-3-模型保存"><a href="#4-5-3-模型保存" class="headerlink" title="4.5.3 模型保存"></a>4.5.3 模型保存</h3><p>模型在COCO数据集上训练完后，可以用fluid.io.save_persistables()方法将模型保存下来，我们实现了如下save_model()函数来将模型保存到指定路径。<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">save_model</span><span class="params">(postfix, main_prog, model_path)</span>:</span></span><br><span class="line">    model_path = os.path.join(model_save_dir, postfix)</span><br><span class="line">    <span class="keyword">if</span> os.path.isdir(model_path):</span><br><span class="line">        shutil.rmtree(model_path)</span><br><span class="line">        print(<span class="string">'save models to %s'</span> % (model_path))</span><br><span class="line">        fluid.io.save_persistables(exe, model_path, main_program=main_prog)</span><br></pre></td></tr></table></figure></p>
 <h3 id="4-5-4-继续训练"><a href="#4-5-4-继续训练" class="headerlink" title="4.5.4 继续训练"></a>4.5.4 继续训练</h3><p>训练过程有时候会被打断，只要每个过几个batch保存一下模型，我们就可以通过load_vars()方法来恢复已经保存的模型来继续训练或者用于预测。文中提到的这些API，<br>大家可以去PaddlePaddle的官网教程上进行更系统的学习和查看，PaddlePaddle提供了大量的中文文档和使用教程，对中文使用者可以说是非常友好的了。<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">fluid.io.load_vars(exe, pretrained_model, main_program=train_prog, predicate=if_exist)</span><br></pre></td></tr></table></figure></p>
@@ -335,7 +335,7 @@ var _hmt = _hmt || [];
 <p><img src="/img/paddle_8.jpg" alt=""></p>
 <p><img src="/img/paddle_9.jpg" alt="CPU/GPU使用情况"></p>
 <h2 id="4-6-模型评估"><a href="#4-6-模型评估" class="headerlink" title="4.6 模型评估"></a>4.6 模型评估</h2><p>在PaddlePaddle的SSD模型中，可以使用eval.py脚本进行模型评估，可以选择11point、integral等方法来计算模型在验证集上的mAP。<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">python eval.py --dataset=<span class="string">'pascalvoc'</span> \</span><br><span class="line">               --model_dir=<span class="string">'train_pascal_model/best_model'</span> \</span><br><span class="line">               --data_dir=<span class="string">'data/pascalvoc'</span> \</span><br><span class="line">               --test_list=<span class="string">'test.txt'</span> \</span><br><span class="line">               --ap_version=<span class="string">'11point'</span> \</span><br><span class="line">               --nms_threshold=0.45</span><br></pre></td></tr></table></figure></p>
-<p>其中，model_dir是我们训练好的模型的保存目录，data_dir是数据集目录，test_list是作为验证集的文件列表(txt文件)，前提是这些文件必须要有对应的标签文件，ap_version是计算mAP的方法，<br>nms_threshold是分类阈值。最后我们得到PaddlePaddle SSD模型在Pascal VOC数据集上的mAP为73.32%<sup>[2]</sup></p>
+<p>其中，model_dir是我们训练好的模型的保存目录，data_dir是数据集目录，test_list是作为验证集的文件列表(txt文件)，前提是这些文件必须要有对应的标签文件，ap_version是计算mAP的方法，nms_threshold是分类阈值。最后我们得到PaddlePaddle SSD模型在Pascal VOC数据集上的mAP为73.32%<sup>[2]</sup></p>
 <table>
 <thead>
 <tr>
@@ -384,7 +384,7 @@ var _hmt = _hmt || [];
 <li>性能优越，生态完整</li>
 </ul>
 <p>从这次实验的结果来看，PaddlePaddle在性能上与TensorFlow等主流框架的性能差别不大，训练速度、CPU/GPU占用率等方面均表现优异，而且PaddlePaddle已经布局了一套完整的生态，前景非常好。</p>
-<h1 id="6-总结"><a href="#6-总结" class="headerlink" title="6. 总结"></a>6. 总结</h1><p>整体来说，PaddlePaddle是一个不错的框架。由于设计简洁加之文档、社区做的很好，非常容易上手，在使用过程中也没有非常难理解的概念，用fluid Program定义网络结构很方便，对于之前使用过TensorFlow的工程师来说可以比较快速的迁移到PaddlePaddle上。<br>这次实验过程中，还是发现了一些PaddlePaddle的问题，训练过程如果意外终止，Paddle的训练任务并没有被完全kill掉，依然会占用CPU和GPU大量资源，内存和显存的管理还需要进一步的提高。不过，<br>实验也证实了，正常情况下PaddlePaddle在SSD模型上的精度、速度等性能与TensorFlow差不多，在数据读取操作上比TensorFlow要更加简洁明了。</p>
+<h1 id="6-总结"><a href="#6-总结" class="headerlink" title="6. 总结"></a>6. 总结</h1><p>整体来说，PaddlePaddle是一个不错的框架。由于设计简洁加之文档、社区做的很好，非常容易上手，在使用过程中也没有非常难理解的概念，用fluid Program定义网络结构很方便，对于之前使用过TensorFlow的工程师来说可以比较快速的迁移到PaddlePaddle上。这次实验过程中，还是发现了一些PaddlePaddle的问题，训练过程如果意外终止，Paddle的训练任务并没有被完全kill掉，依然会占用CPU和GPU大量资源，内存和显存的管理还需要进一步的提高。不过，实验也证实了，正常情况下PaddlePaddle在SSD模型上的精度、速度等性能与TensorFlow差不多，在数据读取操作上比TensorFlow要更加简洁明了。</p>
 <p>[1]. PaddlePaddle Fluid是2016年百度对原有PaddlePaddle的重构版本，如无特殊说明，本文中所述PaddlePaddle均指PaddlePaddle Fluid。</p>
 <p>[2]. 此处引用了官方的评估结果，数据来源：<a href="https://github.com/PaddlePaddle/models/blob/develop/fluid/PaddleCV/object_detection/README_cn.md#%E6%A8%A1%E5%9E%8B%E8%AF%84%E4%BC%B0" target="_blank" rel="noopener">PaddleCV</a></p>
 
@@ -638,14 +638,6 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">机器学习</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">特征处理</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color4">数据集</a>
               </li>
              
@@ -654,15 +646,23 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">机器学习</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color5">随机森林</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">TensorFlow</a>
+                <a href="javascript:void(0)" class="js-tag color5">特征处理</a>
               </li>
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color2">损失优化方法</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">TensorFlow</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -671,10 +671,6 @@ MathJax.Hub.Queue(function() {
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color3">随笔</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">semantic-segmentation</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -698,6 +694,10 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color2">semantic-segmentation</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color5">信号处理</a>
               </li>
              
@@ -714,15 +714,15 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">特征工程</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color1">L2正则化</a>
               </li>
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color1">He正则化</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">特征工程</a>
               </li>
              
               <li class="article-tag-list-item">
