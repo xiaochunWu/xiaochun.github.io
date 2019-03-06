@@ -19,7 +19,7 @@
 <meta property="og:image" content="http://www.wuxiaochun.cn/img/deeplabv3-1.jpg">
 <meta property="og:image" content="http://www.wuxiaochun.cn/img/deeplabv3-2.jpg">
 <meta property="og:image" content="http://www.wuxiaochun.cn/img/示意图.png">
-<meta property="og:image" content="http://www.wuxiaochun.cn/img/deeplabv3+-1.png">
+<meta property="og:image" content="http://www.wuxiaochun.cn/img/deeplabv3+-1.jpg">
 <meta property="og:image" content="http://www.wuxiaochun.cn/img/deeplabv3+-2.jpg">
 <meta property="og:image" content="http://www.wuxiaochun.cn/img/bagging.jpg">
 <meta property="og:image" content="http://www.wuxiaochun.cn/img/boosting.jpg">
@@ -28,7 +28,7 @@
 <meta property="og:image" content="http://www.wuxiaochun.cn/img/crf-2.png">
 <meta property="og:image" content="http://www.wuxiaochun.cn/img/crf-3.png">
 <meta property="og:image" content="http://www.wuxiaochun.cn/img/continue.jpg">
-<meta property="og:updated_time" content="2018-12-10T08:00:02.942Z">
+<meta property="og:updated_time" content="2019-03-06T12:21:58.462Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="semantic-segmentation Implementation">
 <meta name="twitter:description" content="实习结束啦，终于有时间来整理下这几个月做的事情，主要是针对语义分割方向的一些模型复现和改进。">
@@ -257,7 +257,7 @@ var _hmt = _hmt || [];
 </tbody>
 </table>
 <p><img src="/img/示意图.png" alt="从左到右分别是原图、groundtruth、deeplabv3_pascal、deeplabv3_coco20"></p>
-<h1 id="Deeplab-v3-1"><a href="#Deeplab-v3-1" class="headerlink" title="Deeplab-v3+"></a>Deeplab-v3+</h1><h2 id="Abstract-1"><a href="#Abstract-1" class="headerlink" title="Abstract"></a>Abstract</h2><p><img src="/img/deeplabv3+-1.png" alt="deeplabv3+"><br>Deeplab-v3+主要使用了一种新的编码-解码架构，然后检验了Xception作为backbone使用的效果</p>
+<h1 id="Deeplab-v3-1"><a href="#Deeplab-v3-1" class="headerlink" title="Deeplab-v3+"></a>Deeplab-v3+</h1><h2 id="Abstract-1"><a href="#Abstract-1" class="headerlink" title="Abstract"></a>Abstract</h2><p><img src="/img/deeplabv3+-1.jpg" alt="deeplabv3+"><br>Deeplab-v3+主要使用了一种新的编码-解码架构，然后检验了Xception作为backbone使用的效果</p>
 <ul>
 <li>(a). 即Deeplab-v3的结构，使用ASPP模块获取多尺度上下文信息，然后直接上采样得到预测结果</li>
 <li>(b). encoder-decoder结构，高层特征提供语义，decoder逐步恢复边界信息</li>
@@ -620,7 +620,15 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">数据集</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color3">BN</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">语义分割</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -628,19 +636,39 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">特征处理</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">数据集</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color5">随机森林</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">语义分割</a>
+                <a href="javascript:void(0)" class="js-tag color5">特征处理</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">TensorFlow</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color2">损失优化方法</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color2">semantic-segmentation</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">信号处理</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">慢病管理</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">association analysis</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">初始化</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -652,31 +680,7 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">损失优化方法</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">TensorFlow</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">训练过程</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">信号处理</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color5">卷积序列</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">semantic-segmentation</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">初始化</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -688,11 +692,11 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">非均衡样本</a>
+                <a href="javascript:void(0)" class="js-tag color5">训练过程</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">模型训练</a>
+                <a href="javascript:void(0)" class="js-tag color4">树模型</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -704,15 +708,15 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">树模型</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">association analysis</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color3">PaddlePaddle</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">非均衡样本</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">模型训练</a>
               </li>
             
             <div class="clearfix"></div>
