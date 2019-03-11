@@ -3,29 +3,6 @@
   
     
     <entry>
-      <title>使用wfdb来处理心电信号</title>
-      <link href="/2019/01/07/%E4%BD%BF%E7%94%A8wfdb%E6%9D%A5%E5%A4%84%E7%90%86%E5%BF%83%E7%94%B5%E4%BF%A1%E5%8F%B7/"/>
-      <url>/2019/01/07/%E4%BD%BF%E7%94%A8wfdb%E6%9D%A5%E5%A4%84%E7%90%86%E5%BF%83%E7%94%B5%E4%BF%A1%E5%8F%B7/</url>
-      <content type="html"><![CDATA[<p>涉及到项目组设备的更新，近期在探究通过分析短时段心电信号来预测病人的病型，之后成功的话会把成果放上来。<br>因为公开的心电信号数据集中多使用.data的数据格式，一般来说需要matlab处理，但是这样的话不利于程序的一致性和整体性，<br>后来听马组长说有一个python module可以用来进行处理，所以今天记录下wfdb来处理心电信号。(注：使用的数据均为physionet 2017)</p>]]></content>
-      
-      <categories>
-          
-          <category> 信号处理 </category>
-          
-      </categories>
-      
-      
-        <tags>
-            
-            <tag> 信号处理 </tag>
-            
-            <tag> 慢病管理 </tag>
-            
-        </tags>
-      
-    </entry>
-    
-    <entry>
       <title>2019冲鸭~</title>
       <link href="/2019/01/01/2019%E5%86%B2%E9%B8%AD/"/>
       <url>/2019/01/01/2019%E5%86%B2%E9%B8%AD/</url>
